@@ -1,0 +1,543 @@
+\chapter{Constructions}
+\label{chap:constructions}
+
+In this auxiliary chapter we explore some basic constructions in
+categories.
+
+\section{Isomorphisms}
+\label{sec:constructions-isomorphisms}
+
+\todo{First, isomorphisms, isomorphic objects, and identicalness and
+  uniqueness up to isomorphism.}
+
+\begin{definition}[Isomorphism and isomorphic objects
+    {\parencite[15]{pierce-1991}}]
+
+  \label{def:isomorphism}
+
+  \index{isomorphism}
+  \index{object!isomorphic ---}
+
+  Let \cat{C} be a category\footnote{Whenever a category \cat{C} is
+    mentioned, its sets of objects and morphisms, its domain and
+    codomain functions, and its identity and composition functions
+    (\catO{C} and \catM{C}, $\dom$ and $\cod$, and $\id$ and $\comp$,
+    respectively) are implicitly mentioned as well. See Definition
+    \ref{def:category}.}. A morphism $f: a \to b \in \catM{C}$ is an
+  \term{isomorphism} if there is a morphism $f^{-1}: b \to a \in
+  \catM{C}$, called the \term{inverse} of $f$, such that $f^{-1} \comp
+  f = \idO{a}$ and $f \comp f^{-1} = \idO{b}$. Objects $a$ and $b \in
+  \catO{C}$ are \term{isomorphic} if there is an isomorphism $f: a \to
+  b \in \catM{C}$.
+
+\end{definition}
+
+\begin{definition}[Identicalness and uniqueness up to isomorphism
+    {\parencite[15]{pierce-1991}}]
+
+  \label{def:up-to-isomorphism}
+
+  \index{isomorphism!up to ---}
+
+  Isomorphic objects are often said to be identical \term{up to
+    isomorphism}. Similarly, an object with some property is said to
+  be unique up to isomorphism if every object satisfying the property
+  is isomorphic to it.
+
+\end{definition}
+
+\section{Initial and terminal objects}
+\label{sec:constructions-initial-terminal-objects}
+
+\todo{Second, initial and terminal objects.}
+
+\begin{definition}[Initial object
+  {\parencite[444]{poigne-1992}}]
+
+  \label{def:initial-object}
+
+  \index{initial object}
+  \index{object!initial ---|see{initial object}}
+
+  Let \cat{C} be a category. An object $0 \in \catO{C}$ is the
+  \term{initial object} of \cat{C} if, for all objects $a \in
+  \catO{C}$, there is a unique morphism $0 \to a \in \catM{C}$.
+
+\end{definition}
+
+\begin{definition}[Terminal object
+  {\parencite[439]{poigne-1992}}]
+
+  \label{def:terminal-object}
+
+  \index{terminal object}
+  \index{object!terminal ---|see{terminal object}}
+  \index{final object|see{terminal object}}
+  \index{object!final ---|see{terminal object}}
+
+  Let \cat{C} be a category. An object $1 \in \catO{C}$ is the
+  \term{terminal object} of \cat{C} if, for all
+  objects $a \in \catO{C}$, there is a unique morphism $a \to 1 \in
+  \catM{C}$.
+
+\end{definition}
+
+\begin{lemma}
+  Initial and terminal objects are unique up to isomorphism.
+
+  \begin{proof}
+
+    Let \cat{C} be a category.
+    \begin{itemize}
+    \item
+
+      If $0$ and $0'$ are initial objects of \cat{C}, there are unique
+      morphisms $0_{0'}: 0 \to 0'$ and $0'_{0}: 0' \to 0 \in
+      \catM{C}$. Moreover, there are unique morphisms $0_{0} =
+      \idO{0}$ and $0'_{0'} = \idO{0'} \in \catM{C}$. Hence, $0'_{0}
+      \comp 0_{0'} = \idO{0}$ and $0_{0'} \comp 0'_{0} = \idO{0'}$.
+      That is, $0$ is unique up to isomorphism.
+
+    \item
+
+      If $1$ and $1'$ are terminal objects of \cat{C}, there are
+      unique morphisms $1_{1'}: 1' \to 1$ and $1'_{1}: 1 \to 1' \in
+      \catM{C}$. Moreover, there are unique morphisms $1_{1} =
+      \idO{1}$ and $1'_{1'} = \idO{1'} \in \catM{C}$. Hence, $1_{1'}
+      \comp 1'_{1} = \idO{1}$ and $1'_{1} \comp 1_{1'} = \idO{1'}$.
+      That is, $1$ is unique up to isomorphism.
+
+    \end{itemize}
+
+  \end{proof}
+
+\end{lemma}
+
+\begin{example}[Initial and terminal objects in $\set$
+    {\parencite[16]{pierce-1991}}]
+
+  \label{ex:initial-terminal-objects-set}
+
+  In \set, the empty set $\emptyset$ is the initial object. Given a
+  set $A$, the empty function is the unique function $\emptyset \to
+  A$. Additionally, any singleton set $\{x\}$ is a terminal object.
+  Given a set $A$, the function which assigns $x$ to each element of
+  $A$ is the unique function $A \to \{x\}$.
+
+\end{example}
+
+\begin{example}[Initial and terminal objects in Haskell]
+
+  \label{ex:initial-terminal-objects-haskell}
+
+  In \hask, the empty or uninhabited type is the initial object of the
+  category:
+  \begin{codehaskell}
+data Void
+  \end{codehaskell}
+  And the \texthaskell{absurd} function, as defined, for instance, in
+  Edward A. Kmett's \texthaskell{void} package until version
+  0.5.6\footnote{\url{http://hackage.haskell.org/package/void-0.5.6}.},
+  is the unique function required to show that it is indeed the
+  initial object:
+  \begin{codehaskell}
+absurd :: Void -> a
+absurd = absurd
+  \end{codehaskell}
+
+  Additionally, the unit type is the terminal object of the category:
+  \begin{codehaskell}
+data () = ()
+  \end{codehaskell}
+  And the \texthaskell{unit} function is the unique function required
+  to show that it really is the terminal object:
+  \begin{codehaskell}
+unit :: a -> ()
+unit _ = ()
+  \end{codehaskell}
+
+\end{example}
+
+\begin{example}[Initial and terminal objects in Agda]
+
+  \label{ex:initial-terminal-objects-agda}
+
+  Similarly, in Agda, the empty type, defined in \module{Data.Empty},
+  is the initial object:
+  \begin{codeagda}
+data ⊥ : Set where
+  \end{codeagda}
+  And the \textagda{⊥-elim} function, defined in
+  \module{Abel.Data.Empty}, is the unique function required to show
+  that it is indeed the initial object:
+  \begin{codeagda}
+⊥-elim : {A : Set} → ⊥ → A
+⊥-elim ()
+  \end{codeagda}
+
+  The unit type, defined in \module{Data.Unit}, is the terminal
+  object:
+  \begin{codeagda}
+record ⊤ : Set where
+  constructor tt
+  \end{codeagda}
+  Or, equivalently, the empty type defined in \module{Data.Unit.Core}:
+  \begin{codeagda}
+data Unit : Set where
+  unit : Unit
+  \end{codeagda}
+  Finally, the \textagda{unit} function, defined in
+  \module{Abel.Data.Unit}, is the unique function required to show
+  that it really is the terminal object:
+  \begin{codeagda}
+unit : {A : Set} → A → ⊤
+unit _ = tt
+  \end{codeagda}
+
+\end{example}
+
+\begin{example}[Terminal objects and elements of sets
+    {\parencite[16--17]{pierce-1991}}]
+
+  \label{ex:terminal-objects-constants}
+
+  In \set, the elements of a set $A$ can be considered as functions
+  from a terminal object, that is, any singleton set, to $A$. More
+  specifically, if $x \in A$ and $1$ is a terminal object, then $x$
+  can be considered as a function $x: 1 \to A$ which assigns $x$ to
+  the element of $1$.
+
+\end{example}
+
+\section{Products and coproducts}
+\label{sec:constructions-products-coproducts}
+
+\todo{First, products.}
+
+\begin{definition}[Product
+    {\parencite[18]{pierce-1991}}]
+
+  \label{def:product}
+
+  \index{morphism!projection ---}
+  \index{object!product ---}
+  \index{product}
+
+  Let \cat{C} be a category. A \term{product} of two objects $a$ and
+  $b \in \catO{C}$ consists of a product object $a \times b \in
+  \catO{C}$, and two projection morphisms $\pi_{1}: a \times b \to a$
+  and $\pi_{2}: a \times b \to b \in \catM{C}$, such that, for all
+  objects $c \in \catO{C}$, and morphisms $f: c \to a$ and $g: c \to b
+  \in \catM{C}$, there is a unique morphism $\langle{f,g}\rangle: c
+  \to a \times b \in \catM{C}$ such that
+  \begin{equation}
+    \label{eq:product}
+    \pi_{1} \comp \langle{f,g}\rangle = f
+    \quad
+    \text{and}
+    \quad
+    \pi_{2} \comp \langle{f,g}\rangle = g
+    \text{,}
+  \end{equation}
+  that is, such that the diagram in Figure \ref{fig:product} is
+  commutative.
+  \begin{figure}[htbp]
+    \begin{center}
+      \begin{tikzpicture}
+        \node (axb)               {$a \times b$};
+
+        \node (a)  [left of=axb]  {$a$};
+        \node (b)  [right of=axb] {$b$};
+        \node (c)  [below of=axb] {$c$};
+
+        \draw [->] (axb) to node [swap] {$\pi_{1}$} (a);
+        \draw [->] (axb) to node        {$\pi_{2}$} (b);
+
+        \draw [->] (c)  to node        {$f$} (a);
+        \draw [->] (c)  to node [swap] {$g$} (b);
+
+        \draw [->,dotted] (c)  to node [swap] {$\langle{f,g}\rangle$} (axb);
+      \end{tikzpicture}
+    \end{center}
+    \caption{}
+    \label{fig:product}
+  \end{figure}
+
+\end{definition}
+
+\begin{example}[Products in $\set$
+    {\parencites[439--440]{poigne-1992}[17--18]{pierce-1991}}]
+
+  \label{ex:product-set}
+
+  \index{product!Cartesian ---}
+
+  In \set, the product of two sets $A$ and $B$ consists of the
+  Cartesian product
+  \begin{equation}
+    A \times B = \{(x,y) \mid x \in A \quad\text{and}\quad y \in B\}
+    \text{,}
+  \end{equation}
+  and two projection functions $\pi_{1}: A \times B \to A$ and
+  $\pi_{2}: A \times B \to B$ such that, for all $(x,y) \in A \times
+  B$,
+  \begin{equation*}
+    \pi_{1}(x,y) = x
+    \quad
+    \text{and}
+    \quad
+    \pi_{2}(x,y) = y
+    \text{.}
+  \end{equation*}
+  Given a set $C$, and two functions $f: C \to A$ and $g: C \to B$,
+  there is a unique function $\langle{f,g}\rangle: C \to A \times B$
+  defined by
+  \begin{equation*}
+    \langle{f,g}\rangle(z) = (f(z),g(z))
+  \end{equation*}
+  for all $z \in C$. Equations \ref{eq:product} obviously hold.
+
+\end{example}
+
+\begin{example}[Products in $\catbf{Mon}$
+    {\parencite[440]{poigne-1992}}]
+
+  \label{ex:product-mon}
+
+  A product of monoids $M_1 = (M_1, *_1, e_1)$ and $M_2 = (M_2, *_2,
+  e_2)$ is defined by $M_1 \times M_2$ with multiplication $(x_1, x_2)
+  * (y_1, y_2) = (x_1 * y_1, x_2 * y_2)$. The projections to the
+  components are monoid homomorphisms. Products for other sets with
+  structures, such as groups, are defined in the same way.
+
+\end{example}
+
+\begin{example}[Products in order categories
+    {\parencite[440--441]{poigne-1992}}]
+
+  \label{ex:product-order-categories}
+
+  Given an order category $(\Gamma, \models)$ with objects being
+  propositions, product objects define conjunctions with elimination
+  rules as projections $\phi \and \psi \models \phi$ and $\phi \and
+  \psi \models \psi$, and pairing of morphisms yields a sequent
+  version of the introduction rule $\gamma \models \phi$, $\gamma
+  \models \psi$, then $\gamma \models \phi \and \psi$. The terminal
+  object defined 'truth' in that $\phi \models tt$.
+
+\end{example}
+
+\begin{example}[Products in Haskell]
+  \label{ex:product-haskell}
+
+  \index{\hask}
+
+  \index{product}
+  \index{tuple}
+
+  In \hask, tuples are products:
+  \begin{codehaskell}
+data (,) a b = (,) a b
+  \end{codehaskell}
+  The projection functions are \texthaskell{fst} and
+  \texthaskell{snd}, which extract the first and second components of
+  a pair, respectively:
+  \begin{codehaskell}
+fst :: (a,b) -> a
+fst (x,_) = x
+
+snd :: (a,b) -> b
+snd (_,y) = y
+  \end{codehaskell}
+  And the \texthaskell{fork} function is the function required to show
+  that tuples are indeed products:
+  \begin{codehaskell}
+fork :: (c -> a) -> (c -> b) -> c -> (a,b)
+fork f g z = (f z,g z)
+  \end{codehaskell}
+
+\end{example}
+
+\begin{example}[Products in Agda]
+  \label{ex:product-agda}
+
+  \index{product}
+
+  Similarly, in Agda, products and their projection functions are
+  defined in \module{Abel.Data.Product}, as follows:
+  \begin{codeagda}
+data _×_ (A B : Set) : Set where
+  _,_ : A → B → A × B
+
+proj₁ : {A B : Set} → A × B → A
+proj₁ (x , _) = x
+
+proj₂ : {A B : Set} → A × B → B
+proj₂ (_ , y) = y
+  \end{codeagda}
+  And the required function to show that products really are products,
+  defined in \module{Abel.Data.Product} as well, is:
+  \begin{codeagda}
+⟨_,_⟩ : {A B C : Set} → (C → A) → (C → B) → C → A × B
+⟨_,_⟩ f g z = f z , g z
+  \end{codeagda}
+
+\end{example}
+
+\todo{And now coproducts.}
+
+\begin{definition}[Coproduct
+    {\parencite[19]{pierce-1991}}]
+
+  \label{def:coproduct}
+
+  \index{coproduct}
+  \index{morphism!injection ---}
+  \index{object!coproduct ---}
+
+  Let \cat{C} be a category. A \term{coproduct} of two objects $a$ and
+  $b \in \catO{C}$ consists of a coproduct object $a + b \in
+  \catO{C}$, and two injection morphisms $\iota_{1}: a \to a + b$ and
+  $\iota_{2}: b \to a + b \in \catM{C}$, such that, for all objects $c
+  \in \catO{C}$, and morphisms $f: a \to c$ and $g: b \to c \in
+  \catM{C}$, there is a unique morphism $[f,g]: a + b \to c \in
+  \catM{C}$ such that
+  \begin{equation}
+    \label{eq:coproduct}
+    [f,g] \comp \iota_{1} = f
+    \quad
+    \text{and}
+    \quad
+    [f,g] \comp \iota_{2} = g
+    \text{,}
+  \end{equation}
+  that is, such that the diagram in Figure \ref{fig:coproduct} is
+  commutative.
+  \begin{figure}[htbp]
+    \begin{center}
+      \begin{tikzpicture}
+        \node (a+b) {$a + b$};
+
+        \node (a) [left of=a+b]  {$a$};
+        \node (b) [right of=a+b] {$b$};
+        \node (c) [below of=a+b] {$c$};
+
+        \draw [<-] (a+b) to node [swap] {$\iota_{1}$} (a);
+        \draw [<-] (a+b) to node        {$\iota_{2}$} (b);
+
+        \draw [<-] (c) to node        {$f$} (a);
+        \draw [<-] (c) to node [swap] {$g$} (b);
+
+        \draw [<-,dotted] (c) to node [swap] {$[f,g]$} (a+b);
+      \end{tikzpicture}
+    \end{center}
+    \caption{}
+    \label{fig:coproduct}
+  \end{figure}
+
+\end{definition}
+
+\begin{example}[Coproducts in $\set$
+    {\parencite[63]{maclane-1998}}]
+
+  \label{ex:coproduct-set}
+
+  \index{\set}
+
+  \index{coproduct}
+  \index{disjoint union}
+
+  In \set, the coproduct of two sets $A$ and $B$ consists of the
+  disjoint union \parencite{mathworld-disjoint-union}
+  \begin{equation}
+    A + B = \{1\} \times A \cup \{2\} \times B
+    \text{,}
+  \end{equation}
+  and two injection functions $\iota_{1}: A \to A + B$ and $\iota_{2}:
+  B \to A + B$ such that, for all $x \in A$ and $y \in B$,
+  \begin{equation}
+    \iota_{1}(x) = (1,x)
+    \quad
+    \text{and}
+    \quad
+    \iota_{2}(y) = (2,y)
+    \text{.}
+  \end{equation}
+  Given a set $C$, and two functions $f: A \to C$ and $g: B \to C$,
+  there is a unique function $[f,g]: A + B \to C$ defined by
+  \begin{equation}
+    [f,g](\iota_{1}(x)) = f(x)
+    \quad
+    \text{and}
+    \quad
+    [f,g](\iota_{2}(y)) = g(y)
+  \end{equation}
+  for all $x \in A$ and $y \in B$. Equations \ref{eq:coproduct}
+  obviously hold.
+
+\end{example}
+
+\begin{example}[Coproducts and entailment
+    {\parencite[444--445]{poigne-1992}}]
+
+  \label{ex:coproduct-entailment}
+
+  If we interpret objects as propositions and morphisms as entailment,
+  finite coproducts correspond to 'falseness' and 'disjunction':
+  $ff \models \phi$, $\phi \models \phi or \psi$, ...
+
+\end{example}
+
+\begin{example}[Coproducts in Haskell]
+  \label{ex:coproduct-haskell}
+
+  \index{\hask}
+  \index{\texthaskell{Either}}
+
+  \index{coproduct}
+
+  In \hask, coproducts and their injection functions are defined by
+  the \texthaskell{Either} type:
+  \begin{codehaskell}
+data Either a b = Left a | Right b
+  \end{codehaskell}
+  And the \texthaskell{either} function is the function required to
+  satisfy the definition of a coproduct:
+  \begin{codehaskell}
+either :: (a -> c) -> (b -> c) -> Either a b -> c
+either f _ (Left x)  = f x
+either _ g (Right y) = g y
+  \end{codehaskell}
+
+\end{example}
+
+\begin{example}[Coproducts in Agda]
+  \label{ex:coproduct-agda}
+
+  \index{coproduct}
+  \index{disjoint union}
+  \index{sum}
+
+  In a similar way, in Agda, sums or disjoint unions, defined in
+  \module{Abel.Data.Sum}, are coproducts:
+  \begin{codeagda}
+data _+_ (A B : Set) : Set where
+  inj₁ : (x : A) → A + B
+  inj₂ : (y : B) → A + B
+  \end{codeagda}
+  Finally, the required function to show that sums are indeed
+  coproducts is defined in \module{Abel.Data.Sum}, too, as follows:
+  \begin{codeagda}
+[_,_] : {A B C : Set} (f : A → C) (g : B → C) → A + B → C
+[_,_] f _ (inj₁ x) = f x
+[_,_] _ g (inj₂ y) = g y
+  \end{codeagda}
+
+\end{example}
+
+\section{References}
+\label{sec:constructions-references}
+
+\todo{...}
+
+\clearemptydoublepage

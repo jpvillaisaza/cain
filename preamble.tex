@@ -1,0 +1,306 @@
+\usepackage{polyglossia}
+\setdefaultlanguage{english}
+\setmainlanguage[variant=usmax]{english}
+
+\hyphenation{i-so-mor-phism}
+
+%% \usepackage{color}
+
+\usepackage{amsmath}
+
+\usepackage{enumitem}
+\usepackage{epigraph}
+
+\setlength{\epigraphrule}{0pt}
+%% \setlength{\epigraphwidth}{0.4\textwidth}
+\setlength{\epigraphwidth}{0.55\textwidth}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+\renewcommand{\chaptermark}[1]{
+  \ifnum\value{chapter}>0
+    \markboth{\thechapter.\ #1}{}
+  \else
+    \markboth{#1}{}
+  \fi
+}
+
+\fancyhead{}
+\fancyhead[ER]{\textsl{\nouppercase{\leftmark}}}
+\fancyhead[OL]{\textsl{\nouppercase{\rightmark}}}
+
+\fancyhead[LE,RO]{\thepage}
+
+\fancyfoot{}
+
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\newcommand{\clearemptydoublepage}{\clearpage{\pagestyle{empty}\cleardoublepage}}
+
+\usepackage{fontspec}
+
+\usepackage{subcaption}
+
+\usepackage{unicode-math}
+
+\setmathfont{latinmodern-math.otf}
+
+%% \setmathfont[range={\llparenthesis,\rrparenthesis}]{Asana-Math.otf}
+\setmathfont[range={\llparenthesis,\rrparenthesis}]{xits-math.otf}
+
+%% \usepackage[only,llparenthesis,rrparenthesis]{stmaryrd}
+
+\setmonofont
+  [ BoldFont       = DejaVuSansMono-Bold.ttf,
+    ItalicFont     = DejaVuSansMono-Oblique.ttf,
+    BoldItalicFont = DejaVuSansMono-BoldOblique.ttf,
+    Scale          = MatchLowercase,
+  ]
+  {DejaVuSansMono.ttf}
+
+\usepackage{xcolor}
+
+\usepackage{xltxtra}
+\usepackage{xunicode}
+
+\usepackage{makeidx}
+
+\usepackage{xspace}
+
+\usepackage{amsthm}
+
+\let\equation\gather
+\let\endequation\endgather
+
+\usepackage{tikz}
+\tikzset{node distance=2.5cm, auto}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% biblatex
+
+\usepackage[style=authoryear,backref=true]{biblatex}
+\usepackage[english=american]{csquotes}
+
+\SetCiteCommand{\parencite}
+
+\DeclareFieldFormat[article]{title}{#1}
+\DeclareFieldFormat[inbook]{title}{#1}
+\DeclareFieldFormat[inproceedings]{title}{#1}
+\DeclareFieldFormat[thesis]{title}{#1}
+
+\renewcommand{\subtitlepunct}{\ifterm{}{\addcolon}\addspace}
+
+\addbibresource{cain.bib}
+\addbibresource{/home/jpvi/etc/bible/bible.bib}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% hyperref
+
+\usepackage{hyperref}
+
+\hypersetup{colorlinks=true}
+\hypersetup{linktocpage=true}
+
+\definecolor{citecolor}{rgb}{0,0.7,0}
+\definecolor{linkcolor}{rgb}{0.7,0,0}
+\definecolor{urlcolor}{rgb}{0,0,0.7}
+
+\hypersetup{citecolor=citecolor}
+\hypersetup{linkcolor=linkcolor}
+\hypersetup{urlcolor=urlcolor}
+
+\ifcolor
+\else
+  \hypersetup{hidelinks}
+\fi
+
+\makeindex %% detex -w cain.tex | sort -uf > foo
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% todo
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newif\iftodo
+
+\todotrue
+
+\iftodo
+  \ifcolor
+    \newcommand{\todo}[1]{\textcolor{red}{TODO}~(#1)}
+  \else
+    \newcommand{\todo}[1]{TODO~(#1)}
+  \fi
+\else
+  \newcommand{\todo}[1]{}
+\fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Verbatim
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newfontfamily\dejavu{DejaVu Sans Mono}
+
+\usepackage{fancyvrb}
+\usepackage{relsize}
+
+\DefineVerbatimEnvironment
+  {codeagda}
+  {Verbatim}
+  {frame=lines}
+
+\DefineVerbatimEnvironment
+  {codehaskell}
+  {Verbatim}
+  {frame=lines}
+
+\DefineVerbatimEnvironment
+  {code}
+  {Verbatim}
+  {frame=lines}
+
+\newcommand{\textagda}[1]{\texttt{#1}}
+\newcommand{\texthaskell}[1]{\texttt{#1}}
+
+\newcommand{\module}[1]{\textsf{#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Steps
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newlist{steps}{enumerate}{1}
+\setlist[steps]{label=\arabic*.,ref=\arabic*,itemsep=0pt}
+
+\newcommand{\step}[1]{\item[]{#1}}
+\newcommand{\steph}[1]{\step{\texthaskell{#1}}}
+\newcommand{\stepm}[1]{\step{\ensuremath{#1}}}
+
+\newcommand{\by}[1]{(by {#1})}
+
+\newcommand{\bydef}[1]{(by definition of {#1})}
+\newcommand{\bydefh}[1]{\bydef{\texthaskell{#1}}}
+
+\newcommand{\byih}{(by inductive hypothesis)}
+
+\newcommand{\eq}{\ensuremath{=}}
+\newcommand{\eqh}{\texthaskell{=}}
+
+\newcommand{\eqby}[1]{\item[]\quad\eq\quad\by{#1}}
+\newcommand{\eqbyh}[1]{\item[]\quad\eqh\quad\by{#1}}
+
+\newcommand{\eqbydef}[1]{\item[]\quad\eq\quad\bydef{#1}}
+\newcommand{\eqbydefh}[1]{\item[]\quad\eqh\quad\bydefh{#1}}
+
+\newcommand{\eqbyih}{\item[]\quad\eq\quad\byih}
+\newcommand{\eqbyihh}{\item[]\quad\eqh\quad\byih}
+
+\newcommand{\eqtext}[1]{\item[]\quad\eq\quad({#1})}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Theorems
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\theoremstyle{definition}
+
+\newtheorem{definition}{Definition}[chapter]
+
+\newtheorem{example}{Example}[section]
+\newtheorem{examples}[example]{Examples}
+
+\newtheorem*{example*}{Example}
+
+\theoremstyle{plain}
+
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Lemma}
+
+\theoremstyle{remark}
+
+\newtheorem{notation}{Notation}[chapter]
+\newtheorem{note}{Note}
+\newtheorem{remark}{Remark}[chapter]
+
+\newtheorem*{remark*}{Remark}
+\newtheorem*{terminology}{Terminology}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Commands and operators
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Categories
+
+\DeclareMathOperator{\obj}{O}
+\DeclareMathOperator{\mor}{M}
+
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\cod}{cod}
+
+\DeclareMathOperator{\id}{id}
+
+\newcommand{\idO}[1]{\natO{\id}{#1}}
+
+\newcommand{\comp}{\ensuremath{\mathrel{\circ}}}
+\newcommand{\pmoc}{\ensuremath{\mathrel{;}}}
+
+\newcommand{\cat}[1]{\ensuremath{\mathcal{#1}}}
+
+\newcommand{\catO}[1]{\ensuremath{\cat{#1}_{\obj}}}
+\newcommand{\catM}[1]{\ensuremath{\cat{#1}_{\mor}}}
+
+\newcommand{\catbf}[1]{\ensuremath{\mathbf{#1}}\xspace}
+
+\newcommand{\alg}{\catbf{Alg}}
+\newcommand{\falg}[1]{\func{#1}\text{-}\alg}
+\newcommand{\hask}{\catbf{Hask}}
+\newcommand{\set}{\catbf{Set}}
+
+%% Functors
+
+\newcommand{\func}[1]{\ensuremath{\mathsf{#1}}}
+
+\newcommand{\funcO}[1]{\ensuremath{\func{#1}_{\obj}}}
+\newcommand{\funcM}[1]{\ensuremath{\func{#1}_{\mor}}}
+
+%% Natural transformations
+
+\newcommand{\nat}[1]{\ensuremath{#1}}
+
+\newcommand{\natO}[2]{\ensuremath{\nat{#1}_{#2}}}
+
+%% Monads
+
+\newcommand{\underscore}{\ensuremath{\underline{~}}}
+
+\newcommand{\mon}[1]{\func{#1}}
+
+\newcommand{\monM}[2]{\ensuremath{#2^*}}
+
+%% Algebras
+
+\DeclareMathOperator{\inmo}{in}
+
+\newcommand{\cata}[1]{\ensuremath{\llparenthesis#1\rrparenthesis}}
+
+\DeclareMathOperator{\zero}{zero}
+\DeclareMathOperator{\suc}{suc}
+
+\newcommand{\listof}[1]{\text{List}(#1)}
+
+\DeclareMathOperator{\nil}{nil}
+\DeclareMathOperator{\cons}{cons}
+
+\DeclareMathOperator{\fold}{fold}
+\DeclareMathOperator{\foldr}{foldr}
+
+\DeclareMathOperator{\add}{add}
+\DeclareMathOperator{\mul}{mul}
+
+\DeclareMathOperator{\length}{length}
+\DeclareMathOperator{\append}{append}
+\DeclareMathOperator{\map}{map}
+
+%%
+
+\newcommand{\term}[1]{\textsl{#1}}
