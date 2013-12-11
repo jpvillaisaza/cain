@@ -9,20 +9,16 @@
 In this chapter we study categories. In Section \ref{sec:categories}
 we define the concepts of category and commutative diagram, and give
 several examples of categories, including the category of sets and
-total functions. Besides, in Sections \ref{sec:category-haskell} and
-\ref{sec:category-agda} we describe categories of types and functions
-which will allow us to relate category theory to functional
+total functions. Additionally, in Sections \ref{sec:category-haskell}
+and \ref{sec:category-agda} we describe categories of types and
+functions which will allow us to relate category theory to functional
 programming in Haskell and Agda, respectively.
 
 \section{Categories}
 \label{sec:categories}
 
-From the category-theoretical point of view, the concept of category
-``is essentially an auxiliary one''
-\parencite[247]{eilenberg-maclane-1945}. Indeed, Eilenberg and Mac
-Lane defined categories in order to be able to define functors and
-natural transformations. We define them in order to be able to define
-everything.
+We begin with the concept of category, which will be found everywhere
+in our development.
 
 \begin{definition}
   [Category]
@@ -36,18 +32,18 @@ everything.
 
   \index{category}
 
-  A \term{category} \cat{C} consists of:
+  A category \cat{C} consists of:
   \begin{itemize}
   \item
     \index{object}
 
-    A set of \term{objects} \catO{C}.
+    A set of objects \catO{C}.
 
   \item
     \index{morphism}
     \index{arrow|see{morphism}}
 
-    A set of \term{morphisms} or \term{arrows} \catM{C}.
+    A set of morphisms or arrows \catM{C}.
 
   \item
     \index{domain}
@@ -55,28 +51,28 @@ everything.
     \index{codomain}
     \index{target|see{codomain}}
 
-    \term{Domain} and \term{codomain} functions $\dom$ and $\cod:
-    \catM{C} \to \catO{C}$, which assign to each morphism $f \in
-    \catM{C}$ domain and codomain objects $a = \dom(f)$ and $b =
-    \cod(f) \in \catO{C}$. We then draw an actual arrow $f: a \to b$.
+    Domain and codomain functions $\dom$ and $\cod: \catM{C} \to
+    \catO{C}$, which assign to each morphism $f \in \catM{C}$ domain
+    and codomain objects $a = \dom(f)$ and $b = \cod(f) \in \catO{C}$.
+    We then draw an actual arrow $f: a \to b$.
 
   \item
     \index{identity}
 
-    An \term{identity} function $\id: \catO{C} \to \catM{C}$, which
-    assigns to each object $a \in \catO{C}$ an identity morphism
-    $\idO{a}: a \to a \in \catM{C}$.
+    An identity function $\id: \catO{C} \to \catM{C}$, which assigns
+    to each object $a \in \catO{C}$ an identity morphism $\idO{a}: a
+    \to a \in \catM{C}$.
 
   \item
     \index{composition}
 
-    A \term{composition} partial function $\comp\ : \catM{C} \times
-    \catM{C} \to \catM{C}$, which assigns to each pair of morphisms
-    $f: a \to b$ and $g: b \to c \in \catM{C}$ a composite morphism $g
-    \comp f: a \to c \in \catM{C}$, that is, which assigns to each
-    pair of morphisms $f$ and $g \in \catM{C}$ with $\cod(f) =
-    \dom(g)$ a composite morphism $g \comp f: \dom(f) \to \cod(g) \in
-    \catM{C}$. We may then draw a diagram like that of Figure
+    A composition partial function $\comp\ : \catM{C} \times \catM{C}
+    \to \catM{C}$, which assigns to each pair of morphisms $f: a \to
+    b$ and $g: b \to c \in \catM{C}$ a composite morphism $g \comp f:
+    a \to c \in \catM{C}$, that is, which assigns to each pair of
+    morphisms $f$ and $g \in \catM{C}$ with $\cod(f) = \dom(g)$ a
+    composite morphism $g \comp f: \dom(f) \to \cod(g) \in \catM{C}$.
+    We may then draw a diagram like that of Figure
     \ref{fig:category-composition}.
 
     \begin{figure}[htbp]
@@ -113,8 +109,7 @@ everything.
       \text{,}
     \end{equation}
     that is, the diagram in Figure \ref{fig:category-associativity} is
-    commutative (see Definition \ref{def:commutative-diagram}). In
-    other words, composition of morphisms is associative.
+    commutative (see Definition \ref{def:commutative-diagram}).
 
   \item
     \index{identity}
@@ -126,8 +121,7 @@ everything.
       \text{,}
     \end{equation}
     that is, the diagram in Figure \ref{fig:category-identity} is
-    commutative. In other words, identity morphisms are identities for
-    the composition of morphisms.
+    commutative.
 
     \begin{figure}
       \begin{subfigure}[b]{0.5\linewidth}
@@ -168,10 +162,13 @@ everything.
         \caption{The identity axiom.}
         \label{fig:category-identity}
       \end{subfigure}
-      \caption{}
+      \caption{Axioms for categories.}
+      \label{fig:category-axioms}
     \end{figure}
 
   \end{itemize}
+  In other words, identity morphisms are identities for the
+  composition of morphisms, which is associative.
 
 \end{definition}
 
@@ -194,13 +191,14 @@ everything.
   \index{diagram!commutative ---|see{commutative diagram}}
 
   We often use diagrams consisting of objects and morphisms of a
-  category, like that of Figure \ref{fig:category-composition}. Such a
-  diagram in a category \cat{C} is said to be commutative, or to
-  commute, when, for each pair of objects $a$ and $b \in \catO{C}$,
-  any two paths leading from $a$ to $b$ yield, by composition, equal
-  morphisms from $a$ to $b$. For instance, if we say that the diagrams
-  in Figure \ref{fig:commutative-diagram} are commutative, we mean
-  that
+  category, like those of Figures \ref{fig:category-composition} and
+  \ref{fig:category-axioms}. Such a diagram in a category \cat{C} is
+  said to be commutative, or to commute, when, for each pair of
+  objects $a$ and $b \in \catO{C}$, any two paths leading from $a$ to
+  $b$ yield, by composition, equal morphisms from $a$ to $b$. For
+  instance, if we say that the diagrams in Figures
+  \ref{fig:commutative-triangle} and \ref{fig:commutative-square} are
+  commutative, we mean that
   \begin{equation*}
     h = g \comp f
     \quad
@@ -226,6 +224,8 @@ everything.
           \draw [->] (a) to node [swap] {$h$} (c);
         \end{tikzpicture}
       \end{center}
+      \caption{}
+      \label{fig:commutative-triangle}
     \end{subfigure}
     \begin{subfigure}{0.5\linewidth}
       \begin{center}
@@ -241,6 +241,8 @@ everything.
           \draw [->] (b') to node [swap] {$g'$} (c);
         \end{tikzpicture}
       \end{center}
+      \caption{}
+      \label{fig:commutative-square}
     \end{subfigure}
     \caption{Examples of commutative diagrams.}
     \label{fig:commutative-diagram}
@@ -332,7 +334,7 @@ everything.
       \caption{}
       \label{fig:commutative-squares}
     \end{subfigure}
-    \caption{Examples of commutative diagrams.}
+    \caption{More examples of commutative diagrams.}
     \label{fig:commutative-diagrams}
   \end{figure}
 
@@ -378,19 +380,17 @@ everything.
   \index{discrete category}
   \index{category!discrete ---|see{discrete category}}
 
-  A \term{discrete category} is a category whose only morphisms are
-  the identity morphisms. Given a set $A$, we get a discrete category
-  \cat{C} in which $\catO{C} = A$ and $\catM{C} = \{\idO{a}: a \to a
-  \mid a \in A\}$. In addition, a discrete category is determined by
-  its set of objects. Thus, discrete categories are sets.
-
-  The objects of a category correspond exactly to its identity morphisms.
+  A discrete category is a category whose only morphisms are the
+  identity morphisms. Given a set $A$, we get a discrete category
+  \cat{C} in which $\catO{C} = A$ and $\catM{C} = \{\idO{a}: a \in
+  A\}$, where each identity morphism is uniquely determined by the
+  identity axiom. A discrete category is so determined by its set of
+  objects, which correspond exactly to its identity morphisms.
 
 \end{example}
 
 \begin{example}
   [Sets and total functions]
-
 
   %% - \parencite[8--9, 12]{maclane-1998}
   %% - \parencite[419--420]{poigne-1992}
@@ -409,16 +409,14 @@ everything.
   \index{set!small ---}
   \index{universe}
 
-  Assume that there is a big enough set $U$, the \term{universe}. Then
-  a set $A$ is \term{small} if it is a member of the universe.
-  Similarly, a function $f: A \to B$ is small if $A$ and $B$ are
-  small.
-  \set is the category of all small sets and all small total
-  functions. Its objects are small sets and its morphisms are small
-  total functions with specified domain and specified codomain. Its
-  identity function assigns to each set $A \in \catO{\set}$ an
-  identity function $\idO{A}: A \to A \in \catM{\set}$ such that, for
-  all $x \in A$,
+  Assume that there is a big enough set $U$, the universe. Then a set
+  $A$ is small if it is a member of the universe. Similarly, a
+  function $f: A \to B$ is small if $A$ and $B$ are small. \set is the
+  category of all small sets and all small total functions. Its
+  objects are small sets and its morphisms are small total functions
+  with specified domain and specified codomain. Its identity function
+  assigns to each set $A \in \catO{\set}$ an identity function
+  $\idO{A}: A \to A \in \catM{\set}$ such that, for all $x \in A$,
   \begin{equation}
     \label{eq:set-identity}
     \idO{A}(x) = x
@@ -432,21 +430,13 @@ everything.
     (g \comp f)(x) = g(f(x))
     \text{.}
   \end{equation}
-
-\end{example}
-
-\begin{remark}
-
-  \index{foundations}
-  \index{universe}
-
   Note that our assumption of one universe is appropriate since
   considering \set as the category of all sets and all total functions
   would lead to a paradox such as the set of all sets not members of
   themselves. However, it is not necessary for us to go into detail
   about foundations of category theory.
 
-\end{remark}
+\end{example}
 
 \begin{example}
   [Sets, partial functions, and relations]
@@ -468,34 +458,19 @@ everything.
   \index{relation}
   \index{set}
 
-  Likewise, \catbf{Par} or \catbf{Pfn} is the category of all small
-  sets and partial functions, and \catbf{Rel} is the category of all
-  small sets and relations.
+  Likewise, \catbf{Par} is the category of small sets and partial
+  functions, and \catbf{Rel} is the category of small sets and
+  relations. Note that, while category-theorists usually name
+  categories after the common name of their objects---for instance,
+  \set---, \catbf{Par} and \catbf{Rel} are named after the common
+  names of their morphisms, which suggests emphasizing morphisms. In
+  fact, \textcquote[30]{maclane-1998}{category theory asks of every
+    type of mathematical object: \enquote{What are the morphisms?}}.
 
 \end{example}
 
-\begin{remark}
-
-  \textcquote[30]{maclane-1998}{Category theory asks of every type of
-    mathematical object: \enquote{What are the morphisms?}}. This
-  suggests emphasizing morphisms rather than objects. However,
-  category-theorists usually name categories after the common name of
-  their objects---thus, \set---, but it is possible to name them after
-  the common name of their morphisms---thus, \catbf{Fun}\footnote{\set
-    is also known as \catbf{Fun}. See, for instance,
-    \parencite{bird-demoor-1997}.}, \catbf{Par}, and \catbf{Rel}.
-
-
-  %% In the
-  %% case of (small) sets, \set, \catbf{Par}, and \catbf{Rel} offer three
-  %% different answers: total functions, partial functions, and
-  %% relations, respectively.
-
-\end{remark}
-
 \begin{example}
   [Monoids]
-
 
   %% - \parencite[11]{maclane-1998}
   %% - \parencite[420, 422]{poigne-1992}
@@ -507,11 +482,11 @@ everything.
 
   \index{monoid}
 
-  A \term{monoid} is a category with just one object. A monoid is thus
+  A monoid is a category with just one object. A monoid is thus
   determined by its set of morphisms, by its identity morphism, and by
   its composition function. A monoid may then be described as a usual
   monoid, that is, as a set (of morphisms) that is closed under an
-  associative binary operation, and has an identity (morphism). More
+  associative binary operation which has an identity (morphism). More
   formally, given a category \cat{C} with just one object $a \in
   \catO{C}$, we get a usual monoid $C = (\catM{C}, \comp, \idO{a})$.
   Conversely, given a usual monoid $M = (M, *, e)$, we get a category
@@ -523,29 +498,17 @@ everything.
   \index{monoid}
   \index{monoid!--- homomorphism}
 
-  Given two (usual) monoids $M = (M, *, e)$ and $M' = (M', *', e')$, a
-  morphism of monoids $f: M \to M'$ is a function $f: M \to M'$ as
-  described in Example \ref{ex:set} (that is, a function with
-  specified domain and specified codomain) such that $f(a * b) = f(a)
-  *' f(b)$ and $f(e) = e'$.
-
   Given two monoids $M = (M, *, e)$ and $M' = (M', *', e')$, a
-  morphism of monoids $f: M \to M'$ is a function $f: M \to M'$ with
-  specified domain and codomain such that $f(a * b) = f(a) *' f(b)$
-  for all $a$ and $b \in M$, and $f(e) = e'$.
-
-  \catbf{Mon} is the category of all (small) monoids, and morphisms of
-  monoids or monoid homomorphisms.
+  morphism of monoids or monoid homomorphism $f: M \to M'$ is a
+  function $f: M \to M'$ with specified domain and codomain such that
+  $f(a * b) = f(a) *' f(b)$ for all $a$ and $b \in M$, and $f(e) =
+  e'$. Monoids and monoid homomorphisms (more precisely, small monoids
+  and monoid homomorphisms) yield a category, \catbf{Mon}. This
+  category is just one example of the fact that any notion of sets
+  with structure together with structure-preserving morphisms define a
+  category.
 
 \end{example}
-
-\begin{remark}
-
-  In general, any notion of sets with structure together with
-  structure-preserving morphisms define a category
-  \parencite[421]{poigne-1992}.
-
-\end{remark}
 
 \begin{example}
   [Monoids of strings]
@@ -562,19 +525,13 @@ everything.
   \index{symbol}
   \index{word|see{string}}
 
-  Given a set (of symbols) $\Sigma$, a \term{monoid of strings} (or
-  \term{words}) or \term{free monoid} over $\Sigma$ is a monoid whose
-  set of morphisms is the set $\Sigma^{*}$ of all strings over
-  $\Sigma$, whose composition function is concatenation of strings,
-  and whose identity morphism is the empty string $\epsilon$.
-
-  %% \parencite[421]{poigne-1992}
-
-  \index{automaton}
-
-  In addition, automata can be defined in terms of monoids of strings,
-  and automata and appropriate morphisms of automata yield categories.
-
+  Given a set (of symbols) $\Sigma$, a monoid of strings (or words) or
+  free monoid over $\Sigma$ is a monoid whose set of morphisms is the
+  set $\Sigma^{*}$ of all strings over $\Sigma$, whose composition
+  function is concatenation of strings, and whose identity morphism is
+  the empty string $\epsilon$. As an example, automata can be defined
+  in terms of monoids of strings, and automata and appropriate
+  morphisms of automata yield categories.
 
 \end{example}
 
@@ -591,30 +548,25 @@ everything.
   \index{order category|see{preorder}}
   \index{preorder}
 
-  A \term{preorder} \cat{P}, also known as an \term{order category},
-  is a category in which, for all objects $a$ and $b \in \catO{P}$,
-  there is at most one morphism $f: a \to b \in \catM{P}$. Given a
-  preorder \cat{P}, we define a binary relation $\leq$ on \catO{P}
-  with $a \leq b$ if and only if there is a morphism $f: a \to b \in
-  \catM{P}$. This binary relation is reflexive (because there is an
-  identity morphism $\idO{a}: a \to a \in \catM{P}$ for all objects $a
-  \in \catO{P}$) and transitive (because there is a composite morphism
-  $g \comp f: a \to c \in \catM{P}$ for all morphisms $f: a \to b$ and
-  $g: b \to c \in \catM{P}$). Therefore, a (usual) preorder is a set
-  (of objects) equipped with a reflexive and transitive binary
-  relation. Conversely, given a set $P$ with a reflexive and
-  transitive binary relation $\leq$ on $P$, we get a category \cat{P}
-  with $\catO{P} = P$ and $\catM{P} = \{f: a \to b \mid a \leq b\}$.
-  This category has identity morphisms (because $a \leq a$ for all $a
-  \in P$) and composite morphisms (because $a \leq b$ and $b \leq c$
-  imply $a \leq c$ for all $a$, $b$, and $c \in P$). Equations
-  \eqref{eq:category-associativity} and \eqref{eq:category-identity}
-  obviously hold.
-
-  Just like in Examples \ref{ex:set} and
-  \ref{ex:monoid}, preorders and appropriate morphisms of
-  preorders, that is, monotone functions, form yet another category,
-  \catbf{Pre}.
+  A preorder \cat{P}, also known as an order category, is a category
+  in which, for all objects $a$ and $b \in \catO{P}$, there is at most
+  one morphism $f: a \to b \in \catM{P}$. Given a preorder \cat{P}, we
+  define a binary relation $\leq$ on \catO{P} with $a \leq b$ if and
+  only if there is a morphism $f: a \to b \in \catM{P}$. This binary
+  relation is reflexive (because there is an identity morphism
+  $\idO{a}: a \to a \in \catM{P}$ for all objects $a \in \catO{P}$)
+  and transitive (because there is a composite morphism $g \comp f: a
+  \to c \in \catM{P}$ for all morphisms $f: a \to b$ and $g: b \to c
+  \in \catM{P}$). Therefore, a (usual) preorder is a set (of objects)
+  equipped with a reflexive and transitive binary relation.
+  Conversely, given a set $P$ with a reflexive and transitive binary
+  relation $\leq$ on $P$, we get a category \cat{P} with $\catO{P} =
+  P$ and $\catM{P} = \{f: a \to b \mid a \leq b\}$. This category has
+  identity morphisms (because $a \leq a$ for all $a \in P$) and
+  composite morphisms (because $a \leq b$ and $b \leq c$ imply $a \leq
+  c$ for all $a$, $b$, and $c \in P$). \catbf{Pre} is the category of
+  (small) preorders and appropriate morphisms of preorders (that is,
+  monotone functions).
 
 \end{example}
 
@@ -648,11 +600,9 @@ everything.
 From the standpoint of functional programming, categories provide
 important insights into types and functions, and this plays a major
 role in our development. In particular, Haskell types and functions
-form a category, \hask.
-
-The objects of \hask are Haskell types, or, more precisely, nullary
-type constructors or type expressions with kind \texthaskell{*} such
-as \texthaskell{Bool}:
+form a category, \hask. The objects of this category are Haskell
+types, or, more precisely, nullary type constructors or type
+expressions with kind \texthaskell{*} such as \texthaskell{Bool}:
 \begin{codehaskell}
 data Bool = False | True
 \end{codehaskell}
@@ -726,6 +676,8 @@ respectively, whenever they make sense.
     \steph{f x}
       \eqbydefh{id}
     \steph{f (id x)}
+      \eqbydefh{(.)}
+    \steph{(f . id) x}
   \end{steps}
 
 \end{proof}
@@ -733,9 +685,6 @@ respectively, whenever they make sense.
 From now on, we will use \hask as described above as Haskell's
 category\footnote{Note that this is not an attempt to answer the
   question of Haskell's category.}.
-
-%% Note, however, that this is not an attempt to answer the actual
-%% question of Haskell's category.
 
 \section{A category for Agda}
 \label{sec:category-agda}
@@ -801,10 +750,6 @@ category\footnote{Note that this is not an attempt to answer the
   Additionally, our examples of categories are based on
   \parencites[8--9,~10--12]{maclane-1998}[§~1.2.2]{poigne-1992} and
   \parencites{pierce-1991}{bird-demoor-1997}{marquis-2013}.
-
-  For more on categories of automata, see
-  \parencite[421]{poigne-1992}.
-
 
 \item
 
