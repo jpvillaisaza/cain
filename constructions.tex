@@ -2,16 +2,20 @@
 \label{chap:constructions}
 
 In this auxiliary chapter we explore some basic constructions in
-categories.
+categories. We will use these constructions for describing some
+concepts and examples in all the following chapters, especially
+Chapter \ref{chap:algebras}.
 
 \section{Isomorphisms}
 \label{sec:constructions-isomorphisms}
 
-\todo{First, isomorphisms, isomorphic objects, and identicalness and
-  uniqueness up to isomorphism.}
+We begin with the concept of isomorphism and some useful properties
+regarding isomorphisms such as uniqueness up to isomorphism.
 
-\begin{definition}[Isomorphism and isomorphic objects
-    {\parencite[15]{pierce-1991}}]
+\begin{definition}
+  [Isomorphism and isomorphic objects]
+
+  %% \parencite[15]{pierce-1991}
 
   \label{def:isomorphism}
 
@@ -24,49 +28,55 @@ categories.
     (\catO{C} and \catM{C}, $\dom$ and $\cod$, and $\id$ and $\comp$,
     respectively) are implicitly mentioned as well. See Definition
     \ref{def:category}.}. A morphism $f: a \to b \in \catM{C}$ is an
-  \term{isomorphism} if there is a morphism $f^{-1}: b \to a \in
-  \catM{C}$, called the \term{inverse} of $f$, such that $f^{-1} \comp
-  f = \idO{a}$ and $f \comp f^{-1} = \idO{b}$. Objects $a$ and $b \in
-  \catO{C}$ are \term{isomorphic} if there is an isomorphism $f: a \to
-  b \in \catM{C}$.
+  isomorphism if there is a morphism $f^{-1}: b \to a \in \catM{C}$,
+  called the inverse of $f$, such that $f^{-1} \comp f = \idO{a}$ and
+  $f \comp f^{-1} = \idO{b}$. Objects $a$ and $b \in \catO{C}$ are
+  isomorphic if there is an isomorphism $f: a \to b \in \catM{C}$.
 
 \end{definition}
 
-\begin{definition}[Identicalness and uniqueness up to isomorphism
-    {\parencite[15]{pierce-1991}}]
+\begin{definition}
+  [Identicalness and uniqueness up to isomorphism]
+
+  %% \parencite[15]{pierce-1991}
 
   \label{def:up-to-isomorphism}
 
   \index{isomorphism!up to ---}
 
-  Isomorphic objects are often said to be identical \term{up to
-    isomorphism}. Similarly, an object with some property is said to
-  be unique up to isomorphism if every object satisfying the property
-  is isomorphic to it.
+  Isomorphic objects are often said to be identical up to isomorphism.
+  Similarly, an object with some property is said to be unique up to
+  isomorphism if every object satisfying the property is isomorphic to
+  it.
 
 \end{definition}
 
 \section{Initial and terminal objects}
 \label{sec:constructions-initial-terminal-objects}
 
-\todo{Second, initial and terminal objects.}
+We continue with initial and terminal objects, which we will use for
+describing algebras and initial algebras.
 
-\begin{definition}[Initial object
-  {\parencite[444]{poigne-1992}}]
+\begin{definition}
+  [Initial object]
+
+  %% \parencite[444]{poigne-1992}
 
   \label{def:initial-object}
 
   \index{initial object}
   \index{object!initial ---|see{initial object}}
 
-  Let \cat{C} be a category. An object $0 \in \catO{C}$ is the
-  \term{initial object} of \cat{C} if, for all objects $a \in
-  \catO{C}$, there is a unique morphism $0 \to a \in \catM{C}$.
+  Let \cat{C} be a category. An object $0 \in \catO{C}$ is the initial
+  object of \cat{C} if, for all objects $a \in \catO{C}$, there is a
+  unique morphism $0 \to a \in \catM{C}$.
 
 \end{definition}
 
-\begin{definition}[Terminal object
-  {\parencite[439]{poigne-1992}}]
+\begin{definition}
+  [Terminal object]
+
+  %% \parencite[439]{poigne-1992}
 
   \label{def:terminal-object}
 
@@ -76,45 +86,39 @@ categories.
   \index{object!final ---|see{terminal object}}
 
   Let \cat{C} be a category. An object $1 \in \catO{C}$ is the
-  \term{terminal object} of \cat{C} if, for all
-  objects $a \in \catO{C}$, there is a unique morphism $a \to 1 \in
-  \catM{C}$.
+  terminal object of \cat{C} if, for all objects $a \in \catO{C}$,
+  there is a unique morphism $a \to 1 \in \catM{C}$.
 
 \end{definition}
 
 \begin{lemma}
+
   Initial and terminal objects are unique up to isomorphism.
 
   \begin{proof}
 
-    Let \cat{C} be a category.
-    \begin{itemize}
-    \item
+    Let \cat{C} be a category. If $0$ and $0'$ are initial objects of
+    \cat{C}, there are unique morphisms $0_{0'}: 0 \to 0'$ and
+    $0'_{0}: 0' \to 0 \in \catM{C}$. Moreover, there are unique
+    morphisms $0_{0} = \idO{0}$ and $0'_{0'} = \idO{0'} \in \catM{C}$.
+    Hence, $0'_{0} \comp 0_{0'} = \idO{0}$ and $0_{0'} \comp 0'_{0} =
+    \idO{0'}$. That is, $0$ is unique up to isomorphism.
 
-      If $0$ and $0'$ are initial objects of \cat{C}, there are unique
-      morphisms $0_{0'}: 0 \to 0'$ and $0'_{0}: 0' \to 0 \in
-      \catM{C}$. Moreover, there are unique morphisms $0_{0} =
-      \idO{0}$ and $0'_{0'} = \idO{0'} \in \catM{C}$. Hence, $0'_{0}
-      \comp 0_{0'} = \idO{0}$ and $0_{0'} \comp 0'_{0} = \idO{0'}$.
-      That is, $0$ is unique up to isomorphism.
-
-    \item
-
-      If $1$ and $1'$ are terminal objects of \cat{C}, there are
-      unique morphisms $1_{1'}: 1' \to 1$ and $1'_{1}: 1 \to 1' \in
-      \catM{C}$. Moreover, there are unique morphisms $1_{1} =
-      \idO{1}$ and $1'_{1'} = \idO{1'} \in \catM{C}$. Hence, $1_{1'}
-      \comp 1'_{1} = \idO{1}$ and $1'_{1} \comp 1_{1'} = \idO{1'}$.
-      That is, $1$ is unique up to isomorphism.
-
-    \end{itemize}
+    Similarly, if $1$ and $1'$ are terminal objects of \cat{C}, there
+    are unique morphisms $1_{1'}: 1' \to 1$ and $1'_{1}: 1 \to 1' \in
+    \catM{C}$. Moreover, there are unique morphisms $1_{1} = \idO{1}$
+    and $1'_{1'} = \idO{1'} \in \catM{C}$. Hence, $1_{1'} \comp 1'_{1}
+    = \idO{1}$ and $1'_{1} \comp 1_{1'} = \idO{1'}$. That is, $1$ is
+    unique up to isomorphism.
 
   \end{proof}
 
 \end{lemma}
 
-\begin{example}[Initial and terminal objects in $\set$
-    {\parencite[16]{pierce-1991}}]
+\begin{example}
+  [Initial and terminal objects in $\set$]
+
+  %% \parencite[16]{pierce-1991}
 
   \label{ex:initial-terminal-objects-set}
 
@@ -144,7 +148,6 @@ data Void
 absurd :: Void -> a
 absurd = absurd
   \end{codehaskell}
-
   Additionally, the unit type is the terminal object of the category:
   \begin{codehaskell}
 data () = ()
@@ -174,7 +177,6 @@ data ⊥ : Set where
 ⊥-elim : {A : Set} → ⊥ → A
 ⊥-elim ()
   \end{codeagda}
-
   The unit type, defined in \module{Data.Unit}, is the terminal
   object:
   \begin{codeagda}
@@ -196,8 +198,10 @@ unit _ = tt
 
 \end{example}
 
-\begin{example}[Terminal objects and elements of sets
-    {\parencite[16--17]{pierce-1991}}]
+\begin{example}
+  [Terminal objects and elements of sets]
+
+  %% \parencite[16--17]{pierce-1991}
 
   \label{ex:terminal-objects-constants}
 
@@ -212,10 +216,13 @@ unit _ = tt
 \section{Products and coproducts}
 \label{sec:constructions-products-coproducts}
 
-\todo{First, products.}
+We end with the concepts of product and coproduct, which correspond to
+Cartesian products and disjoiunt unions, respectively.
 
-\begin{definition}[Product
-    {\parencite[18]{pierce-1991}}]
+\begin{definition}
+  [Product]
+
+  %% \parencite[18]{pierce-1991}
 
   \label{def:product}
 
@@ -223,13 +230,13 @@ unit _ = tt
   \index{object!product ---}
   \index{product}
 
-  Let \cat{C} be a category. A \term{product} of two objects $a$ and
-  $b \in \catO{C}$ consists of a product object $a \times b \in
-  \catO{C}$, and two projection morphisms $\pi_{1}: a \times b \to a$
-  and $\pi_{2}: a \times b \to b \in \catM{C}$, such that, for all
-  objects $c \in \catO{C}$, and morphisms $f: c \to a$ and $g: c \to b
-  \in \catM{C}$, there is a unique morphism $\langle{f,g}\rangle: c
-  \to a \times b \in \catM{C}$ such that
+  Let \cat{C} be a category. A product of two objects $a$ and $b \in
+  \catO{C}$ consists of a product object $a \times b \in \catO{C}$,
+  and two projection morphisms $\pi_{1}: a \times b \to a$ and
+  $\pi_{2}: a \times b \to b \in \catM{C}$, such that, for all objects
+  $c \in \catO{C}$, and morphisms $f: c \to a$ and $g: c \to b \in
+  \catM{C}$, there is a unique morphism $\langle{f,g}\rangle: c \to a
+  \times b \in \catM{C}$ such that
   \begin{equation}
     \label{eq:product}
     \pi_{1} \comp \langle{f,g}\rangle = f
@@ -265,8 +272,10 @@ unit _ = tt
 
 \end{definition}
 
-\begin{example}[Products in $\set$
-    {\parencites[439--440]{poigne-1992}[17--18]{pierce-1991}}]
+\begin{example}
+  [Products in $\set$]
+
+  %% \parencites[439--440]{poigne-1992}[17--18]{pierce-1991}
 
   \label{ex:product-set}
 
@@ -295,35 +304,7 @@ unit _ = tt
   \begin{equation*}
     \langle{f,g}\rangle(z) = (f(z),g(z))
   \end{equation*}
-  for all $z \in C$. Equations \ref{eq:product} obviously hold.
-
-\end{example}
-
-\begin{example}[Products in $\catbf{Mon}$
-    {\parencite[440]{poigne-1992}}]
-
-  \label{ex:product-mon}
-
-  A product of monoids $M_1 = (M_1, *_1, e_1)$ and $M_2 = (M_2, *_2,
-  e_2)$ is defined by $M_1 \times M_2$ with multiplication $(x_1, x_2)
-  * (y_1, y_2) = (x_1 * y_1, x_2 * y_2)$. The projections to the
-  components are monoid homomorphisms. Products for other sets with
-  structures, such as groups, are defined in the same way.
-
-\end{example}
-
-\begin{example}[Products in order categories
-    {\parencite[440--441]{poigne-1992}}]
-
-  \label{ex:product-order-categories}
-
-  Given an order category $(\Gamma, \models)$ with objects being
-  propositions, product objects define conjunctions with elimination
-  rules as projections $\phi \and \psi \models \phi$ and $\phi \and
-  \psi \models \psi$, and pairing of morphisms yields a sequent
-  version of the introduction rule $\gamma \models \phi$, $\gamma
-  \models \psi$, then $\gamma \models \phi \and \psi$. The terminal
-  object defined 'truth' in that $\phi \models tt$.
+  for all $z \in C$. Equations \eqref{eq:product} obviously hold.
 
 \end{example}
 
@@ -384,10 +365,10 @@ proj₂ (_ , y) = y
 
 \end{example}
 
-\todo{And now coproducts.}
+\begin{definition}
+  [Coproduct]
 
-\begin{definition}[Coproduct
-    {\parencite[19]{pierce-1991}}]
+  %% \parencite[19]{pierce-1991}
 
   \label{def:coproduct}
 
@@ -395,13 +376,13 @@ proj₂ (_ , y) = y
   \index{morphism!injection ---}
   \index{object!coproduct ---}
 
-  Let \cat{C} be a category. A \term{coproduct} of two objects $a$ and
-  $b \in \catO{C}$ consists of a coproduct object $a + b \in
-  \catO{C}$, and two injection morphisms $\iota_{1}: a \to a + b$ and
-  $\iota_{2}: b \to a + b \in \catM{C}$, such that, for all objects $c
-  \in \catO{C}$, and morphisms $f: a \to c$ and $g: b \to c \in
-  \catM{C}$, there is a unique morphism $[f,g]: a + b \to c \in
-  \catM{C}$ such that
+  Let \cat{C} be a category. A coproduct of two objects $a$ and $b \in
+  \catO{C}$ consists of a coproduct object $a + b \in \catO{C}$, and
+  two injection morphisms $\iota_{1}: a \to a + b$ and $\iota_{2}: b
+  \to a + b \in \catM{C}$, such that, for all objects $c \in
+  \catO{C}$, and morphisms $f: a \to c$ and $g: b \to c \in \catM{C}$,
+  there is a unique morphism $[f,g]: a + b \to c \in \catM{C}$ such
+  that
   \begin{equation}
     \label{eq:coproduct}
     [f,g] \comp \iota_{1} = f
@@ -437,8 +418,10 @@ proj₂ (_ , y) = y
 
 \end{definition}
 
-\begin{example}[Coproducts in $\set$
-    {\parencite[63]{maclane-1998}}]
+\begin{example}
+  [Coproducts in $\set$]
+
+  %% \parencite[63]{maclane-1998}
 
   \label{ex:coproduct-set}
 
@@ -448,7 +431,7 @@ proj₂ (_ , y) = y
   \index{disjoint union}
 
   In \set, the coproduct of two sets $A$ and $B$ consists of the
-  disjoint union \parencite{mathworld-disjoint-union}
+  disjoint union
   \begin{equation}
     A + B = \{1\} \times A \cup \{2\} \times B
     \text{,}
@@ -472,19 +455,8 @@ proj₂ (_ , y) = y
     \quad
     [f,g](\iota_{2}(y)) = g(y)
   \end{equation}
-  for all $x \in A$ and $y \in B$. Equations \ref{eq:coproduct}
+  for all $x \in A$ and $y \in B$. Equations \eqref{eq:coproduct}
   obviously hold.
-
-\end{example}
-
-\begin{example}[Coproducts and entailment
-    {\parencite[444--445]{poigne-1992}}]
-
-  \label{ex:coproduct-entailment}
-
-  If we interpret objects as propositions and morphisms as entailment,
-  finite coproducts correspond to 'falseness' and 'disjunction':
-  $ff \models \phi$, $\phi \models \phi or \psi$, ...
 
 \end{example}
 
@@ -538,6 +510,7 @@ data _+_ (A B : Set) : Set where
 \section{References}
 \label{sec:constructions-references}
 
-\todo{...}
+This chapter is based on \parencites[15--19]{pierce-1991}[439--440,
+  444]{poigne-1992}[63]{maclane-1998}.
 
 \clearemptydoublepage
