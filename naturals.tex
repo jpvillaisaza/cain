@@ -2,8 +2,8 @@
 \label{chap:naturals}
 
 \epigraph{
-  ... and \term{functor} has been defined in order to be able to
-  define \term{natural transformation}.
+  ... and \emph{functor} has been defined in order to be able to
+  define \emph{natural transformation}.
 }{---\textcite[18]{maclane-1998}}
 
 In this chapter we explore natural transformations and their relation
@@ -111,26 +111,21 @@ transformations, which will be explored in this chapter.
 \section{Natural transformations}
 \label{sec:naturals}
 
-\todo{Introduce Definition \ref{def:natural}. Consider including
-  Remark \ref{re:natural}.}
-
-%% \parencites[16]{maclane-1998}[435--436]{poigne-1992}
+``The trinity of concepts category, functor, and natural
+transformation is what category theory is built on''
+\parencite{nlab-category-theory}.
 
 \begin{definition}
-  [Natural transformation]
-
   \label{def:natural}
 
-  \index{natural transformation}
-  \index{transformation!natural ---|see{natural transformation}}
+  %% \parencites[16]{maclane-1998}[435--436]{poigne-1992}
 
   Let $\func{F}: \cat{C} \to \cat{D}$ and $\func{G}: \cat{C} \to
   \cat{D}$ be functors\footnote{Whenever a functor $\func{F}: \cat{C}
     \to \cat{D}$ is mentioned, its object and morphism functions
     (\funcO{F} and \funcM{F}, respectively) are implicitly mentioned
     as well. See Definition \ref{def:functor}.} for categories \cat{C}
-  and \cat{D}.
-  A \term{natural transformation}
+  and \cat{D}. A natural transformation
   \begin{equation}
     \label{eq:natural}
     \nat{\tau}: \func{F} \to \func{G}: \cat{C} \to \cat{D}
@@ -145,16 +140,16 @@ transformations, which will be explored in this chapter.
     \natO{\tau}{a}: \funcO{F}(a) \to \funcO{G}(a) \in \catM{D}
     \text{,}
   \end{equation*}
-  called a \term{component} of the natural transformation, such that,
-  for all morphisms $f: a \to b \in \catM{C}$,
+  called a component of the natural transformation, such that, for all
+  morphisms $f: a \to b \in \catM{C}$,
   \begin{equation}
     \label{eq:naturality}
-    \index{naturality}
     \natO{\tau}{b} \comp \funcM{F}(f) = \funcM{G}(f) \comp \natO{\tau}{a}
     \text{,}
   \end{equation}
-  called \term{naturality} of the natural transformation, that is,
-  such that the diagram in Figure \ref{fig:naturality} is commutative.
+  called naturality of the natural transformation, that is, such that
+  the diagram in Figure \ref{fig:naturality} is commutative.
+
   \begin{figure}[htbp]
     \begin{center}
       \begin{tikzpicture}
@@ -182,18 +177,22 @@ transformations, which will be explored in this chapter.
   \end{equation}
   indexed by the set of objects \catO{C} such that
   \eqref{eq:naturality} holds.
+
 \end{definition}
 
 \begin{remark}
   \label{re:natural-translation}
 
+  %% Since \func{F} sends objects and morphisms of \cat{C} to objects and
+  %% morphisms of \cat{D}, it may thought of as giving a picture of
+  %% \cat{C} in \cat{D} \parencites[16]{maclane-1998}[10]{marquis-2013}.
+
   Since a functor $\func{F}: \cat{C} \to \cat{D}$ may be thought of as
-  a picture of all the objects and morphisms of \cat{C} in \cat{D}
-  (see Remark \ref{re:functor-picture}), a natural transformation
-  $\nat{\tau}: \func{F} \to \func{G}: \cat{C} \to \cat{D}$ may be
-  thought of as a mapping or translation from the picture \func{F}
-  into the picture \func{G} with all diagrams like that of Figure
-  \ref{fig:natural-translation} commutative
+  a picture of all the objects and morphisms of \cat{C} in \cat{D} , a
+  natural transformation $\nat{\tau}: \func{F} \to \func{G}: \cat{C}
+  \to \cat{D}$ may be thought of as a mapping or translation from the
+  picture \func{F} into the picture \func{G} with all diagrams like
+  that of Figure \ref{fig:natural-translation} commutative
   \parencite[16]{maclane-1998}. This gives a better idea of a natural
   transformation as a morphism of functors.
   \begin{figure}[htbp]
@@ -227,7 +226,6 @@ transformations, which will be explored in this chapter.
 \end{remark}
 
 \begin{remark}
-
   \label{re:category-functor-natural}
 
   According to \textcite[18]{maclane-1998}, ``\emph{category} has been
@@ -245,9 +243,7 @@ transformations, which will be explored in this chapter.
 
 \end{remark}
 
-\begin{remark}
-  [Why is a natural transformation \emph{natural}?]
-
+\begin{remark}[Why is a natural transformation \emph{natural}?]
   \label{re:natural}
 
   Given two functors \func{F} and \func{G} from \cat{C} to \cat{D},
@@ -266,41 +262,9 @@ transformations, which will be explored in this chapter.
 
 \end{remark}
 
-%% \parencite[16]{maclane-1998}
-
-\begin{definition}
-  [Natural isomorphism]
-
-  \label{def:natural-isomorphism}
-
-  \index{natural isomorphism}
-  \index{isomorphism!natural ---|see{natural isomorphism}}
-
-  A \emph{natural isomorphism}
-  \begin{equation*}
-    \nat{\tau}: \func{F} \cong \func{G}: \cat{C} \to \cat{D}
-  \end{equation*}
-  is a natural transformation whose components are invertible in
-  \cat{D}.
-
-  \todo{Details...}
-
-\end{definition}
-
-Although Definition \ref{def:natural-isomorphism} is not an essential
-part of the study of natural transformations and their relation with
-functional programming, it will be fundamental for studying monoidal
-functors.
-
-\todo{Introduce examples of natural transformations.}
-
 \begin{example}
-  [Identity]
-
   \label{ex:natural-identity}
 
-  \index{identity}
-  \index{natural transformation!identity ---}
   Given a category \cat{C}, its identity function\footnote{See
     Definition \ref{def:category}.}
   \begin{equation*}
@@ -318,7 +282,9 @@ functors.
     \id: \func{I} \to \func{I}: \cat{C} \to \cat{C}
     \text{.}
   \end{equation*}
+
   \begin{proof}
+
     For all morphisms $f: a \to b \in \catM{C}$, the naturality of the
     identity natural transformation is given by
     \begin{equation*}
@@ -329,6 +295,7 @@ functors.
     \ref{fig:natural-id-a} (or by the commutativity of the diagram in
     Figure \ref{fig:natural-id-b}, which makes explicit the functors
     involved), which holds by \eqref{eq:category-identity}.
+
     \begin{figure}[htbp]
       \begin{subfigure}[b]{0.5\linewidth}
         \begin{center}
@@ -369,17 +336,15 @@ functors.
       \caption{Naturality of the identity natural transformation.}
       \label{fig:natural-id}
     \end{figure}
+
   \end{proof}
 
 \end{example}
 
 \begin{example}
-  [Identity and power set\footnote{This example is based on
-      \parencite[11]{marquis-2013}.}]
   \label{ex:natural-identity-power-set}
 
-  \index{functor!identity ---}
-  \index{functor!power set ---}
+  %% \parencite[11]{marquis-2013}
 
   It is possible, and natural, to define a translation from the
   identity functor (see Example \ref{ex:functor-identity}) into the power
@@ -404,18 +369,20 @@ functors.
     \nat{\eta}: \func{I} \to \func{P}: \set \to \set
     \text{.}
   \end{equation*}
+
   \begin{proof}
+
     Given a function $f: X \to Y \in \catM{\set}$ and an element $x
     \in X$,
     \begin{steps}
       \step{$(\natO{\eta}{Y} \comp \funcM{I}(f))(x)$}\label{eta-a}
         \eqbydef{\comp}
       \step{$\natO{\eta}{Y}(\funcM{I}(f)(x))$}
-        \eqbydef{\funcM{I} \eqref{eq:funcM-id-b}}
+        \eqbydef{\funcM{I} \eqref{eq:functor-identity-morphism}}
       \step{$\natO{\eta}{Y}(f(x))$}
         \eqbydef{\nat{\eta} \eqref{eq:eta}}
       \step{$\{f(x)\}$}
-        \eqbydef{\funcM{P} \eqref{eq:funcM-power-set}}
+        \eqbydef{\funcM{P} \eqref{eq:functor-power-set-morphism}}
       \step{$\funcM{P}(f)(\{x\})$}
         \eqbydef{\nat{\eta} \eqref{eq:eta}}
       \step{$\funcM{P}(f)(\natO{\eta}{X}(x))$}
@@ -429,6 +396,7 @@ functors.
     \end{steps}
     which is the naturality of \nat{\eta}, or, equivalently, the
     commutativity of the diagram in Figure \ref{fig:naturality-eta}.
+
     \begin{figure}[htbp]
       \begin{center}
         \begin{tikzpicture}
@@ -447,6 +415,7 @@ functors.
       \caption{Naturality of $\eta$ (Example \ref{ex:natural-identity-power-set}).}
       \label{fig:naturality-eta}
     \end{figure}
+
   \end{proof}
 
 \end{example}
@@ -456,28 +425,6 @@ Section \ref{sec:naturals-introduction}) is quite appropiate, but
 there is another interpretation which fits the bill. It is that of a
 homomorphism of functors and is indicated by the following example
 \parencite[page 436]{poigne-1992}.
-
-%% \parencite[436]{poigne-1992}
-
-\begin{example}
-  [Automata]
-
-  \label{ex:natural-automata}
-
-  \index{automaton}
-
-  Every homomorphism $h: D \to D'$ of $M$-automata defines a natural
-  transformation
-  \begin{equation*}
-    \nat{h}: \func{D} \to \func{D'}: \cat{M} \to \set
-  \end{equation*}
-  since
-  \begin{equation*}
-    h(D(x)(s)) = h(\delta(x,s)) = \delta'(x,h(s))
-    \text{.}
-  \end{equation*}
-
-\end{example}
 
 \section{Natural transformations in Haskell}
 \label{sec:naturals-haskell}
@@ -489,9 +436,6 @@ functions in functional programming correspond to natural
 transformations. This statement is based on, for instance,
 \parencites[34]{bird-demoor-1997}[78]{elkins-2009}[435, 436]{poigne-1992}[48,
   49]{rydeheard-1986}[113]{rydeheard-1988}[350]{wadler-1989}.
-
-\index{parametric polymorphism}
-\index{polymorphism!parametric ---|see{parametric polymorphism}}
 
 The kind of polymorphism that the statement above refers to is
 \emph{parametric polymorphism}
@@ -559,8 +503,7 @@ Naturality in Haskell is the ``theorem for free'' of
 \parencite{wadler-1989}. Given the type of a polymorphic function, it
 is possible to conclude that it satisfies its naturality
 \eqref{eq:naturality-haskell}. This result is known as
-\index{parametricity}\emph{parametricity} due to its relation with
-parametric polymorphism.
+\emph{parametricity} due to its relation with parametric polymorphism.
 
 Parametricity is a reformulation of Reynold's abstraction theorem and
 is also known as the representation theorem. A different approach to
@@ -582,55 +525,30 @@ polymorphic function satisfies its naturality, but it does not provide
 a proof of it. Parametricity does not require the definition of a
 function (only its type), but proving naturality does.
 
-\begin{remark}
-  [Natural isomorphisms in Haskell]
-
-  Given two functors \texthaskell{f} and \texthaskell{g}, a natural
-  isomorphism in Haskell is a parametrically polymorphic function
-  \begin{equation*}
-    \text{\texthaskell{tau :: f a -> g a}}
-  \end{equation*}
-  and a parametrically polymorphic function
-  \begin{equation*}
-    \text{\texthaskell{tau-1 :: g a -> f a}}
-    \text{.}
-  \end{equation*}
-
-\end{remark}
-
-\todo{Introduce examples}
-
 \begin{example}
-  [Identity]
-
-  \label{ex:natural-id-haskell}
-
-  \index{\texthaskell{id}}
-  \index{identity}
-  \index{natural transformation!identity ---}
+  \label{ex:natural-identity-haskell}
 
   The identity function of \hask
   \begin{equation*}
     \text{\texthaskell{id :: a -> a}}
   \end{equation*}
   is a natural transformation.
+
   \begin{proof}
+
     Example \ref{ex:natural-identity} establishes that the identity
     function is a natural transformation regardless of which category
     it belongs to. For that reason, the identity function of \hask is
     a natural transformation. Equivalently, \eqref{eq:hask-identity}
     in Section \ref{sec:category-haskell} means that naturality holds
     for \texthaskell{id}.
+
   \end{proof}
 
 \end{example}
 
 \begin{example}
-  [\texthaskell{head}]
-
   \label{ex:natural-head-haskell}
-
-  \index{\texthaskell{head}}
 
   The \texthaskell{head} function, which extracts the first element of
   a list, is a natural transformation from the \texthaskell{[]}
@@ -679,6 +597,7 @@ function (only its type), but proving naturality does.
   \ref{ex:natural-last-haskell}.
 
   \begin{proof}
+
     \hfill
     \begin{itemize}
     \item
@@ -722,16 +641,13 @@ function (only its type), but proving naturality does.
         \steph{head . fmap f = fmap f . head}.
       \end{steps}
     \end{itemize}
+
   \end{proof}
 
 \end{example}
 
 \begin{example}
-  [\texthaskell{last}]
-
   \label{ex:natural-last-haskell}
-
-  \index{\texthaskell{last}}
 
   The \texthaskell{last} function, which extracts the last element of
   a list, is a natural transformation from the \texthaskell{[]}
@@ -766,6 +682,7 @@ function (only its type), but proving naturality does.
   naturality of the \texthaskell{last} function requires induction.
 
   \begin{proof}
+
     \hfill
     \begin{itemize}
     \item
@@ -835,12 +752,12 @@ function (only its type), but proving naturality does.
         \steph{last . fmap f = fmap f . last}.
       \end{steps}
     \end{itemize}
+
   \end{proof}
 
 \end{example}
 
 \begin{example}
-  [\texthaskell{repeat}]
 
   The \texthaskell{repeat} function is a natural transformation from
   the identity functor into the \texthaskell{[]} functor.
@@ -922,13 +839,11 @@ diagram in Figure \ref{fig:naturality-agda}.
     idNT = mkNT id (λ _ → refl)
   \end{codeagda}
 
-  Compare with Example \ref{ex:natural-id-haskell}.
+  Compare with Example \ref{ex:natural-identity-haskell}.
 
 \end{example}
 
 \begin{example}
-  [\textagda{head}]
-
   \label{ex:natural-head-agda}
 
   Module \module{Abel.Data.List}.
@@ -956,8 +871,6 @@ diagram in Figure \ref{fig:naturality-agda}.
 \end{example}
 
 \begin{example}
-  [\textagda{last}]
-
   \label{ex:natural-last-agda}
 
   Module \module{Abel.Data.List}.

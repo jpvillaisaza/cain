@@ -116,7 +116,7 @@
   \hypersetup{hidelinks}
 \fi
 
-\makeindex %% detex -w cain.tex | sort -uf > foo
+%% \makeindex %% detex -w cain.tex | sort -uf > foo
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% todo
@@ -196,6 +196,8 @@
 \newcommand{\eqbyihh}{\item[]\quad\eqh\quad\byih}
 
 \newcommand{\eqtext}[1]{\item[]\quad\eq\quad({#1})}
+
+\newcommand{\eqbynothing}{\item[]\quad\eq\quad}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Theorems
@@ -301,6 +303,6 @@
 \DeclareMathOperator{\append}{append}
 \DeclareMathOperator{\map}{map}
 
-%%
 
-\newcommand{\term}[1]{\textsl{#1}}
+
+%% \newcommand{\term}[1]{#1}

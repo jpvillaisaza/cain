@@ -91,8 +91,9 @@ for abstract manipulation \parencite[60]{moggi-1991}.
 \todo{Introduce Example \ref{ex:notions-computation}.}
 
 \begin{examples}
-  [\footnote{These examples are based on \parencite[58]{moggi-1991}.}]
   \label{ex:notions-computation}
+
+  %% \parencite[58]{moggi-1991}
 
   Notions of computation:
   \begin{itemize}
@@ -128,12 +129,9 @@ natural transformations \parencite[60]{moggi-1991}.
 \todo{Note about the two equality lines in the second commutative diagram above.}
 
 \begin{definition}
-  [Monad\footnote{This definition is based on
-      \parencite[137]{maclane-1998}.}]
-
   \label{def:monad}
 
-  \index{monad}
+  %% \parencite[137]{maclane-1998}
 
   Let \cat{C} be a category. A \emph{monad}
   \begin{equation}
@@ -278,6 +276,7 @@ natural transformations \parencite[60]{moggi-1991}.
 
 \begin{remark}
   \label{re:monad-monoid}
+
   Formally, the definition of a monad is like that of a monoid $M$, as
   described in Example \ref{ex:monoid}. The set $M$ of
   elements of the monoid is replaced by the endofunctor \func{T} from
@@ -294,25 +293,26 @@ natural transformations \parencite[60]{moggi-1991}.
   with product $\times$ replaced by composition of endofunctors and
   unit set replaced by the identity endofunctor
   \parencite[138]{maclane-1998}.
+
 \end{remark}
 
 \todo{\nat{\mu} is associative, and \nat{\eta} is a two-sided unit
   for \nat{\mu}.}
 
-\todo{When referring to a term, choose between `monad' and \term{monad}.}
-
 \begin{terminology}
   \label{ter:monad}
-  Although the common term for monads is \term{monad}, alternatives
-  include \term{standard construction}, which is the original term
-  \parencite[30]{manes-1976}, \term{algebraic theory in monoid form}
-  \parencite[29]{manes-1976}, and \term{triple}
+
+  Although the common term for monads is monad, alternatives
+  include standard construction, which is the original term
+  \parencite[30]{manes-1976}, algebraic theory in monoid form
+  \parencite[29]{manes-1976}, and triple
   \parencites[83]{barr-2005}[372]{barr-wells-2012}.
   %% , which seems to be the only current alternative.
-  We choose \term{monad} because of Remark
-  \ref{re:monad-monoid} and reserve \term{triple} for effectively
+  We choose monad because of Remark
+  \ref{re:monad-monoid} and reserve triple for effectively
   distinguishing between monads and triples, as explained in page
   \pageref{ter:triple}.
+
 \end{terminology}
 
 \todo{If more examples are added, consider introducing the examples.}
@@ -331,7 +331,9 @@ natural transformations \parencite[60]{moggi-1991}.
     \mon{I} = (\func{I}, \id, \id)
   \end{equation*}
   in \cat{C}, called the identity monad in \cat{C}.
+
   \begin{proof}
+
     Equations \eqref{eq:monad-associativity},
     \eqref{eq:monad-unity-left}, and \eqref{eq:monad-unity-right} hold
     by \eqref{eq:category-identity}, and
@@ -339,15 +341,19 @@ natural transformations \parencite[60]{moggi-1991}.
     \eqref{eq:monad-naturality-multiplication} hold because \nat{\id}
     is a natural transformation, as demonstrated in Example
     \ref{ex:natural-identity}.
+
   \end{proof}
+
 \end{example}
 
 \begin{example}
+
   Let $M = (M, *, e)$ be a monoid. Then the functor $M \times
   \underscore : \set \to \set$, $X \mapsto M \times X$ together with
   natural transformations $\natO{\eta}{X}(x) = (e, x)$ and
   $\natO{\mu}{X}(m_2 * (m_1, x)) = (m_2 * m_1, x)$ defines a monad
   \parencite[596]{poigne-1992}.
+
 \end{example}
 
 \begin{example}
@@ -366,16 +372,9 @@ correspond exactly to Kleisli triples, not monads (as will be
 explained, they do correspond to monads, but via Kleisli triples).
 
 \begin{definition}
-  [Kleisli triple\footnote{This definition is based on
-      \parencite[58]{moggi-1991}.}]
-
   \label{def:triple}
 
-  \index{triple}
-  \index{Kleisli triple|see{triple}}
-  \index{triple!Kleisli ---|see{triple}}
-
-  \index{monad!--- in extension form}
+  %% \parencite[58]{moggi-1991}
 
   Let \cat{C} be a category. A \emph{Kleisli triple}
   \begin{equation}
@@ -469,20 +468,23 @@ explained, they do correspond to monads, but via Kleisli triples).
   values to computations to a function from computations to
   computations, which first evaluates a computation and then applies
   $f$ to the resulting value \parencite[59]{moggi-1991}.
+
 \end{remark}
 
 \begin{terminology}
   \label{ter:triple}
-  The common term for Kleisli triples is \term{Kleisli triple}. Yet
-  another term is \term{algebraic theory in extension form}
+
+  The common term for Kleisli triples is Kleisli triple. Yet
+  another term is algebraic theory in extension form
   \parencite[32]{manes-1976}, which is perhaps more precise but rather
   outdated. Despite the fact that the latter could be updated to
-  something like \term{monad in extension form}, we choose
-  \term{Kleisli triple} for the sake of simplicity. When defining
+  something like monad in extension form, we choose
+  Kleisli triple for the sake of simplicity. When defining
   monads, \textcite[138]{maclane-1998} considers the use of
-  \term{triple} as ``frequent but unfortunate,'' but this is not the
+  triple as ``frequent but unfortunate,'' but this is not the
   case within the context of this dissertation. \todo{Why or do not
     mention it.}
+
 \end{terminology}
 
 \begin{remark*}
@@ -491,6 +493,7 @@ explained, they do correspond to monads, but via Kleisli triples).
   Note that, contrary to the definition of a monad, a Kleisli triple does not
   require an endofunctor and its unit is not required to be defined as
   a natural transformation.
+
 \end{remark*}
 
 ...
@@ -511,18 +514,22 @@ explained, they do correspond to monads, but via Kleisli triples).
     \text{,}
   \end{equation*}
   in \cat{C}, called the identity Kleisli triple.
+
   \begin{proof}
+
     Equation \eqref{eq:triple-associativity} holds by
     \eqref{eq:category-associativity}, and \eqref{eq:triple-unity-left}
     and \eqref{eq:triple-unity-right} hold by
     \eqref{eq:category-identity}.
+
   \end{proof}
+
 \end{example}
 
 \begin{examples}
-  [Notions of computation\footnote{These examples are based on
-      \parencite[60]{moggi-1991}.}]
   \label{ex:triple-notions-computation}
+
+  %% \parencite[60]{moggi-1991}
 
   \hfill
   \begin{description}
@@ -549,6 +556,7 @@ following theorems demonstrate that monads and Kleisli triples are equivalent.
 As illustrated in Figure \ref{fig:monad-theory-triple}, these proofs
 are enough for stating the equivalence between the three alternative
 descriptions.
+
 \begin{figure}[htbp]
   \begin{center}
     \begin{tikzpicture}
@@ -570,6 +578,7 @@ and natural transformations, this lemma is simpler than its converse.
 
 \begin{lemma}
   \label{lem:monad-to-triple}
+
   Let $\mon{T} = (\func{T}, \nat{\eta}, \nat{\mu})$ be a monad in a
   category \cat{C}. Then
   \begin{equation*}
@@ -589,7 +598,9 @@ and natural transformations, this lemma is simpler than its converse.
     \text{,}
   \end{equation}
   is a Kleisli triple in \cat{C}.
+
   \begin{proof}
+
     As
     \begin{steps}
       \stepm{\monM{}{\natO{\eta}{a}}}
@@ -628,7 +639,9 @@ and natural transformations, this lemma is simpler than its converse.
       \stepm{\monM{}{(\monM{}{g} \comp f)}},
     \end{steps}
     \eqref{eq:triple-associativity} holds.
+
   \end{proof}
+
 \end{lemma}
 
 The object function of a Kleisli triple can be extended to define an
@@ -637,6 +650,7 @@ an endofunctor can be derived from a Kleisli triple.
 
 \begin{proposition}
   \label{prop:triple-to-endofunctor}
+
   If $\mon{T} = (\funcO{T}, \nat{\eta}, \monM{}{\underscore})$ is a Kleisli triple in
   a category \cat{C}, then
   \begin{equation*}
@@ -654,7 +668,9 @@ an endofunctor can be derived from a Kleisli triple.
     \text{,}
   \end{equation}
   is an endofunctor in \cat{C}.
+
   \begin{proof}
+
     Equation \eqref{eq:functor-identity} holds because
     \begin{steps}
       \stepm{\funcM{T}(\idO{a})}
@@ -675,7 +691,9 @@ an endofunctor can be derived from a Kleisli triple.
         \eqbydef{$\funcM{T}(f)$ and $\funcM{T}(g)$ \eqref{eq:triple-to-endofunctor-morphism-function}}
       \stepm{\funcM{T}(g) \comp \funcM{T}(f)}.
     \end{steps}
+
   \end{proof}
+
 \end{proposition}
 
 Since \func{T} is an endofunctor, it is now possible to ask if
@@ -684,9 +702,12 @@ Since \func{T} is an endofunctor, it is now possible to ask if
 
 \begin{proposition}
   \label{prop:triple-to-monad-unit}
+
   If $\mon{T} = (\funcO{T}, \nat{\eta}, \monM{}{\underscore})$ is a Kleisli triple in
   a category \cat{C}, then the transformation \nat{\eta} is natural.
+
   \begin{proof}
+
     As
     \begin{steps}
       \stepm{\natO{\eta}{\funcO{T}(b)} \comp f}
@@ -696,7 +717,9 @@ Since \func{T} is an endofunctor, it is now possible to ask if
       \stepm{\funcM{T}(f) \comp \natO{\eta}{a}},
     \end{steps}
     \nat{\eta} is natural.
+
   \end{proof}
+
 \end{proposition}
 
 Lemma \ref{prop:triple-to-monad-multiplication} defines the
@@ -705,6 +728,7 @@ is a natural transformation.
 
 \begin{proposition}
   \label{prop:triple-to-monad-multiplication}
+
   If $\mon{T} = (\funcO{T}, \nat{\eta}, \monM{}{\underscore})$ is a Kleisli triple in
   a category \cat{C}, then a function $\nat{\mu}: \catO{C} \to
   \catM{C}$ which assigns to each object $a \in \catO{C}$ a morphism
@@ -717,7 +741,9 @@ is a natural transformation.
   \end{equation}
   is a natural transformation $\nat{\mu}: \func{T} \comp \func{T} \to
   \func{T}: \cat{C} \to \cat{C}$.
+
   \begin{proof}
+
     Since
     \begin{steps}
       \stepm{\natO{\mu}{\funcO{T}(b)} \comp \funcM{T}(\funcM{T}(f))}
@@ -743,7 +769,9 @@ is a natural transformation.
       \stepm{\funcM{T}(f) \comp \natO{\mu}{a}},
     \end{steps}
     then \nat{\mu} is natural.
+
   \end{proof}
+
 \end{proposition}
 
 Lemma \ref{lem:triple-to-monad} states that a monad can be obtained
@@ -752,6 +780,7 @@ above.
 
 \begin{lemma}
   \label{lem:triple-to-monad}
+
   Let $\mon{T} = (\funcO{T}, \nat{\eta}, \monM{}{\underscore})$ be a Kleisli triple in
   a category \cat{C}. Then
   \begin{equation*}
@@ -765,7 +794,9 @@ above.
   \func{T} \to \func{T}: \cat{C} \to \cat{C}$ is the natural
   transformation defined by Lemma
   \ref{prop:triple-to-monad-multiplication}, is a monad in \cat{C}.
+
   \begin{proof}
+
     As
     \begin{steps}
       \stepm{\natO{\mu}{a} \comp \natO{\mu}{\funcO{T}(a)}}
@@ -812,7 +843,9 @@ above.
     \end{steps}
     then \eqref{eq:monad-unity-left} and \eqref{eq:monad-unity-right}
     hold.
+
   \end{proof}
+
 \end{lemma}
 
 Finally, Theorem \ref{the:monad-triple} proves that monads and Kleisli triples
@@ -820,13 +853,18 @@ are equivalent.
 
 \begin{theorem}
   \label{the:monad-triple}
+
   Monads and Kleisli triples are coextensive.
+
   \begin{proof}
+
     The correspondence between monads and Kleisli triples is given by Lemma
     \ref{lem:monad-to-triple}, which proves that a Kleisli triple can be
     derived from a monad, and Lemma \ref{lem:triple-to-monad}, which proves
     that a monad can be derived from a Kleisli triple.
+
   \end{proof}
+
 \end{theorem}
 
 \todo{Introduce Example \ref{ex:monad-triple-identity}.}
@@ -999,8 +1037,11 @@ instance Monad' Identity where
   \end{figure}
 
   \begin{proof}
+
     ...
+
   \end{proof}
+
 \end{example}
 
 \begin{example}
@@ -1052,6 +1093,7 @@ instance Monad' Maybe where
   \end{figure}
 
   \begin{proof}
+
     Equation \eqref{eq:monad-associativity-haskell} holds because
     \begin{steps}
       \steph{(join . join) Nothing}
@@ -1117,7 +1159,9 @@ instance Monad' Maybe where
       \steph{id (Just x)},
     \end{steps}
     then \eqref{eq:monad-unity-right-haskell} holds.
+
   \end{proof}
+
 \end{example}
 
 \begin{example}
@@ -1187,6 +1231,7 @@ instance Monad' [] where
   \end{figure}
 
   \begin{proof}
+
     \hfill
 
     \begin{steps}
@@ -1238,7 +1283,9 @@ instance Monad' [] where
 
       \steph{x:xs}
     \end{steps}
+
   \end{proof}
+
 \end{example}
 
 \subsection*{Kleisli triples}
@@ -1479,8 +1526,11 @@ instance Monad Identity where
   \end{figure}
 
   \begin{proof}
+
     ...
+
   \end{proof}
+
 \end{example}
 
 \begin{example}
@@ -1521,6 +1571,7 @@ instance Monad Maybe where
   \end{figure}
 
   \begin{proof}
+
     \hfill
     \begin{steps}
       \steph{bind return Nothing}
@@ -1573,7 +1624,9 @@ instance Monad Maybe where
         \eqbydefh{bind}
       \steph{bind (bind g . f) (Just x)}
     \end{steps}
+
   \end{proof}
+
 \end{example}
 
 \begin{example}
@@ -1612,6 +1665,7 @@ instance Monad [] where
   \end{figure}
 
   \begin{proof}
+
     \hfill
     \begin{steps}
       \steph{bind return []}
@@ -1646,7 +1700,9 @@ instance Monad [] where
         \eqbydefh{id}
       \steph{id (x:xs)}
     \end{steps}
+
   \end{proof}
+
 \end{example}
 
 \subsection*{Monads $=$ Kleisli triples}
@@ -1749,6 +1805,7 @@ and \ref{ex:monad-identity-haskell}.
 
 \begin{example}
   \label{ex:monad-identity-agda}
+
   The identity monad in Agda (which corresponds to the identity monad
   in \hask as presented in Example \ref{ex:monad-identity-haskell}) is
   defined and proved to be a monad in the module
@@ -1785,10 +1842,12 @@ monad' = mkMonad' return join associativity unity-left unity-right
                       join (fmap (fmap f) x) ≡ fmap f (join x)
     naturality-join (identity _) = refl
   \end{codeagda}
+
 \end{example}
 
 \begin{example}
   \label{ex:monad-maybe-agda}
+
   The \textagda{Maybe} monad in Agda corresponds to Example
   \ref{ex:monad-maybe-haskell} and can be found in module
   \module{Abel.Data.Maybe.Monad}.
@@ -1827,6 +1886,7 @@ monad' = mkMonad' return join associativity unity-left unity-right
     naturality-join (just _) = refl
     naturality-join nothing  = refl
   \end{codeagda}
+
 \end{example}
 
 \begin{example}
@@ -1876,6 +1936,7 @@ monad' = mkMonad' return join associativity unity-left unity-right
     naturality-join {f = f} ((x ∷ xs) ∷ xss) =
       cong (_∷_ (f x)) (naturality-join (xs ∷ xss))
   \end{codeagda}
+
 \end{example}
 
 \subsection*{Kleisli triples}
@@ -1967,6 +2028,7 @@ monad = mkMonad return bind associativity unity-left unity-right
 
 \begin{example}
   \label{ex:triple-maybe-agda}
+
   The \textagda{Maybe} Kleisli triple in Agda corresponds to the
   \texthaskell{Maybe} Kleisli triple in Haskell (Example
   \ref{ex:triple-maybe-haskell}). Its definition and proof can be found in module
@@ -1998,6 +2060,7 @@ monad = mkMonad return bind associativity unity-left unity-right
     unity-right (just _) = refl
     unity-right nothing  = refl
   \end{codeagda}
+
 \end{example}
 
 \begin{example}
@@ -2042,6 +2105,7 @@ monad = mkMonad return bind associativity unity-left unity-right
     unity-right []       = refl
     unity-right (x ∷ xs) = cong (_∷_ x) (unity-right xs)
   \end{codeagda}
+
 \end{example}
 
 \subsection*{Monads $=$ Kleisli triples}
