@@ -13,14 +13,9 @@ We begin with the concept of isomorphism and some useful properties
 regarding isomorphisms such as uniqueness up to isomorphism.
 
 \begin{definition}
-  [Isomorphism and isomorphic objects]
-
-  %% \parencite[15]{pierce-1991}
-
   \label{def:isomorphism}
 
-  \index{isomorphism}
-  \index{object!isomorphic ---}
+  %% \parencite[15]{pierce-1991}
 
   Let \cat{C} be a category\footnote{Whenever a category \cat{C} is
     mentioned, its sets of objects and morphisms, its domain and
@@ -36,13 +31,9 @@ regarding isomorphisms such as uniqueness up to isomorphism.
 \end{definition}
 
 \begin{definition}
-  [Identicalness and uniqueness up to isomorphism]
-
-  %% \parencite[15]{pierce-1991}
-
   \label{def:up-to-isomorphism}
 
-  \index{isomorphism!up to ---}
+  %% \parencite[15]{pierce-1991}
 
   Isomorphic objects are often said to be identical up to isomorphism.
   Similarly, an object with some property is said to be unique up to
@@ -58,14 +49,9 @@ We continue with initial and terminal objects, which we will use for
 describing algebras and initial algebras.
 
 \begin{definition}
-  [Initial object]
-
-  %% \parencite[444]{poigne-1992}
-
   \label{def:initial-object}
 
-  \index{initial object}
-  \index{object!initial ---|see{initial object}}
+  %% \parencite[444]{poigne-1992}
 
   Let \cat{C} be a category. An object $0 \in \catO{C}$ is the initial
   object of \cat{C} if, for all objects $a \in \catO{C}$, there is a
@@ -74,16 +60,9 @@ describing algebras and initial algebras.
 \end{definition}
 
 \begin{definition}
-  [Terminal object]
-
-  %% \parencite[439]{poigne-1992}
-
   \label{def:terminal-object}
 
-  \index{terminal object}
-  \index{object!terminal ---|see{terminal object}}
-  \index{final object|see{terminal object}}
-  \index{object!final ---|see{terminal object}}
+  %% \parencite[439]{poigne-1992}
 
   Let \cat{C} be a category. An object $1 \in \catO{C}$ is the
   terminal object of \cat{C} if, for all objects $a \in \catO{C}$,
@@ -116,11 +95,9 @@ describing algebras and initial algebras.
 \end{lemma}
 
 \begin{example}
-  [Initial and terminal objects in $\set$]
+  \label{ex:initial-terminal-objects-set}
 
   %% \parencite[16]{pierce-1991}
-
-  \label{ex:initial-terminal-objects-set}
 
   In \set, the empty set $\emptyset$ is the initial object. Given a
   set $A$, the empty function is the unique function $\emptyset \to
@@ -130,8 +107,7 @@ describing algebras and initial algebras.
 
 \end{example}
 
-\begin{example}[Initial and terminal objects in Haskell]
-
+\begin{example}
   \label{ex:initial-terminal-objects-haskell}
 
   In \hask, the empty or uninhabited type is the initial object of the
@@ -161,8 +137,7 @@ unit _ = ()
 
 \end{example}
 
-\begin{example}[Initial and terminal objects in Agda]
-
+\begin{example}
   \label{ex:initial-terminal-objects-agda}
 
   Similarly, in Agda, the empty type, defined in \module{Data.Empty},
@@ -199,11 +174,9 @@ unit _ = tt
 \end{example}
 
 \begin{example}
-  [Terminal objects and elements of sets]
+  \label{ex:terminal-objects-constants}
 
   %% \parencite[16--17]{pierce-1991}
-
-  \label{ex:terminal-objects-constants}
 
   In \set, the elements of a set $A$ can be considered as functions
   from a terminal object, that is, any singleton set, to $A$. More
@@ -220,15 +193,9 @@ We end with the concepts of product and coproduct, which correspond to
 Cartesian products and disjoiunt unions, respectively.
 
 \begin{definition}
-  [Product]
-
-  %% \parencite[18]{pierce-1991}
-
   \label{def:product}
 
-  \index{morphism!projection ---}
-  \index{object!product ---}
-  \index{product}
+  %% \parencite[18]{pierce-1991}
 
   Let \cat{C} be a category. A product of two objects $a$ and $b \in
   \catO{C}$ consists of a product object $a \times b \in \catO{C}$,
@@ -273,13 +240,9 @@ Cartesian products and disjoiunt unions, respectively.
 \end{definition}
 
 \begin{example}
-  [Products in $\set$]
-
-  %% \parencites[439--440]{poigne-1992}[17--18]{pierce-1991}
-
   \label{ex:product-set}
 
-  \index{product!Cartesian ---}
+  %% \parencites[439--440]{poigne-1992}[17--18]{pierce-1991}
 
   In \set, the product of two sets $A$ and $B$ consists of the
   Cartesian product
@@ -308,13 +271,8 @@ Cartesian products and disjoiunt unions, respectively.
 
 \end{example}
 
-\begin{example}[Products in Haskell]
+\begin{example}
   \label{ex:product-haskell}
-
-  \index{\hask}
-
-  \index{product}
-  \index{tuple}
 
   In \hask, tuples are products:
   \begin{codehaskell}
@@ -339,10 +297,8 @@ fork f g z = (f z,g z)
 
 \end{example}
 
-\begin{example}[Products in Agda]
+\begin{example}
   \label{ex:product-agda}
-
-  \index{product}
 
   Similarly, in Agda, products and their projection functions are
   defined in \module{Abel.Data.Product}, as follows:
@@ -366,15 +322,9 @@ proj₂ (_ , y) = y
 \end{example}
 
 \begin{definition}
-  [Coproduct]
-
-  %% \parencite[19]{pierce-1991}
-
   \label{def:coproduct}
 
-  \index{coproduct}
-  \index{morphism!injection ---}
-  \index{object!coproduct ---}
+  %% \parencite[19]{pierce-1991}
 
   Let \cat{C} be a category. A coproduct of two objects $a$ and $b \in
   \catO{C}$ consists of a coproduct object $a + b \in \catO{C}$, and
@@ -419,16 +369,9 @@ proj₂ (_ , y) = y
 \end{definition}
 
 \begin{example}
-  [Coproducts in $\set$]
-
-  %% \parencite[63]{maclane-1998}
-
   \label{ex:coproduct-set}
 
-  \index{\set}
-
-  \index{coproduct}
-  \index{disjoint union}
+  %% \parencite[63]{maclane-1998}
 
   In \set, the coproduct of two sets $A$ and $B$ consists of the
   disjoint union
@@ -460,13 +403,8 @@ proj₂ (_ , y) = y
 
 \end{example}
 
-\begin{example}[Coproducts in Haskell]
+\begin{example}
   \label{ex:coproduct-haskell}
-
-  \index{\hask}
-  \index{\texthaskell{Either}}
-
-  \index{coproduct}
 
   In \hask, coproducts and their injection functions are defined by
   the \texthaskell{Either} type:
@@ -483,12 +421,8 @@ either _ g (Right y) = g y
 
 \end{example}
 
-\begin{example}[Coproducts in Agda]
+\begin{example}
   \label{ex:coproduct-agda}
-
-  \index{coproduct}
-  \index{disjoint union}
-  \index{sum}
 
   In a similar way, in Agda, sums or disjoint unions, defined in
   \module{Abel.Data.Sum}, are coproducts:
