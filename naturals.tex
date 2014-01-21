@@ -420,12 +420,6 @@ transformation is what category theory is built on''
 
 \end{example}
 
-In most cases the idea of a polymorphic function (as presented in
-Section \ref{sec:naturals-introduction}) is quite appropiate, but
-there is another interpretation which fits the bill. It is that of a
-homomorphism of functors and is indicated by the following example
-\parencite[page 436]{poigne-1992}.
-
 \section{Natural transformations in Haskell}
 \label{sec:naturals-haskell}
 
@@ -732,7 +726,7 @@ function (only its type), but proving naturality does.
         \steph{last (fmap f (y:ys))}
           \eqbydefh{(.)}
         \steph{(last . fmap f) (y:ys)}
-          \eqbyihh
+          \eqbyihh{}
         \steph{(fmap f . last) (y:ys)}
           \eqbydefh{(.)}
         \steph{fmap f (last (y:ys))}

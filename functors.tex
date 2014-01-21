@@ -9,14 +9,15 @@
 In this chapter we explore functors. In Section \ref{sec:functors} we
 define mathematical functors, and in Sections
 \ref{sec:functors-haskell} and \ref{sec:functors-agda} we describe
-functors in Haskell and Adgda, respectively.
+functors in Haskell and Agda, respectively.
 
 \section{Introduction}
 \label{sec:functors-introduction}
 
 Mapping over lists, which is accomplished with the \texthaskell{map}
-function, is a dominant idiom in Haskell \parencite{lipovaca-2011}.
-The type signature of the \texthaskell{map} function is:
+function, is ``a dominant idiom in Haskell''
+\parencite[146]{lipovaca-2011}. The type signature of the
+\texthaskell{map} function is:
 \begin{codehaskell}
 map :: (a -> b) -> [a] -> [b]
 \end{codehaskell}
@@ -55,10 +56,7 @@ approach. This is achieved with the definition of the
 \texthaskell{Functor} type class, which is used for types that can be
 mapped over and which generalizes the \texthaskell{map} function as a
 \emph{uniform} action over a parameterized type such as
-\texthaskell{[a]} in
-\begin{codehaskell}
-(a -> b) -> [a] -> [b]
-\end{codehaskell}
+\texthaskell{[a]} in \texthaskell{(a -> b) -> [a] -> [b]}.
 
 However, the definition of the \texthaskell{Functor} type class is not
 enough to determine what a ``uniform action over a parameterized
@@ -324,141 +322,100 @@ of these laws amounts to proving that an instance of the
 \begin{example}
   \label{ex:functor-identity-haskell}
 
-  \todo{Add text and reference Example \ref{ex:functor-identity}.}
-
+  The identity functor of \hask, which is just an instance of the
+  identity functor as described in Example \ref{ex:functor-identity},
+  is defined as follows:
   \begin{codehaskell}
+newtype Identity a = Identity {unIdentity :: a}
+
 instance Functor Identity where
-  fmap f (Identity x) = Identity (f b)
+  fmap f (Identity x) = Identity (f x)
   \end{codehaskell}
+
+  %% Note that \texthaskell{Identity a} is a renamed data type which is
+  %% isomorphic to \texthaskell{a}. See \parencite[§
+  %%   4.2.3]{peytonjones-2003}.
+
+  \begin{proof}
+
+    See the proof of Example \ref{ex:functor-identity}.
+
+  \end{proof}
 
 \end{example}
 
 \begin{example}
   \label{ex:functor-maybe-haskell}
 
-  When declaring an instance of the \texthaskell{Functor} type class, it is
-  necessary to define a type constructor and to implement an
-  appropiate \texthaskell{fmap} for that particular type constructor.
+  %% \parencites[147--148]{lipovaca-2011}[246]{osullivan-2008}[20--21]{yorgey-2009}
 
-  Given a type constructor \texthaskell{f}, the type signature of
-  \texthaskell{fmap} is:
+  A common example of functors in Haskell is the \texthaskell{Maybe}
+  functor. Its type constructor is, of course, the \texthaskell{Maybe}
+  type constructor:
   \begin{codehaskell}
-fmap :: Functor f => (a -> b) -> f a -> f b
+data Maybe a = Nothing | Just a
   \end{codehaskell}
-  In the case of the \texthaskell{Maybe} type constructor, replacing the
-  \texthaskell{f}'s in the type signature of \texthaskell{fmap} gives the type
-  signature of the function we need to define in order to make it an
-  instance of the \texthaskell{Functor} type class:
-  \begin{codehaskell}
-fmap :: (a -> b) -> Maybe a -> Maybe b
-  \end{codehaskell}
-
-  \begin{equation}
-    \label{eq:maybe-fmap-nothing}
-    \text{\texthaskell{fmap \_ Nothing = Nothing}}
-  \end{equation}
-  \begin{equation}
-    \label{eq:maybe-fmap-just}
-    \text{\texthaskell{fmap f (Just x) = Just (f x)}}
-  \end{equation}
-
-  The definition of the \texthaskell{Maybe} functor is:
-
+  And its \texthaskell{fmap} function is defined as follows:
   \begin{codehaskell}
 instance Functor Maybe where
   fmap _ Nothing  = Nothing
   fmap f (Just x) = Just (f x)
   \end{codehaskell}
-
-The Maybe type constructor represents a container which might hold a
-single element. Under the context point of view, it represents a
-context with possible failure \parencite{yorgey-2009}. It is like a box
-that can hold nothing, or it can contain one item
-\parencite{lipovaca-2011}. The instance for Maybe shows
-clearly what fmap needs to do \parencite{osullivan-2008}.
-
-Two different intuitions are usually presented when explaining the
-\texthaskell{Maybe} functor. From a container point of view, the
-\texthaskell{Maybe} type constructor represents a container which might
-hold a single element. If this container actually holds a single
-element, \texthaskell{fmap} applies a given function to it. Otherwise, it
-does nothing. From a context point of view, it represents a context
-with possible failure (in the case of \texthaskell{Nothing}). A third
-intuition is more appropiate when comparing an instance of the
-\texthaskell{Functor} type class with mathematical functors: if there is a
-function \texthaskell{f :: a -> b}, \texthaskell{fmap} \emph{lifts} that
-function and the result is a function which can be used in the
-container or context world (in this case, a function with \texthaskell{f a
-  -> f b} as type signature).
-
-Although some familiarity with \texthaskell{Maybe} as an instance of the
-\texthaskell{Functor} type class makes it easy to see that it is in fact a
-functor, it is possible to prove \eqref{eq:functor-identity} and
-\eqref{eq:functor-composition} in order to demonstrate that \texthaskell{Maybe} and
-its implementation of \texthaskell{fmap} actually constitute a functor.
+  Basically, the \texthaskell{Maybe} type constructor sends types
+  \texthaskell{a} to types \texthaskell{Maybe a}, a value of type
+  \texthaskell{Maybe a} either contains a value of type
+  \texthaskell{a} or is empty, and the \texthaskell{fmap} function
+  sends functions \texthaskell{a -> b} to functions \texthaskell{Maybe
+    a -> Maybe b}.
 
   \begin{proof}
 
-    We shall prove \eqref{eq:functor-identity} and \eqref{eq:functor-composition}:
-    \begin{itemize}
-    \item
-      For proving the first law, there are two cases: \texthaskell{Nothing}
-      and \texthaskell{Just x}. In the case of a \texthaskell{Nothing}:
-      \begin{steps}
-        \steph{fmap id Nothing}
-          \eqbydefh{fmap}
-        \steph{Nothing}
-          \eqbydefh{id}
-        \steph{id Nothing}
-      \end{steps}
-      And in the case of a \texthaskell{Just x}:
-      \begin{steps}
-        \steph{fmap id (Just x)}
-          \eqbydefh{fmap}
-        \steph{Just (id x)}
-          \eqbydefh{id}
-        \steph{Just x}
-          \eqbydefh{id}
-        \steph{id (Just x)}
-      \end{steps}
-      So \texthaskell{fmap id = id}.
-    \item
-      Similarly, there are two cases for proving the second law. For
-      \texthaskell{Nothing}:
-      \begin{steps}
-        \steph{(fmap g . fmap f) Nothing}
-          \eqbydefh{(.)}
-        \steph{fmap g (fmap f Nothing)}
-          \eqbydefh{fmap}
-        \steph{fmap g Nothing}
-          \eqbydefh{fmap}
-        \steph{Nothing}
-          \eqbydefh{fmap}
-        \steph{fmap (g . f) Nothing}
-      \end{steps}
-      And for \texthaskell{Just x} (in this case, it is easier to prove that
-      both sides of the second law are \texthaskell{Just (g (f x))}):
-      \begin{steps}
-        \steph{fmap (g . f) (Just x)}
-          \eqbydefh{fmap}
-        \steph{Just ((g . f) x)}
-          \eqbydefh{(.)}
-        \steph{Just (g (f x))}
-      \end{steps}
-      Finally:
-      \begin{steps}
-        \steph{(fmap g . fmap f) (Just x)}
-          \eqbydefh{(.)}
-        \steph{fmap g (fmap f (Just x))}
-          \eqbydefh{fmap}
-        \steph{fmap g (Just (f x))}
-          \eqbydefh{fmap}
-        \steph{Just (g (f x))}
-      \end{steps}
-      So \texthaskell{fmap (g . f) = fmap g . fmap f}.
-    \end{itemize}
-    The \texthaskell{Maybe} type constructor and \texthaskell{fmap} thus
-    define a real functor because they satisfy both laws.
+    First, we prove that \eqref{eq:functor-identity} holds. In the
+    case of \texthaskell{Nothing}:
+    \begin{steps}
+      \steph{fmap id Nothing}
+        \eqbydefh{fmap}
+      \steph{Nothing}
+        \eqbydefh{id}
+      \steph{id Nothing}
+    \end{steps}
+    And in the case of \texthaskell{Just x}:
+    \begin{steps}
+      \steph{fmap id (Just x)}
+        \eqbydefh{fmap}
+      \steph{Just (id x)}
+        \eqbydefh{id}
+      \steph{Just x}
+        \eqbydefh{id}
+      \steph{id (Just x)}
+    \end{steps}
+    And, second, we prove that \eqref{eq:functor-composition} holds.
+    In the case of \texthaskell{Nothing}:
+    \begin{steps}
+      \steph{(fmap g . fmap f) Nothing}
+        \eqbydefh{(.)}
+      \steph{fmap g (fmap f Nothing)}
+        \eqbydefh{fmap}
+      \steph{fmap g Nothing}
+        \eqbydefh{fmap}
+      \steph{Nothing}
+        \eqbydefh{fmap}
+      \steph{fmap (g . f) Nothing}
+    \end{steps}
+    And in the case of \texthaskell{Just x}:
+    \begin{steps}
+      \steph{fmap (g . f) (Just x)}
+        \eqbydefh{fmap}
+      \steph{Just ((g . f) x)}
+        \eqbydefh{(.)}
+      \steph{Just (g (f x))}
+        \eqbydefh{fmap}
+      \steph{fmap g (Just (f x))}
+        \eqbydefh{fmap}
+      \steph{fmap g (fmap f (Just x))}
+        \eqbydefh{(.)}
+      \steph{(fmap g . fmap f) (Just x)}
+    \end{steps}
 
   \end{proof}
 
@@ -467,114 +424,82 @@ its implementation of \texthaskell{fmap} actually constitute a functor.
 \begin{example}
   \label{ex:functor-list-haskell}
 
-  The type signature of \texthaskell{fmap} for the list type constructor
-  (\texthaskell{[]}) is:
-  \begin{codehaskell}
-fmap :: (a -> b) -> [a] -> [b]
-  \end{codehaskell}
+  %% \parencites[146--147]{lipovaca-2011}[20--21]{yorgey-2009}
 
-  Haskell defines this instance as:
-  \begin{codehaskell}
-instance Functor [] where
-  fmap = map
-  \end{codehaskell}
-  However, it is possible to implement \texthaskell{fmap} without using
-  \texthaskell{map}.
+  Another common example of functors in Haskell is the list functor.
+  Its type constructor is \texthaskell{[]}, and its \texthaskell{fmap}
+  function is, obviously, the \texthaskell{map} function:
   \begin{codehaskell}
 instance Functor [] where
   fmap _ []     = []
   fmap f (x:xs) = f x : fmap f xs
   \end{codehaskell}
-
-
-  There are three correct ways of thinking about the \texthaskell{[]}
-  functor: Under the container point of view, a list is a container or
-  a box and \texthaskell{fmap} is used for applying a function to each
-  element of the list.
-
-  Under the context point of view, a list represents a single value
-  which is nondeterministically chosen from among several
-  possibilities (the elements of the list) and the list functor
-  represents a context of nondeterministic choice
-  \parencite{yorgey-2009}. And the intuition which best suits the
-  spirit of mathematical functors is that \texthaskell{fmap} \emph{lifts} a
-  function. A function \texthaskell{f :: a -> b} can not be applied to a
-  list of \texthaskell{a} (\texthaskell{[a]}), but \texthaskell{fmap f :: [a] -> [b]}
-  can.
+  Or:
+  \begin{codehaskell}
+instance Functor [] where
+  fmap = map
+  \end{codehaskell}
+  The \texthaskell{[]} type constructor sends types \texthaskell{a} to
+  types \texthaskell{[a]}, that is, lists of \texthaskell{a}, and the
+  \texthaskell{fmap} or \texthaskell{map} function, which we talked
+  about in Section \ref{sec:functors-introduction}, sends functions of
+  type \texthaskell{a -> b} to functions of type \texthaskell{[a] ->
+    [b]}.
 
   \begin{proof}
 
-    Both laws are proven by induction:
-    \begin{itemize}
-    \item
-      The basis case for the first law is:
-      \begin{steps}
-        \steph{fmap id []}
-          \eqbydefh{fmap}
-        \steph{[]}
-          \eqbydefh{id}
-        \steph{id []}
-      \end{steps}
-      The induction step, which uses \texthaskell{fmap id xs = xs} as
-      inductive hypothesis, is:
-      \begin{steps}
-        \steph{fmap id (x:xs)}
-          \eqbydefh{fmap}
-        \steph{id x : fmap id xs}
-          \eqbydefh{id}
-        \steph{x : fmap id xs}
-          \eqbyihh
-        \steph{x:xs}
-          \eqbydefh{id}
-        \steph{id (x:xs)}
-      \end{steps}
-    \item
-      For the second law, the basis case is:
-      \begin{steps}
-        \steph{(fmap g . fmap f) []}
-          \eqbydefh{(.)}
-        \steph{fmap g (fmap f [])}
-          \eqbydefh{fmap}
-        \steph{fmap g []}
-          \eqbydefh{fmap}
-        \steph{[]}
-          \eqbydefh{fmap}
-        \steph{fmap (g . f) []}
-      \end{steps}
-      The induction case (with
-      \begin{codehaskell}
-        fmap (g . f) xs = (fmap g . fmap f) xs
-      \end{codehaskell}
-      as inductive hypothesis) proves that both sides of
-      the second law are
-      \begin{codehaskell}
-        g (f x) : (fmap g . fmap f) xs
-      \end{codehaskell}
-      For the left side:
-      \begin{steps}
-        \steph{fmap (g . f) (x:xs)}
-          \eqbydefh{fmap}
-        \steph{(g . f) x : fmap (g . f) xs}
-          \eqbydefh{(.)}
-        \steph{g (f x) : fmap (g . f) xs}
-          \eqbyihh
-        \steph{g (f x) : (fmap g . fmap f) xs}
-      \end{steps}
-      And for the right side:
-      \begin{steps}
-        \steph{(fmap g . fmap f) (x:xs)}
-          \eqbydefh{(.)}
-        \steph{fmap g (fmap f (x:xs))}
-          \eqbydefh{fmap}
-        \steph{fmap g (f x : fmap f xs)}
-          \eqbydefh{fmap}
-        \steph{g (f x) : fmap g (fmap f xs)}
-          \eqbydefh{(.)}
-        \steph{g (f x) : (fmap g . fmap f) xs}
-      \end{steps}
-    \end{itemize}
-    So \texthaskell{[]} and \texthaskell{fmap} (or \texthaskell{map}) satisfy the
-    functor laws and hence constitute one.
+    First, we prove \eqref{eq:functor-identity} by induction. In the
+    case of an empty list:
+    \begin{steps}
+      \steph{fmap id []}
+        \eqbydefh{fmap}
+      \steph{[]}
+        \eqbydefh{id}
+      \steph{id []}
+    \end{steps}
+    And in the case of a nonempty list \texthaskell{(x:xs)}:
+    \begin{steps}
+      \steph{fmap id (x:xs)}
+        \eqbydefh{fmap}
+      \steph{id x : fmap id xs}
+        \eqbydefh{id}
+      \steph{x : fmap id xs}
+        \eqbyihh{}
+      \steph{x:xs}
+        \eqbydefh{id}
+      \steph{id (x:xs)}
+    \end{steps}
+    And, second, we prove \eqref{eq:functor-composition}, also by
+    induction. In the case of an empty list:
+    \begin{steps}
+      \steph{(fmap g . fmap f) []}
+        \eqbydefh{(.)}
+      \steph{fmap g (fmap f [])}
+        \eqbydefh{fmap}
+      \steph{fmap g []}
+        \eqbydefh{fmap}
+      \steph{[]}
+        \eqbydefh{fmap}
+      \steph{fmap (g . f) []}
+    \end{steps}
+    And in the case of a nonempty list \texthaskell{(x:xs)}:
+    \begin{steps}
+      \steph{fmap (g . f) (x:xs)}
+        \eqbydefh{fmap}
+      \steph{(g . f) x : fmap (g . f) xs}
+        \eqbydefh{(.)}
+      \steph{g (f x) : fmap (g . f) xs}
+        \eqbyihh{}
+      \steph{g (f x) : (fmap g . fmap f) xs}
+        \eqbydefh{(.)}
+      \steph{g (f x) : fmap g (fmap f xs)}
+        \eqbydefh{fmap}
+      \steph{fmap g (f x : fmap f xs)}
+        \eqbydefh{fmap}
+      \steph{fmap g (fmap f (x:xs))}
+        \eqbydefh{(.)}
+      \steph{(fmap g . fmap f) (x:xs)}
+    \end{steps}
 
   \end{proof}
 
@@ -583,160 +508,131 @@ instance Functor [] where
 \begin{example}
   \label{ex:functor-product-haskell}
 
-  Since the kind of \texthaskell{(,)} is \texthaskell{* -> * -> *}, it can be
-  partially applied in order to define an instance of the
-  \texthaskell{Functor} type class for it. Given a concrete type
-  \texthaskell{a}, the type signature of \texthaskell{fmap} for \texthaskell{((,) a)}
-  is:
-  \begin{codehaskell}
-fmap :: (b -> c) -> (a, b) -> (a, c)
-  \end{codehaskell}
+  %% \parencites[21]{yorgey-2009}
 
-  The \texthaskell{((,) a)} functor is defined as follows:
+  Another usual example of functors in Haskell is the product functor.
+  Its type constructor is \texthaskell{(,) a} (see Example
+  \ref{ex:product-haskell}), and its \texthaskell{fmap} function is
+  uniquely defined as follows:
   \begin{codehaskell}
 instance Functor ((,) a) where
   fmap f (x, y) = (x, f y)
   \end{codehaskell}
-  Note that this the only way of defining \texthaskell{fmap} (regardless of
-  the functor laws and within ``platonic'' \hask).
 
-  \texthaskell{((,) a)} represents a container which holds an annotation of
-  type \texthaskell{a} along with the actual value it holds
-  \parencite{yorgey-2009}. The first element of a tuple is never
-  modified by \texthaskell{fmap}, it is fixed.
-
-  \todo{Is there a better way to say ``annotation''?}
+  %% \texthaskell{((,) a)} represents a container which holds an
+  %% annotation of type \texthaskell{a} along with the actual value it
+  %% holds \parencite{yorgey-2009}. The first element of a tuple is never
+  %% modified by \texthaskell{fmap}, it is fixed. Annotation?
 
   \begin{proof}
 
-    \hfill
-    \begin{itemize}
-    \item
-      The following reasoning proves the first law:
-      \begin{steps}
-        \steph{fmap id (x, y)}
-          \eqbydefh{fmap}
-        \steph{(x, id y)}
-          \eqbydefh{id}
-        \steph{(x, y)}
-          \eqbydefh{id}
-        \steph{id (x, y)}
-      \end{steps}
-    \item
-      The second law is proven in a similar way:
-      \begin{steps}
-        \steph{(fmap h . fmap g) (x, y)}
-          \eqbydefh{(.)}
-        \steph{fmap h (fmap g (x, y))}
-          \eqbydefh{fmap}
-        \steph{fmap h (x, g y)}
-          \eqbydefh{fmap}
-        \steph{(x, h (g y))}
-          \eqbydefh{(.)}
-        \steph{(x, (h . g) y)}
-          \eqbydefh{fmap}
-        \steph{fmap (h . g) (x, y)}
-      \end{steps}
-    \end{itemize}
-    The above reasonings prove that the functor laws hold for the
-    \texthaskell{((,) a)} type constructor and its implementation of
-    \texthaskell{fmap}.
+    We prove that \eqref{eq:functor-identity} and
+    \eqref{eq:functor-composition} hold. In the first place:
+    \begin{steps}
+      \steph{fmap id (x, y)}
+        \eqbydefh{fmap}
+      \steph{(x, id y)}
+        \eqbydefh{id}
+      \steph{(x, y)}
+        \eqbydefh{id}
+      \steph{id (x, y)}
+    \end{steps}
+    And, in the second place:
+    \begin{steps}
+      \steph{(fmap h . fmap g) (x, y)}
+        \eqbydefh{(.)}
+      \steph{fmap h (fmap g (x, y))}
+        \eqbydefh{fmap}
+      \steph{fmap h (x, g y)}
+        \eqbydefh{fmap}
+      \steph{(x, h (g y))}
+        \eqbydefh{(.)}
+      \steph{(x, (h . g) y)}
+        \eqbydefh{fmap}
+      \steph{fmap (h . g) (x, y)}
+    \end{steps}
 
   \end{proof}
 
 \end{example}
 
 \begin{example}
-  \label{ex:functor-either-haskell}
+  \label{ex:functor-coproduct-haskell}
 
-  The \texthaskell{Either} type constructor takes two type parameters. It
-  is thus possible to declare \texthaskell{Either a} as an instance of the
-  \texthaskell{Functor} type class. The type signature of \texthaskell{fmap} for
-  a concrete type \texthaskell{a} is:
-  \begin{codehaskell}
-fmap :: (b -> c) -> Either a b -> Either a c
-  \end{codehaskell}
+  %% \parencites[149]{lipovaca-2011}[21]{yorgey-2009}
 
-  The instance is defined as follows:
+  In a similar way, the coproduct functor is an usual example of
+  functors in Haskell. Its type constructor is \texthaskell{Either a}
+  (see Example \ref{ex:functor-coproduct-haskell}), and its
+  \texthaskell{fmap} function is uniquely defined as follows:
   \begin{codehaskell}
 instance Functor (Either a) where
   fmap _ (Left x)  = Left x
   fmap g (Right y) = Right (g y)
   \end{codehaskell}
-  This is similar to the \texthaskell{((,) a)} functor in that there is
-  only one way of implementing \texthaskell{fmap} (again, regardless of the
-  functor laws and within ``platonic'' \hask).
 
-  \texthaskell{Either a b} represents a container which can have either a
-  value of type \texthaskell{a} (which usually represents some sort of
-  error condition) or a value of type \texthaskell{b}. It is very similar
-  to \texthaskell{Maybe} in that it represents possible failure, but it can
-  carry some additional information about the failure
-  \parencite{yorgey-2009}.
-
-  The behavior of \texthaskell{fmap} is practically the same as the
-  behavior of \texthaskell{fmap} for \texthaskell{Maybe}: a given function is
-  mapped in the case of a \texthaskell{Right}, but not in the case of a
-  \texthaskell{Left}. The \texthaskell{Left} is like an empty box or container
-  (like \texthaskell{Nothing}) with an error message written on the side
-  which explains why it is empty \parencite{lipovaca-2011}.
+  %% \texthaskell{Either a b} represents a container which can have
+  %% either a value of type \texthaskell{a} (which usually represents
+  %% some sort of error condition) or a value of type \texthaskell{b}. It
+  %% is very similar to \texthaskell{Maybe} in that it represents
+  %% possible failure, but it can carry some additional information about
+  %% the failure \parencite{yorgey-2009}. The behavior of
+  %% \texthaskell{fmap} is practically the same as the behavior of
+  %% \texthaskell{fmap} for \texthaskell{Maybe}: a given function is
+  %% mapped in the case of a \texthaskell{Right}, but not in the case of
+  %% a \texthaskell{Left}. The \texthaskell{Left} is like an empty box or
+  %% container (like \texthaskell{Nothing}) with an error message written
+  %% on the side which explains why it is empty
+  %% \parencite{lipovaca-2011}.
 
   \begin{proof}
 
-    Proving that \texthaskell{Either a} is a functor is very similar to
-    proving that \texthaskell{Maybe} is a functor.
-    \begin{itemize}
-    \item
-      In the case of a \texthaskell{Left} constructor, the first law is
-      proven as follows:
-      \begin{steps}
-        \steph{fmap id (Left x)}
-          \eqbydefh{fmap}
-        \steph{Left x}
-          \eqbydefh{id}
-        \steph{id (Left x)}
-      \end{steps}
-      In the case of a \texthaskell{Right} constructor, the following
-      reasoning proves the first law:
-      \begin{steps}
-        \steph{fmap id (Right y)}
-          \eqbydefh{fmap}
-        \steph{Right (id y)}
-          \eqbydefh{id}
-        \steph{Right y}
-          \eqbydefh{id}
-        \steph{id (Right y)}
-      \end{steps}
-    \item
-      For the second law and a \texthaskell{Left}, we have:
-      \begin{steps}
-        \steph{(fmap h . fmap g) (Left x)}
-          \eqbydefh{(.)}
-        \steph{fmap h (fmap g (Left x))}
-          \eqbydefh{fmap}
-        \steph{fmap h (Left x)}
-          \eqbydefh{fmap}
-        \steph{Left x}
-          \eqbydefh{fmap}
-        \steph{fmap (h . g) (Left x)}
-      \end{steps}
-      And for a \texthaskell{Right}:
-      \begin{steps}
-        \steph{(fmap h . fmap g) (Right y)}
-          \eqbydefh{(.)}
-        \steph{fmap h (fmap g (Right y))}
-          \eqbydefh{fmap}
-        \steph{fmap h (Right (g y))}
-          \eqbydefh{fmap}
-        \steph{Right (h (g y))}
-          \eqbydefh{(.)}
-        \steph{Right ((h . g) y)}
-          \eqbydefh{fmap}
-        \steph{fmap (h . g) (Right y)}
-      \end{steps}
-    \end{itemize}
-    In conclusion, the \texthaskell{Either a} type constructor is a
-    functor.
+    We begin with the proof of \eqref{eq:functor-identity}. In the
+    case of a \texthaskell{Left x}:
+    \begin{steps}
+      \steph{fmap id (Left x)}
+        \eqbydefh{fmap}
+      \steph{Left x}
+        \eqbydefh{id}
+      \steph{id (Left x)}
+    \end{steps}
+    And in the case of a \texthaskell{Right y}:
+    \begin{steps}
+      \steph{fmap id (Right y)}
+        \eqbydefh{fmap}
+      \steph{Right (id y)}
+        \eqbydefh{id}
+      \steph{Right y}
+        \eqbydefh{id}
+      \steph{id (Right y)}
+    \end{steps}
+    We end with the proof of \eqref{eq:functor-composition}. In the
+    case of a \texthaskell{Left x}:
+    \begin{steps}
+      \steph{(fmap h . fmap g) (Left x)}
+        \eqbydefh{(.)}
+      \steph{fmap h (fmap g (Left x))}
+        \eqbydefh{fmap}
+      \steph{fmap h (Left x)}
+        \eqbydefh{fmap}
+      \steph{Left x}
+        \eqbydefh{fmap}
+      \steph{fmap (h . g) (Left x)}
+    \end{steps}
+    And in the case of a \texthaskell{Right y}:
+    \begin{steps}
+      \steph{(fmap h . fmap g) (Right y)}
+        \eqbydefh{(.)}
+      \steph{fmap h (fmap g (Right y))}
+        \eqbydefh{fmap}
+      \steph{fmap h (Right (g y))}
+        \eqbydefh{fmap}
+      \steph{Right (h (g y))}
+        \eqbydefh{(.)}
+      \steph{Right ((h . g) y)}
+        \eqbydefh{fmap}
+      \steph{fmap (h . g) (Right y)}
+    \end{steps}
 
   \end{proof}
 
@@ -745,174 +641,115 @@ instance Functor (Either a) where
 \begin{example}
   \label{ex:functor-function-haskell}
 
-  Declaring \texthaskell{((->) a)} as an instance of the \texthaskell{Functor}
-  type class is an interesting example. Its type signature for
-  \texthaskell{fmap} is:
-  \begin{codehaskell}
-fmap :: (b -> c) -> (a -> b) -> a -> c
-  \end{codehaskell}
-  This type signature is exactly the same as that of \texthaskell{(.)}
-  (that is, function composition). As a consequence, the instance
-  declaration is:
+  %% \parencites[220--222]{lipovaca-2011}[21]{yorgey-2009}
+
+  An interesting example of functors in Haskell is the function
+  functor. Its type constructor is \texthaskell{(->) a}, and its
+  \texthaskell{fmap} function is function composition:
   \begin{codehaskell}
 instance Functor ((->) a) where
   fmap g f = \x -> g (f x)
   \end{codehaskell}
-  An equivalent way of defining this instance is:
+  Or, equivalently:
   \begin{codehaskell}
 instance Functor ((->) a) where
   fmap = (.)
   \end{codehaskell}
 
-\begin{verbatim}
-
-The Typeclassopedia: ((->) e), the type of functions which take a
- value of type e as parameter, is a Functor. It would be clearer to
- write it as (e ->), but that syntax is not allowed. However, you can
- certainly think of it as (e ->). As a container, (e -> a) represents
- a (possibly infinite) set of values of a, indexed by values of e.
- Alternatively, and more usefully, (e ->) can be thought of as a
- context in which a value of type e is available to be consulted in a
- read-only fashion. This is also why ((->) e) is sometimes referred to
- as the reader monad.
-Learn You...: Functions as functors: Another instance of Functor that
- we've been dealing with all along is (->) r. The function type r -> a
- can be rewritten as (->) r a. It's just a type constructor that takes
- two type parameters, like Either. From Control.Monad.Instances.
-Learn You: Function composition! We pipe the output of r -> a into the
- input of a -> b to get a function r -> b, which is exactly what
- function composition is all about. Another way to write it: fmap =
- (.) fmap (*3) (+100) 1 = 303
-...: Just like all functors, functions can be thought of as values
- with contexts. When we have a function like (+3), we can view the
- value as the eventual result of the function, and the context is that
- we need to apply the function to something to get to the result.
- Using fmap (*3) on (+100) will create another function that acts like
- (+100), but before producing a result, (*3) will be applied to that
- result.
-...: The fact that fmap is function composition when used on functions
- isn't so terribly useful right now, but at least it's very
- interesting. It also bends our minds a bit and lets us see how things
- that act more like computations than boxes can be functors. The
- function being mapped over a computation results in the same sort of
- computation, but the result of that computation is modified with the
- function.
-
-\end{verbatim}
+  %% From \parencite[21]{yorgey-2009}: \texthaskell{((->) e)}, the type
+  %% of functions which take a value of type \texthaskell{e} as a
+  %% parameter, is a functor. It would be clearer to write it as e ->, by
+  %% analogy with an operator section like (1+), but that syntax is not
+  %% allowed. However, you can certainly think of it as (e ->). As a
+  %% container, (e -> a) represents a (possibly infinite) set of values
+  %% of a, indexed by values of e. Alternatively, and more usefully, (e
+  %% ->) can be thought of as a context in which a value of type e is
+  %% available to be consulted in a read-only fashion. This is also why
+  %% ((->) e) is sometimes referred to as the reader monad.
 
   \begin{proof}
 
-    \hfill
-    \begin{itemize}
-    \item
-      The first law is proven as follows:
-      \begin{steps}
-        \steph{fmap id f}
-          \eqbydefh{fmap}
-        \steph{id . f}
-          \eqbyh{identity of \texthaskell{(.)}}
-        \steph{f}
-          \eqbydefh{id}
-        \steph{id f}
-      \end{steps}
-    \item
-      And the second law:
-      \begin{steps}
-        \steph{(fmap h . fmap g) f}
-          \eqbydefh{(.)}
-        \steph{fmap h (fmap g f)}
-          \eqbydefh{fmap}
-        \steph{fmap h (g . f)}
-          \eqbydefh{fmap}
-        \steph{h . (g . f)}
-          \eqbyh{by associativity of \texthaskell{(.)}}
-        \steph{(h . g) . f}
-          \eqbydefh{fmap}
-        \steph{fmap (h . g) f}
-      \end{steps}
-    \end{itemize}
-    As a consequence, the \texthaskell{((->) a)} is a functor.
+    In the first place, we prove \eqref{eq:functor-identity}:
+    \begin{steps}
+      \steph{fmap id f}
+        \eqbydefh{fmap}
+      \steph{id . f}
+        \eqby{\eqref{eq:category-identity}}
+      \steph{f}
+        \eqbydefh{id}
+      \steph{id f}
+    \end{steps}
+    And, in the second place, we prove \eqref{eq:functor-composition}:
+    \begin{steps}
+      \steph{(fmap h . fmap g) f}
+        \eqbydefh{(.)}
+      \steph{fmap h (fmap g f)}
+        \eqbydefh{fmap}
+      \steph{fmap h (g . f)}
+        \eqbydefh{fmap}
+      \steph{h . (g . f)}
+        \eqby{\eqref{eq:category-associativity}}
+      \steph{(h . g) . f}
+        \eqbydefh{fmap}
+      \steph{fmap (h . g) f}
+    \end{steps}
 
   \end{proof}
 
 \end{example}
 
-\begin{remark}
-
-  Even though \texthaskell{Set} is obviously a functor, it can not be made
-  an instance of the \texthaskell{Functor} type class because it requires
-  an \texthaskell{Ord} constraint on its elements (but \texthaskell{fmap} must
-  be applicable to any types \texthaskell{a} and \texthaskell{b})
-  \parencite{yorgey-2009}. This is a notable exception in the
-  instances defined in Haskell.
-
-  \todo{Details.}
-
-\end{remark}
-
 \begin{example}
-  [\texthaskell{Parser}]
-
-  \todo{\parencite{osullivan-2008}.}
-
-\end{example}
-
-\begin{example}[Bad \texthaskell{Maybe}]
-
   \label{ex:functor-bad-maybe-haskell}
 
-  Since proving the functor laws is not necessary for defining an
-  instance of the \texthaskell{Functor} type class, it is possible to
-  implement the \texthaskell{Maybe} functor as follows:
+  Since the functor laws are not part of the definition of the
+  \texthaskell{Functor} type class, we can redefine the
+  \texthaskell{Maybe} functor (see Example
+  \ref{ex:functor-maybe-haskell}) as follows:
   \begin{codehaskell}
 instance Functor Maybe where
   fmap _ Nothing  = Nothing
   fmap _ (Just _) = Nothing
   \end{codehaskell}
-
-  This definition of \texthaskell{fmap} is accepted by Haskell even though
-  it clearly violates both functor laws. Just one counterexample is
-  enough for proving that this is not really a functor:
+  Even though this definition of the \texthaskell{fmap} function is
+  accepted by Haskell, the following counterexample proves that it
+  violates the first functor law:
   \begin{codehaskell}
 > fmap id (Just 0)
 Nothing
 > id (Just 0)
 Just 0
   \end{codehaskell}
-  These results show that the first law does not hold.
-
-  The above instance declaration is the only alternative for defining
-  \texthaskell{Maybe} as an instance of the \texthaskell{Functor} type class.
+  Note that this is the only alternative declaration of the
+  \texthaskell{Maybe} functor.
 
 \end{example}
 
-\begin{example}[\texthaskell{[]}]
+\begin{example}
+  \label{ex:functor-bad-list-haskell}
 
-  It is also possible to give a bad implementation of \texthaskell{[]} as
-  an instance of the \texthaskell{Functor} type class:
+  We can also redefine the list functor (see Example
+  \ref{ex:functor-list-haskell}). Here is the declaration we discussed
+  in Section \ref{sec:functors-introduction}:
   \begin{codehaskell}
 instance Functor [] where
   fmap _ []     = []
   fmap f (x:xs) = f x : f x : fmap f xs
   \end{codehaskell}
-  This definition is equivalent to that of Section
-  \ref{sec:functors-introduction}, but it is not the only incorrect
-  instance for this particular type constructor. For instance:
+  But this is not the only way to redefine this functor. For instance:
   \begin{codehaskell}
 instance Functor [] where
   fmap _ []     = []
   fmap f (x:xs) = [f x]
   \end{codehaskell}
-
-  In the first case, a counterexample is:
+  However, neither of these instances satisfy the first functor law,
+  as demonstrated by the following counterexamples. In the first case:
   \begin{codehaskell}
 > fmap id [0,1]
 [0,0,1,1]
 > id [0,1]
 [0,1]
   \end{codehaskell}
-
-  And in the second case, a similar counterexample is:
+  And, in the second case:
   \begin{codehaskell}
 > fmap id [0,1]
 [0]
@@ -922,67 +759,12 @@ instance Functor [] where
 
 \end{example}
 
-\begin{example}
-  [\texthaskell{CMaybe}\footnote{This example is based on
-      \parencite[225--227]{lipovaca-2011}.}]
-
-  The \texthaskell{CMaybe} type
-  constructor is very similar to the \texthaskell{Maybe} type constructor:
-  \begin{codehaskell}
-data CMaybe a = CNothing | CJust Int a
-  \end{codehaskell}
-  The only difference is a value of type \texthaskell{Int} in the case of a
-  \texthaskell{CJust}, which can be used as a counter when defining this
-  type constructor as an instance of the \texthaskell{Functor} type class:
-  \begin{codehaskell}
-instance Functor CMaybe where
-  fmap _ CNothing    = CNothing
-  fmap f (CJust i x) = CJust (i + 1) (f x)
-  \end{codehaskell}
-  The difference with the implementation for the \texthaskell{Maybe} type
-  constructor is that \texthaskell{fmap} increments the counter \texthaskell{i}
-  whenever the given function \texthaskell{f} is applied to the value of
-  type \texthaskell{a} inside a \texthaskell{CJust}.
-
-  Some examples are presented to clarify \texthaskell{fmap}'s behavior:
-  \begin{codehaskell}
-> fmap (+ 1) (CJust 0 0)
-CJust 1 1
-> fmap (- 1) (CJust 1 1)
-CJust 2 0
-  \end{codehaskell}
-
-  Some more specific examples give a counterexample for proving that
-  the first law does not hold for this instance:
-  \begin{codehaskell}
-> fmap id (CJust 0 0)
-CJust 1 0
-> id (CJust 0 0)
-CJust 0 0
-  \end{codehaskell}
-
-\end{example}
-
-\todo{Probably from Learn You a Haskell: At first, the functor laws
-  might seem a bit confusing and unnecessary. But if we know that a
-  type obeys both laws, we can make certain assumptions about how it
-  will act. If a type obeys the functor laws, we know that calling
-  fmap on a value of that type will only map the function over
-  it---nothing more. This leads to code that is more abstract and
-  extensible, because we can use laws to reason about behaviors that
-  any functor should have and make functions that operate reliably on
-  any functor. This is a motivation for studying functors in Agda,
-  where the laws can be enforced, a programmer is not allowed to
-  define an instance of the class Functor if it does not obey the
-  laws.}
-
 \section{Functors in Agda}
 \label{sec:functors-agda}
 
-Functors in Agda are defined by the Agda standard library
-\parencite{danielsson-2013} in the module \module{Category.Functor},
-but the functor laws are not included.
-
+The Agda standard library defines functors in Agda just like functors
+in Haskell, that is, without the functor laws\footnote{See
+  \parencite[module \module{Category.Functor}]{danielsson-2013}.}.
 Abel defines functors in the module \module{Abel.Category.Functor},
 which includes the functor laws\footnote{We refer to propositional
   (intensional) equality, as defined in \parencite[module
@@ -994,198 +776,172 @@ record Functor (F : Set → Set) : Set₁ where
 
   field
 
-    fmap    : ∀ {A B} → (A → B) → F A → F B
+    fmap    : {A B : Set} → (A → B) → F A → F B
 
-    fmap-id : ∀ {A} (fx : F A) → fmap id fx ≡ id fx
+    fmap-id : {A : Set} (fx : F A) → fmap id fx ≡ id fx
 
-    fmap-∘  : ∀ {A B C} {f : A → B} {g : B → C}
+    fmap-∘  : {A B C : Set} {f : A → B} {g : B → C}
               (fx : F A) → fmap (g ∘ f) fx ≡ (fmap g ∘ fmap f) fx
 \end{codeagda}
 The inclusion of the functor laws makes it impossible to define a
 functor which is not really a functor because all instances must prove
 that \textagda{F} and \textagda{fmap} satisfy the laws.
 
-\todo{What category?}
-
-\begin{example}
+\begin{example}[See module \module{Abel.Data.Maybe.Functor}]
   \label{ex:functor-maybe-agda}
 
-  The module \module{Abel.Data.Maybe.Functor} defines the
-  \textagda{Maybe} functor. This instance corresponds to Example
-  \ref{ex:functor-maybe-haskell}.
+  The \textagda{Maybe} functor in Agda is defined as follows:
   \begin{codeagda}
 functor : Functor Maybe
 functor = mkFunctor fmap fmap-id fmap-∘
   where
-    fmap : ∀ {A B} → (A → B) → Maybe A → Maybe B
+    fmap : {A B : Set} → (A → B) → Maybe A → Maybe B
     fmap f (just x) = just (f x)
     fmap _ nothing  = nothing
 
-    fmap-id : ∀ {A} (mx : Maybe A) → fmap id mx ≡ id mx
+    fmap-id : {A : Set} (mx : Maybe A) → fmap id mx ≡ id mx
     fmap-id (just _) = refl
     fmap-id nothing  = refl
 
-    fmap-∘ : ∀ {A B C} {f : A → B} {g : B → C}
+    fmap-∘ : {A B C : Set} {f : A → B} {g : B → C}
              (mx : Maybe A) → fmap (g ∘ f) mx ≡ (fmap g ∘ fmap f) mx
     fmap-∘ (just _) = refl
     fmap-∘ nothing  = refl
-    \end{codeagda}
+  \end{codeagda}
+  Clearly, this functor corresponds to the \texthaskell{Maybe} functor
+  in Haskell (see Example \ref{ex:functor-maybe-haskell}).
 
 \end{example}
 
-\begin{example}
+\begin{example}[See module \module{Abel.Data.List.Functor}]
   \label{ex:functor-list-agda}
 
-  The module \module{Abel.Data.List.Functor} defines the \textagda{List}
-  functor. This instance can be compared with that of Example
-  \ref{ex:functor-list-haskell}.
+  The following instance corresponds to the list functor in Agda:
   \begin{codeagda}
 functor : Functor List
 functor = mkFunctor fmap fmap-id fmap-∘
   where
-    fmap : ∀ {A B} → (A → B) → List A → List B
+    fmap : {A B : Set} → (A → B) → List A → List B
     fmap _ []       = []
     fmap f (x ∷ xs) = f x ∷ fmap f xs
 
-    fmap-id : ∀ {A} (xs : List A) → fmap id xs ≡ id xs
+    fmap-id : {A : Set} (xs : List A) → fmap id xs ≡ id xs
     fmap-id []       = refl
     fmap-id (x ∷ xs) = cong (_∷_ x) (fmap-id xs)
 
-    fmap-∘ : ∀ {A B C} {f : A → B} {g : B → C}
+    fmap-∘ : {A B C : Set} {f : A → B} {g : B → C}
              (xs : List A) → fmap (g ∘ f) xs ≡ (fmap g ∘ fmap f) xs
     fmap-∘             []       = refl
     fmap-∘ {f = f} {g} (x ∷ xs) = cong (_∷_ (g (f x))) (fmap-∘ xs)
-    \end{codeagda}
+  \end{codeagda}
+  This definition matches that of the list functor in Haskell (see
+  Example \ref{ex:functor-list-haskell}).
 
 \end{example}
 
-\begin{example}
+\begin{example}[See module \module{Abel.Data.Product.Functor}]
   \label{ex:functor-product-agda}
 
-  The module \module{Abel.Data.Product.Functor} defines the
-  \textagda{Product} functor. Compare with Example
-  \ref{ex:functor-product-haskell}.
+  Here is the declaration of the product functor in Agda (see Example
+  \ref{ex:product-agda}):
   \begin{codeagda}
-functor : ∀ {A} → Functor (_×_ A)
-functor {A} = mkFunctor fmap (λ _ → refl) (λ _ → refl)
+functor : {A : Set} → Functor (_×_ A)
+functor {A} = mkFunctor fmap fmap-id fmap-∘
   where
-    fmap : ∀ {B C} → (B → C) → A × B → A × C
-    fmap f (x , y) = x , f y
+    fmap : {B C : Set} → (B → C) → A × B → A × C
+    fmap g (x , y) = x , g y
+
+    fmap-id : {B : Set} (x,y : A × B) → fmap id x,y ≡ id x,y
+    fmap-id (x , y) = refl
+
+    fmap-∘ : {B C D : Set} {g : B → C} {h : C → D}
+             (x,y : A × B) → fmap (h ∘ g) x,y ≡ (fmap h ∘ fmap g) x,y
+    fmap-∘ (x , y) = refl
   \end{codeagda}
+  Compare this with the product functor in Haskell (see Example
+  \ref{ex:functor-product-haskell}).
 
 \end{example}
 
-\begin{example}
-  \label{ex:functor-sum-agda}
+\begin{example}[See module \module{Abel.Data.Sum.Functor}]
+  \label{ex:functor-coproduct-agda}
 
-  The module \module{Abel.Data.Sum.Functor} defines the
-  \textagda{Sum} functor. Compare with Example
-  \ref{ex:functor-either-haskell}.
+  The coproduct functor in Agda (see Example \ref{ex:coproduct-agda})
+  is defined as follows:
   \begin{codeagda}
-functor : ∀ {A} → Functor (_⊎_ A)
+functor : {A : Set} → Functor (_+_ A)
 functor {A} = mkFunctor fmap fmap-id fmap-∘
   where
-    fmap : ∀ {B C} → (B → C) → A ⊎ B → A ⊎ C
+    fmap : {B C : Set} → (B → C) → A + B → A + C
     fmap _ (inj₁ x) = inj₁ x
     fmap g (inj₂ y) = inj₂ (g y)
 
-    fmap-id : ∀ {B} (x⊎y : A ⊎ B) → fmap id x⊎y ≡ id x⊎y
+    fmap-id : {B : Set} (x+y : A + B) → fmap id x+y ≡ id x+y
     fmap-id (inj₁ _) = refl
     fmap-id (inj₂ _) = refl
 
-    fmap-∘ : ∀ {B C D} {g : B → C} {h : C → D}
-             (x⊎y : A ⊎ B) → fmap (h ∘ g) x⊎y ≡ (fmap h ∘ fmap g) x⊎y
+    fmap-∘ : {B C D : Set} {g : B → C} {h : C → D}
+             (x+y : A + B) → fmap (h ∘ g) x+y ≡ (fmap h ∘ fmap g) x+y
     fmap-∘ (inj₁ _) = refl
     fmap-∘ (inj₂ _) = refl
-    \end{codeagda}
+  \end{codeagda}
+  Compare this with the coproduct functor in Haskell (see Example
+  \ref{ex:functor-coproduct-haskell}).
 
 \end{example}
 
-\begin{example}
+\begin{example}[See module \module{Abel.Function.Functor}]
   \label{ex:functor-function-agda}
 
-  The module \module{Abel.Function.Functor} defines the
-  \textagda{Function} functor. Compare with Example
-  \ref{ex:functor-function-haskell}.
+  Here is the definition of the function functor in Agda, which
+  corresponds to the Haskell functor described in Example
+  \ref{ex:functor-function-haskell}:
   \begin{codeagda}
-functor : ∀ {A} → Functor (λ B → A → B)
-functor {A} = mkFunctor (λ g f → g ∘ f) (λ _ → refl) (λ _ → refl)
+functor : {A : Set} → Functor (λ B → A → B)
+functor = mkFunctor (λ g f → g ∘ f) (λ _ → refl) (λ _ → refl)
   \end{codeagda}
 
 \end{example}
 
-\begin{example}[Bad \textagda{Maybe}?]
+\begin{example}
   \label{ex:functor-bad-maybe-agda}
 
-  It is possible to try to define a bad instance of, for example,
-  the \textagda{Maybe} functor. The following implementation corresponds
-  to that of Example \ref{ex:functor-bad-maybe-haskell}:
+  We can try to define the alternative \texthaskell{Maybe} functor of
+  Example \ref{ex:functor-bad-maybe-haskell} in Agda:
   \begin{codeagda}
 functor : Functor Maybe
 functor = mkFunctor fmap fmap-id fmap-∘
   where
-    fmap : ∀ {A B} → (A → B) → Maybe A → Maybe B
+    fmap : {A B : Set} → (A → B) → Maybe A → Maybe B
     fmap f (just x) = nothing
     fmap _ nothing  = nothing
 
-    fmap-id : ∀ {A} (ma : Maybe A) → fmap id ma ≡ id ma
+    fmap-id : {A : Set} (mx : Maybe A) → fmap id mx ≡ id mx
     fmap-id (just _) = ?
     fmap-id nothing  = refl
 
-    fmap-∘ : ∀ {A B C} {f : A → B} {g : B → C}
-             (ma : Maybe A) → fmap (g ∘ f) ma ≡ (fmap g ∘ fmap f) ma
+    fmap-∘ : {A B C : Set} {f : A → B} {g : B → C}
+             (mx : Maybe A) → fmap (g ∘ f) mx ≡ (fmap g ∘ fmap f) mx
     fmap-∘ (just _) = refl
     fmap-∘ nothing  = refl
   \end{codeagda}
-  However, the above code does not type check in Agda because there is
-  a proof missing:
-  \begin{codeagda}
-fmap id (just x) = id (just x)
-  \end{codeagda}
-  Example \ref{ex:functor-bad-maybe-haskell} includes a
-  counterexample for this, so it is not possible to declare a bad and
-  yet type checking instance of the \textagda{Maybe} functor in Agda
-  using Abel's definition.
+  But this code does not type check because there is a proof missing.
+  As we saw in Example \ref{ex:functor-bad-maybe-haskell}, the first
+  functor law does not hold for this definition of the
+  \textagda{Maybe} functor, so there is no way to make this instance
+  type check in Agda.
 
 \end{example}
 
 \section{References}
 \label{sec:functors-references}
 
-%% \parencites[13]{maclane-1998}[428]{poigne-1992} def:functor
+Our definition of a functor is based on
+\parencites[13]{maclane-1998}[428]{poigne-1992}, and our power set and
+identity functors are taken from \parencites[431]{poigne-1992} and
+\parencite[11]{marquis-2013}, respectively. In addition, we use
+\parencites[146--150, 218--227]{lipovaca-2011}[18--23]{yorgey-2009} as
+a basis for our study of functors in Haskell.
 
-\todo{The definition of a functor is simpler (not as a concept, but as
-  a definition) than the definition of a category. Our definition is
-  based mainly on \cite{maclane-1998}, but some details were taken
-  from \cite{poigne-1992}. Notation is different (ours is more
-  explicit, which helps when comparing functors with functors in
-  functional programming) (normally, the object and morphism functions
-  have the same name). \cite{marquis-2013} is useful for informal
-  definitions (the idea of preserving structure). \cite{eilenberg-maclane-1945}
-  define functors on two arguments (covariant in one and contravariant
-  in the other). The definition is pretty much the same ignoring the
-  contravariant one (just for history). A covariant functor refers to
-  functors as defined in this chapter: morphisms of categories that
-  preserve domains and codomains. A contravariant functor, on the
-  other side, refers to functors that reverse domains and codomains.
-  The latter are not part of the definition in this chapter because
-  they are not used (but they could with an implementation such as
-  that of \parencite{elkins-2009}).}
-
-\todo{Regarding examples, the power set and the identity functors are
-  in almost any reference, but some of the others are based on
-  \cite{poigne-1992}. It is important to remember that functors were
-  just something necessary for defining natural transformations, which
-  is not the case in functional programming.}
-
-\todo{For functors in Haskell:
-  \cite{lipovaca-2011,osullivan-2008,yorgey-2009}. \todo{Add the
-    Haskell Wikibook, HaskellWiki}. A different approach to that of
-  this chapter and the Typeclassopedia is the one used by
-  \parencite{elkins-2009}.}
-
-
-%% Example \ref{ex:functor-power-set} is based on
-%% \parencites[13]{maclane-1998}[10--11]{marquis-2013}[431]{poigne-1992}
 
 \clearemptydoublepage
