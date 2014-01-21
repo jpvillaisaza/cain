@@ -21,35 +21,24 @@ We begin with the concept of category, which will be found everywhere
 in our development.
 
 \begin{definition}
-  [Category]
+  \label{def:category}
 
   %% - \parencite[7--8, 10]{maclane-1998}
   %% - \parencite[418]{poigne-1992}
 
   %% - \parencite[1]{pierce-1991}
 
-  \label{def:category}
-
-  \index{category}
-
   A category \cat{C} consists of:
   \begin{itemize}
   \item
-    \index{object}
 
     A set of objects \catO{C}.
 
   \item
-    \index{morphism}
-    \index{arrow|see{morphism}}
 
     A set of morphisms or arrows \catM{C}.
 
   \item
-    \index{domain}
-    \index{source|see{domain}}
-    \index{codomain}
-    \index{target|see{codomain}}
 
     Domain and codomain functions $\dom$ and $\cod: \catM{C} \to
     \catO{C}$, which assign to each morphism $f \in \catM{C}$ domain
@@ -57,14 +46,12 @@ in our development.
     We then draw an actual arrow $f: a \to b$.
 
   \item
-    \index{identity}
 
     An identity function $\id: \catO{C} \to \catM{C}$, which assigns
     to each object $a \in \catO{C}$ an identity morphism $\idO{a}: a
     \to a \in \catM{C}$.
 
   \item
-    \index{composition}
 
     A composition partial function $\comp\ : \catM{C} \times \catM{C}
     \to \catM{C}$, which assigns to each pair of morphisms $f: a \to
@@ -100,7 +87,6 @@ in our development.
   axioms:
   \begin{itemize}
   \item
-    \index{associativity}
 
     Whenever $h \comp g$ and $g \comp f \in \catM{C}$,
     \begin{equation}
@@ -112,7 +98,6 @@ in our development.
     commutative (see Definition \ref{def:commutative-diagram}).
 
   \item
-    \index{identity}
 
     For all morphisms $f: a \to b \in \catM{C}$,
     \begin{equation}
@@ -177,18 +162,13 @@ in our development.
 }{---\textcite[13]{carroll-2004}}
 
 \begin{definition}
-  [Commutative diagram]
+  \label{def:commutative-diagram}
 
   %% - \parencite[8]{maclane-1998}
   %% - \parencite[434--435]{poigne-1992}
 
   %% - \parencite[27--28]{bird-demoor-1997}
   %% - \parencite[10--13]{pierce-1991}
-
-  \label{def:commutative-diagram}
-
-  \index{commutative diagram}
-  \index{diagram!commutative ---|see{commutative diagram}}
 
   We often use diagrams consisting of objects and morphisms of a
   category, like those of Figures \ref{fig:category-composition} and
@@ -251,12 +231,11 @@ in our development.
 \end{definition}
 
 \begin{remark}
+  \label{re:commutative-diagram}
 
   %% - \parencite[434--435]{poigne-1992}
 
   %% - \parencite[12]{pierce-1991}
-
-  \label{re:commutative-diagram}
 
   Moreover, commutative diagrams are closed under composition of
   diagrams in that a diagram commutes if all its subdiagrams commute.
@@ -341,14 +320,12 @@ in our development.
 \end{remark}
 
 \begin{example}
-  [Trivial categories]
+  \label{ex:trivial-categories}
 
   %% - \parencite[10--11]{maclane-1998}
   %% - \parencite[422]{poigne-1992}
 
   %% - \parencite[5--6]{pierce-1991}
-
-  \label{ex:trivial-categories}
 
   \catbf{0}, the empty category, is the category with no objects and
   no morphisms; \catbf{1}, the trivial category, is the category with
@@ -369,16 +346,11 @@ in our development.
 \end{example}
 
 \begin{example}
-  [Discrete categories]
+  \label{ex:discrete-category}
 
   %% - \parencite[11]{maclane-1998}
 
   %% - \parencite[422]{poigne-1992}
-
-  \label{ex:discrete-category}
-
-  \index{discrete category}
-  \index{category!discrete ---|see{discrete category}}
 
   A discrete category is a category whose only morphisms are the
   identity morphisms. Given a set $A$, we get a discrete category
@@ -390,24 +362,13 @@ in our development.
 \end{example}
 
 \begin{example}
-  [Sets and total functions]
+  \label{ex:set}
 
   %% - \parencite[8--9, 12]{maclane-1998}
   %% - \parencite[419--420]{poigne-1992}
 
   %% - \parencite[26]{bird-demoor-1997}
   %% - \parencite[2]{pierce-1991}
-
-  \label{ex:set}
-
-  \index{\set}
-
-  \index{function}
-  \index{function!small ---}
-  \index{function!total ---}
-  \index{set}
-  \index{set!small ---}
-  \index{universe}
 
   Assume that there is a big enough set $U$, the universe. Then a set
   $A$ is small if it is a member of the universe. Similarly, a
@@ -439,24 +400,10 @@ in our development.
 \end{example}
 
 \begin{example}
-  [Sets, partial functions, and relations]
+  \label{ex:par-rel}
 
   %% - \parencite[26]{bird-demoor-1997}
   %% - \parencite[420]{poigne-1992}
-
-  \label{ex:par-rel}
-
-  \index{\catbf{Par}}
-  \index{\catbf{Pfn}|see{\catbf{Par}}}
-  \index{\catbf{Rel}}
-
-  \index{category!\catbf{Par}}
-  \index{category!\catbf{Pfn}|see{\catbf{Par}}}
-  \index{category!\catbf{Rel}}
-
-  \index{function!partial ---}
-  \index{relation}
-  \index{set}
 
   Likewise, \catbf{Par} is the category of small sets and partial
   functions, and \catbf{Rel} is the category of small sets and
@@ -470,17 +417,13 @@ in our development.
 \end{example}
 
 \begin{example}
-  [Monoids]
+  \label{ex:monoid}
 
   %% - \parencite[11]{maclane-1998}
   %% - \parencite[420, 422]{poigne-1992}
 
   %% - \parencite[21]{adamek-2006}
   %% - \parencite[4]{pierce-1991}
-
-  \label{ex:monoid}
-
-  \index{monoid}
 
   A monoid is a category with just one object. A monoid is thus
   determined by its set of morphisms, by its identity morphism, and by
@@ -492,11 +435,6 @@ in our development.
   Conversely, given a usual monoid $M = (M, *, e)$, we get a category
   \cat{M} with just one object $M$ (that is, $\catO{M} = \{M\}$),
   $\catM{M} = M$, composition $*$ and identity morphism $e$.
-
-  \index{\catbf{Mon}}
-
-  \index{monoid}
-  \index{monoid!--- homomorphism}
 
   Given two monoids $M = (M, *, e)$ and $M' = (M', *', e')$, a
   morphism of monoids or monoid homomorphism $f: M \to M'$ is a
@@ -511,19 +449,9 @@ in our development.
 \end{example}
 
 \begin{example}
-  [Monoids of strings]
-
-  %% \parencite[420, 422]{poigne-1992}
-
   \label{ex:monoid-strings}
 
-  \index{monoid}
-  \index{monoid!--- of strings}
-  \index{monoid!--- of words|see{--- of strings}}
-  \index{monoid!free ---|see{--- of strings}}
-  \index{string}
-  \index{symbol}
-  \index{word|see{string}}
+  %% \parencite[420, 422]{poigne-1992}
 
   Given a set (of symbols) $\Sigma$, a monoid of strings (or words) or
   free monoid over $\Sigma$ is a monoid whose set of morphisms is the
@@ -536,17 +464,11 @@ in our development.
 \end{example}
 
 \begin{example}
-  [Preorders]
+  \label{ex:preorder}
 
   %% - \parencite[11]{maclane-1998}
   %% - \parencite[3--4]{pierce-1991}
   %% - \parencite[421--422, 423]{poigne-1992}
-
-  \label{ex:preorder}
-
-  \index{category!order ---|see{preorder}}
-  \index{order category|see{preorder}}
-  \index{preorder}
 
   A preorder \cat{P}, also known as an order category, is a category
   in which, for all objects $a$ and $b \in \catO{P}$, there is at most
@@ -571,7 +493,7 @@ in our development.
 \end{example}
 
 \begin{example}
-  [Deductive systems]
+  \label{ex:deductive-system}
 
   %% - \parencite[5--6, 8]{marquis-2013}
   %% - \parencite[6--7]{pierce-1991}
@@ -579,10 +501,8 @@ in our development.
 
   %% - \parencite[§ 9.1]{poigne-1992}
 
-  \label{ex:deductive-system}
-
   We can look at categories as deductive systems with objects formulas
-  and morphisms deductions. In this way, domains and codomains are
+  and morphisms deductions. In this way, domains and co\-do\-mains are
   premises and conclusions, respectively. A morphism is thus a proof
   of the fact that its codomain is deducible from its domain. In
   particular, identity morphisms are instances of the reflexivity
@@ -699,8 +619,8 @@ function defined in \module{Abel.Function}:
 id : {A : Set} → A → A
 id x = x
 \end{codeagda}
-And its composition function is function composition as defined in
-\module{Abel.Function}:
+And its composition function is function composition as defined in the
+module \module{Abel.Function}:
 \begin{codeagda}
 infixr 9 _∘_
 
