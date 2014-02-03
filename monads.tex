@@ -6,14 +6,8 @@
   substance simple...
 }{---\textcite[1]{leibniz-1714}}
 
-In this chapter we explore monads and their relation to monads in
-Haskell and Agda.
-
-\section{Introduction}
-\label{sec:monads-introduction}
-
-\todo{Regarding the epigraph, should it be mentioned that it seems
-  like monads are everywhere? Music, religion, philosophy, ...}
+%% In this chapter we explore monads and their relation to monads in
+%% Haskell and Agda.
 
 In Haskell, given two types \texthaskell{a} and \texthaskell{b}, the
 Cartesian product\footnote{This definition is adapted from
@@ -22,20 +16,15 @@ elements of type \texthaskell{a} and a list \texthaskell{ys} of
 elements of type \texthaskell{b} is defined to be the list of tuples
 \texthaskell{(x,y)} of type \texthaskell{(a,b)} for which
 \texthaskell{x} belongs to \texthaskell{xs} and \texthaskell{y}
-belongs to \texthaskell{ys}, that is,
-\begin{equation*}
-  \text{\texthaskell{cartesian :: [a] -> [b] -> [(a,b)]}}
-\end{equation*}
-where, using a list comprehension,
-\begin{equation*}
-  \text{\texthaskell{cartesian xs ys = [(x,y) | x <- xs, y <- ys]}}
-  \text{,}
-\end{equation*}
+belongs to \texthaskell{ys}, that is, using a list comprehension:
+\begin{codehaskell}
+cartesian :: [a] -> [b] -> [(a,b)]
+cartesian xs ys = [(x,y) | x <- xs, y <- ys]
+\end{codehaskell}
 or, equivalently, desugaring the list comprehension,
-\begin{equation*}
-  \text{\texthaskell{cartesian xs ys = xs >>= \textbackslash x -> ys >>= \textbackslash y -> return (x,y)}}
-  \text{,}
-\end{equation*}
+\begin{codehaskell}
+cartesian xs ys = xs >>= \ x -> ys >>= \ y -> return (x,y)
+\end{codehaskell}
 which should be clarified by Examples \ref{ex:monad-list-haskell} and
 \ref{ex:triple-list-haskell}. This is but one simple example to show
 that ``a monad is often an obvious and useful tool to help solve a
@@ -100,8 +89,7 @@ for abstract manipulation \parencite[60]{moggi-1991}.
   \item
     \emph{Partiality}
   \item
-    \emph{Nondeterminism} \todo{Mention Section
-      \ref{sec:monads-introduction}.}
+    \emph{Nondeterminism}
   \item
     \emph{Side effects}
   \item
@@ -117,13 +105,11 @@ for abstract manipulation \parencite[60]{moggi-1991}.
 
 \subsection*{Monads}
 
-\todo{There is no mention...}
-
-As mentioned in Section \ref{sec:monads-introduction}, monads in
-Haskell and Agda correspond to triples. However, monads are more
-widely used in category theory and more suitable for abstract
-manipulation because they are defined only in terms of functors and
-natural transformations \parencite[60]{moggi-1991}.
+As mentioned earlier \todo{Where?}, monads in Haskell and Agda
+correspond to triples. However, monads are more widely used in
+category theory and more suitable for abstract manipulation because
+they are defined only in terms of functors and natural transformations
+\parencite[60]{moggi-1991}.
 
 \todo{Note about the identity natural transformation}
 \todo{Note about the two equality lines in the second commutative diagram above.}
@@ -315,8 +301,6 @@ natural transformations \parencite[60]{moggi-1991}.
 
 \end{terminology}
 
-\todo{If more examples are added, consider introducing the examples.}
-
 \begin{example}
   \label{ex:monad-identity}
 
@@ -344,23 +328,6 @@ natural transformations \parencite[60]{moggi-1991}.
 
   \end{proof}
 
-\end{example}
-
-\begin{example}
-
-  Let $M = (M, *, e)$ be a monoid. Then the functor $M \times
-  \underscore : \set \to \set$, $X \mapsto M \times X$ together with
-  natural transformations $\natO{\eta}{X}(x) = (e, x)$ and
-  $\natO{\mu}{X}(m_2 * (m_1, x)) = (m_2 * m_1, x)$ defines a monad
-  \parencite[596]{poigne-1992}.
-
-\end{example}
-
-\begin{example}
-  Let $P : \set \to \set$ be the covariant power set functor. Then
-  $\natO{\mu}{X} = \{ x \}$ and $\natO{\eta}{X}(\{Y_i \mid i \in I\})
-  = \bigcup_{i \in I} Y_i$ define a monad
-  \parencite[596]{poigne-1992}.
 \end{example}
 
 \subsection*{Kleisli triples}
@@ -866,8 +833,6 @@ are equivalent.
   \end{proof}
 
 \end{theorem}
-
-\todo{Introduce Example \ref{ex:monad-triple-identity}.}
 
 \begin{example}
   \label{ex:monad-triple-identity}
