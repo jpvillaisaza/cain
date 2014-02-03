@@ -24,9 +24,18 @@ regarding isomorphisms such as uniqueness up to isomorphism.
     respectively) are implicitly mentioned as well. See Definition
     \ref{def:category}.}. A morphism $f: a \to b \in \catM{C}$ is an
   isomorphism if there is a morphism $f^{-1}: b \to a \in \catM{C}$,
-  called the inverse of $f$, such that $f^{-1} \comp f = \idO{a}$ and
-  $f \comp f^{-1} = \idO{b}$. Objects $a$ and $b \in \catO{C}$ are
-  isomorphic if there is an isomorphism $f: a \to b \in \catM{C}$.
+  called the inverse of $f$, such that
+  \begin{equation}
+    \label{eq:isomorphism}
+    f^{-1} \comp f = \idO{a}
+    \quad
+    \text{and}
+    \quad
+    f \comp f^{-1} = \idO{b}
+    \text{.}
+  \end{equation}
+  Objects $a$ and $b \in \catO{C}$ are isomorphic if there is an
+  isomorphism $f: a \to b \in \catM{C}$.
 
 \end{definition}
 

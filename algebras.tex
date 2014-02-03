@@ -7,13 +7,11 @@
 
 In this chapter we explore algebras and initial algebras over
 endofunctors, and their relation to algebraic data types in Haskell.
-
-In functional programming, \texthaskell{foldr} is a standard function
-that encapsulates common patterns of induction and recursion
-concerning lists \parencite[355--356]{hutton-1999}. In Haskell,
-\texthaskell{foldr} can be defined as follows\footnote{Note that this
-  is not the type signature of the standard \texthaskell{foldr}
-  function.}:
+As motivation, \texthaskell{foldr} is a standard function that
+encapsulates common patterns of induction and recursion concerning
+lists \parencite[355--356]{hutton-1999}. The \texthaskell{foldr}
+function can be defined as follows\footnote{Note that this is not the
+  type signature of the standard \texthaskell{foldr} function.}:
 \begin{codehaskell}
 foldr :: b -> (a -> b -> b) -> [a] -> b
 foldr n c []     = n
@@ -23,13 +21,13 @@ That is, given a value \texthaskell{n} of type \texthaskell{b} and a
 function \texthaskell{c} of type \texthaskell{a -> b -> b}, the
 function \texthaskell{foldr n c} of type \texthaskell{[a] -> b}
 replaces \texthaskell{[]} with \texthaskell{n} and \texthaskell{(:)}
-with \texthaskell{c}. This amounts to saying that both
+with \texthaskell{c}. This amounts to saying that both triples
 \texthaskell{[a]}, \texthaskell{[]}, and \texthaskell{(:)}, and
 \texthaskell{b}, \texthaskell{n}, and \texthaskell{c} are algebras
-over an endofunctor, and, more important, that the former constitute
-the initial algebra over that endofunctor. As it turns out, this fact
-uniquely determines both the type and the definition of the
-\texthaskell{foldr} function.
+over an endofunctor, and, more important, that the former triple
+constitutes the initial algebra over the endofunctor. As it turns out,
+this fact uniquely determines both the type signature and the
+definition of the \texthaskell{foldr} function.
 
 This idea generalizes to algebraic data types in the sense that one
 such type is the initial algebra over an endofunctor and that this
@@ -39,8 +37,8 @@ of induction and recursion concerning the type.
 \section{Algebras}
 \label{sec:algebras}
 
-We begin by describing algebras over endofunctors and then discuss some
-examples which will be revisited later on.
+We begin by describing algebras (over endofunctors) and algebra
+homomorphisms.
 
 \begin{definition}
   \label{def:algebra}
@@ -233,9 +231,9 @@ examples which will be revisited later on.
 
 \end{definition}
 
-\todo{In order to define initial algebras, we need a category of
-  algebras and algebra homomorphisms. The following definitions end
-  with the definition of such a category.}
+Let us now define identity and composite algebra homomorphisms, which
+will allow us to construct categories of algebras and algebra
+homomorphisms.
 
 \begin{definition}
   \label{def:identity-algebra-homomorphism}
@@ -248,8 +246,8 @@ examples which will be revisited later on.
 
   \begin{proof}
 
-    We prove that $\idO{(a,\alpha)}$ is indeed an \func{F}-algebra
-    homomorphism:
+    We prove \eqref{eq:algebra-homomorphism} with $f =
+    \idO{(a,\alpha)}$:
     \begin{steps}
       \stepm{\alpha \comp \funcM{F}(\idO{a})}
         \eqby{\eqref{eq:functor-identity}}
@@ -275,8 +273,7 @@ examples which will be revisited later on.
 
   \begin{proof}
 
-    We prove that $g \comp f$ is indeed an \func{F}-algebra
-    homomorphism:
+    We prove \eqref{eq:algebra-homomorphism} with $f = g \comp f$:
     \begin{steps}
       \stepm{\gamma \comp \funcM{F}(g \comp f)}
         \eqby{\eqref{eq:functor-composition}}
@@ -309,13 +306,17 @@ examples which will be revisited later on.
 
   \begin{proof}
 
-    Equations \eqref{eq:category-associativity} and
-    \eqref{eq:category-identity} prove that \func{F}-\alg is indeed a
-    category.
+    Since \eqref{eq:category-associativity} and
+    \eqref{eq:category-identity} hold for \cat{C}, they hold for
+    \func{F}-\alg too.
 
   \end{proof}
 
 \end{definition}
+
+Having constructed categories of algebras and algebra homomorphisms,
+we move on to their initial objects (see Definition
+\ref{def:initial-object}), that is, initial algebras.
 
 \begin{definition}
   \label{def:initial-algebra}
@@ -358,10 +359,11 @@ examples which will be revisited later on.
     \label{fig:cata-charn}
   \end{figure}
 
-  Basically, the initial \func{F}-algebra of a category \func{F}-\alg
-  is the initial object.
-
 \end{definition}
+
+Intuitively, the initial algebra denotes the collection of constructor
+functions for inductive data types, and the catamorphism is a simple
+iteration.
 
 \begin{lemma}
   \label{lem:cata-refl-fusion}
@@ -385,10 +387,10 @@ examples which will be revisited later on.
 
   \begin{proof}
 
-    Since $(\mu\func{F},\inmo)$ is the initial \func{F}-algebra of the
-    category \func{F}-\alg, $\cata\inmo$ and $\cata\beta$ are unique.
-    As a consequence, \eqref{eq:cata-refl} and \eqref{eq:cata-fusion}
-    (see Figure \ref{fig:cata-fusion}) hold.
+    Since $(\mu\func{F},\inmo)$ is initial, then $\cata\inmo$ and
+    $\cata\beta$ are unique, which proves both equations. (For
+    \eqref{eq:cata-fusion}, see the diagram in Figure
+    \ref{fig:cata-fusion}.)
 
     \begin{figure}[htb]
       \begin{center}
@@ -425,9 +427,7 @@ examples which will be revisited later on.
 
 \end{lemma}
 
-Intuitively, the initial algebra denotes the collection of constructor
-functions for inductive data types, and the catamorphism is a simple
-iteration. The following theorem is ``the formal justification on the
+The following theorem is ``the formal justification on the
 identification of inductive types with initial algebras''
 \parencite[17]{vene-2000}.
 
@@ -439,32 +439,31 @@ identification of inductive types with initial algebras''
   Let $\func{F}: \cat{C} \to \cat{C}$ be an endofunctor in a category
   \cat{C}. If $(\mu\func{F},\inmo)$ is the initial \func{F}-algebra of
   the category \func{F}-\alg, then $\inmo$ is an isomorphism with its
-  inverse
-  \begin{equation*}
-    \inmo^{-1}: \mu\func{F} \to \funcO{F}(\mu\func{F})
-  \end{equation*}
-  defined by
-  \begin{equation*}
+  inverse $\inmo^{-1}: \mu\func{F} \to \funcO{F}(\mu\func{F})$ defined
+  by
+  \begin{equation}
+    \label{eq:lambek}
     \inmo^{-1} = \cata{\funcM{F}(\inmo)}
     \text{.}
-  \end{equation*}
+  \end{equation}
 
   \begin{proof}
 
-    First, we prove that $\inmo \comp \inmo^{-1} = \idO{\mu\func{F}}$,
-    that is, $\inmo \comp \cata{\funcM{F}(\inmo)} =
-    \idO{\mu\func{F}}$:
+    We prove \eqref{eq:isomorphism} with $f = \inmo$. In the first
+    place:
     \begin{steps}
+      \stepm{\inmo \comp \inmo^{-1}}
+        \eqby{\eqref{eq:lambek}}
       \stepm{\inmo \comp \cata{\funcM{F}(\inmo)}}
         \eqby{\eqref{eq:cata-fusion} with $f = \inmo$}
       \stepm{\cata\inmo}
         \eqby{\eqref{eq:cata-refl}}
       \stepm{\idO{\mu\func{F}}}
     \end{steps}
-    And second, we prove that $\inmo^{-1} \comp \inmo =
-    \idO{\funcO{F}(\mu\func{F})}$, that is, $\cata{\funcM{F}(\inmo)}
-    \comp \inmo = \idO{\funcO{F}(\mu\func{F})}$:
+    And in the second place:
     \begin{steps}
+      \stepm{\inmo^{-1} \comp \inmo}
+        \eqby{\eqref{eq:lambek}}
       \stepm{\cata{\funcM{F}(\inmo)} \comp \inmo}
         \eqby{\eqref{eq:cata-charn} with $\alpha = \funcM{F}(\inmo)$}
       \stepm{\funcM{F}(\inmo) \comp \funcM{F}(\cata{\funcM{F}(\inmo)})}
@@ -480,13 +479,8 @@ identification of inductive types with initial algebras''
 
 \end{theorem}
 
-``The theorem shows that the carrier of the initial algebra is (up to
-isomorphism) a fixed point of the functor. In fact, initial algebras
-generalize the notion of the least fixed point from lattice theory in
-the sense that if the base category is a preorder and thus an
-endofunctor is a monotonic function then the carrier of the initial
-algebra is the least fixed point of the given function''
-\parencite[18]{vene-2000}.
+This ``theorem shows that the carrier of the initial algebra is (up to
+isomorphism) a fixed point of the functor'' \parencite[18]{vene-2000}.
 
 \begin{example}
   \label{ex:initial-algebra-initial-object}
