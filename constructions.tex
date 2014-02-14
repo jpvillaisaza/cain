@@ -17,14 +17,8 @@ regarding isomorphisms such as uniqueness up to isomorphism.
 
   %% \parencite[15]{pierce-1991}
 
-  Let \cat{C} be a category\footnote{Whenever a category \cat{C} is
-    mentioned, its sets of objects and morphisms, its domain and
-    codomain functions, and its identity and composition functions
-    (\catO{C} and \catM{C}, $\dom$ and $\cod$, and $\id$ and $\comp$,
-    respectively) are implicitly mentioned as well. See Definition
-    \ref{def:category}.}. A morphism $f: a \to b \in \catM{C}$ is an
-  isomorphism if there is a morphism $f^{-1}: b \to a \in \catM{C}$,
-  called the inverse of $f$, such that
+  Let \cat{C} be a category. A morphism $f: a \to b$ is an isomorphism
+  if there is an inverse morphism $f^{-1}: b \to a$ such that
   \begin{equation}
     \label{eq:isomorphism}
     f^{-1} \comp f = \idO{a}
@@ -34,8 +28,8 @@ regarding isomorphisms such as uniqueness up to isomorphism.
     f \comp f^{-1} = \idO{b}
     \text{.}
   \end{equation}
-  Objects $a$ and $b \in \catO{C}$ are isomorphic if there is an
-  isomorphism $f: a \to b \in \catM{C}$.
+  Objects $a$ and $b$ are isomorphic if there is an
+  isomorphism $f: a \to b$.
 
 \end{definition}
 
@@ -62,9 +56,9 @@ describing algebras and initial algebras.
 
   %% \parencite[444]{poigne-1992}
 
-  Let \cat{C} be a category. An object $0 \in \catO{C}$ is the initial
-  object of \cat{C} if, for all objects $a \in \catO{C}$, there is a
-  unique morphism $0 \to a \in \catM{C}$.
+  Let \cat{C} be a category. An object $0$ is the initial object of
+  \cat{C} if, for all objects $a$, there is a unique morphism $0 \to
+  a$.
 
 \end{definition}
 
@@ -73,9 +67,9 @@ describing algebras and initial algebras.
 
   %% \parencite[439]{poigne-1992}
 
-  Let \cat{C} be a category. An object $1 \in \catO{C}$ is the
-  terminal object of \cat{C} if, for all objects $a \in \catO{C}$,
-  there is a unique morphism $a \to 1 \in \catM{C}$.
+  Let \cat{C} be a category. An object $1$ is the terminal object of
+  \cat{C} if, for all objects $a$, there is a unique morphism $a \to
+  1$.
 
 \end{definition}
 
@@ -206,13 +200,11 @@ Cartesian products and disjoiunt unions, respectively.
 
   %% \parencite[18]{pierce-1991}
 
-  Let \cat{C} be a category. A product of two objects $a$ and $b \in
-  \catO{C}$ consists of a product object $a \times b \in \catO{C}$,
-  and two projection morphisms $\pi_{1}: a \times b \to a$ and
-  $\pi_{2}: a \times b \to b \in \catM{C}$, such that, for all objects
-  $c \in \catO{C}$, and morphisms $f: c \to a$ and $g: c \to b \in
-  \catM{C}$, there is a unique morphism $\langle{f,g}\rangle: c \to a
-  \times b \in \catM{C}$ such that
+  A product of objects $a$ and $b$ in a category \cat{C} consists of a
+  product object $a \times b$, and projection morphisms $\pi_{1}: a
+  \times b \to a$ and $\pi_{2}: a \times b \to b$, such that, for all
+  objects $c$, and morphisms $f: c \to a$ and $g: c \to b$, there is a
+  unique morphism $\langle{f,g}\rangle: c \to a \times b$ such that
   \begin{equation}
     \label{eq:product}
     \pi_{1} \comp \langle{f,g}\rangle = f
@@ -224,7 +216,8 @@ Cartesian products and disjoiunt unions, respectively.
   \end{equation}
   that is, such that the diagram in Figure \ref{fig:product} is
   commutative.
-  \begin{figure}[htbp]
+
+  \begin{figure}[htb]
     \begin{center}
       \begin{tikzpicture}
         \node (axb)               {$a \times b$};
@@ -335,13 +328,11 @@ proj₂ (_ , y) = y
 
   %% \parencite[19]{pierce-1991}
 
-  Let \cat{C} be a category. A coproduct of two objects $a$ and $b \in
-  \catO{C}$ consists of a coproduct object $a + b \in \catO{C}$, and
-  two injection morphisms $\iota_{1}: a \to a + b$ and $\iota_{2}: b
-  \to a + b \in \catM{C}$, such that, for all objects $c \in
-  \catO{C}$, and morphisms $f: a \to c$ and $g: b \to c \in \catM{C}$,
-  there is a unique morphism $[f,g]: a + b \to c \in \catM{C}$ such
-  that
+  A coproduct of objects $a$ and $b$ in a category \cat{C} consists of
+  a coproduct object $a + b$, and injection morphisms $\iota_{1}: a
+  \to a + b$ and $\iota_{2}: b \to a + b$, such that, for all objects
+  $c$, and morphisms $f: a \to c$ and $g: b \to c$, there is a unique
+  morphism $[f,g]: a + b \to c$ such that
   \begin{equation}
     \label{eq:coproduct}
     [f,g] \comp \iota_{1} = f
@@ -353,7 +344,8 @@ proj₂ (_ , y) = y
   \end{equation}
   that is, such that the diagram in Figure \ref{fig:coproduct} is
   commutative.
-  \begin{figure}[htbp]
+
+  \begin{figure}[htb]
     \begin{center}
       \begin{tikzpicture}
         \node (a+b) {$a + b$};

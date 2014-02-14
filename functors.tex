@@ -91,6 +91,11 @@ development. In detail:
     $\comp$, respectively) are implicitly mentioned as well. See
     Definition \ref{def:category}.}. A functor $\func{F}: \cat{C} \to
   \cat{D}$ consists of an object function
+  %% Let $\cat{C}$ and $\cat{D}$ be categories. A functor $\func{F}:
+  %% \cat{C} \to \cat{D}$ assigns to each object $a$ of $\cat{C}$ an
+  %% object $\funcO{F}(a)$ of $\cat{D}$, and to each morphism $f: a \to
+  %% b$ of $\cat{C}$ a morphism
+  %% $\funcM{F}(f): \funcO{F}(a) \to \funcO{F}(b) \in \catM{D}$ such that,
   \begin{equation}
     \label{eq:functor-object}
     \funcO{F}: \catO{C} \to \catO{D}
@@ -106,13 +111,13 @@ development. In detail:
     \funcM{F}(f): \funcO{F}(a) \to \funcO{F}(b) \in \catM{D}
     \text{,}
   \end{equation*}
-  such that, for all objects $a \in \catO{C}$,
+  such that, for all objects $a$ in \cat{C},
   \begin{equation}
     \label{eq:functor-identity}
     \funcM{F}(\idO{a}) = \idO{\funcO{F}(a)}
     \text{,}
   \end{equation}
-  and, whenever $g \comp f \in \catM{C}$,
+  and, for all morphisms $f: a \to b$ and $g: b \to c$ in \cat{C},
   \begin{equation}
     \label{eq:functor-composition}
     \funcM{F}(g \comp f) = \funcM{F}(g) \comp \funcM{F}(f)

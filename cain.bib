@@ -217,6 +217,16 @@
   url          = {http://learnyouahaskell.com},
 }
 
+@proceedings{lncs-240,
+  editor       = {David Pitt and Samson Abramsky and Axel Poigné and David Rydeheard},
+  date         = {1986},
+  eventtitle   = {Category Theory and Computer Programming},
+  eventdate    = {1985},
+  series       = {Lecture Notes in Computer Science},
+  number       = {240},
+  publisher    = {Springer},
+}
+
 @incollection{marquis-2013,
   author       = {Jean-Pierre Marquis},
   title        = {Category Theory},
@@ -272,14 +282,11 @@
   date         = {2010-07},
 }
 
-@proceedings{pitt-1986,
-  editor       = {David Pitt and Samson Abramsky and Axel Poigné and David Rydeheard},
-  date         = {1986},
-  eventtitle   = {Category Theory and Computer Programming},
-  eventdate    = {1985},
-  series       = {Lecture Notes in Computer Science},
-  number       = {240},
-  publisher    = {Springer},
+@inproceedings{pitt-1986,
+  crossref     = {lncs-240},
+  author       = {David Pitt},
+  title        = {Categories},
+  pages        = {6--15},
 }
 
 @book{poe-2004,
@@ -312,7 +319,7 @@
 }
 
 @inproceedings{rydeheard-1986,
-  crossref     = {pitt-1986},
+  crossref     = {lncs-240},
   author       = {Rydeheard, David E.},
   title        = {Functors and Natural Transformations},
   pages        = {43--50},

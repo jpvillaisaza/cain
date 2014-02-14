@@ -119,7 +119,7 @@ they are defined only in terms of functors and natural transformations
 
   %% \parencite[137]{maclane-1998}
 
-  Let \cat{C} be a category. A \emph{monad}
+  Let \cat{C} be a category. A monad
   \begin{equation}
     \label{eq:monad}
     \mon{T} = (\func{T}, \nat{\eta}, \nat{\mu})
@@ -143,8 +143,8 @@ they are defined only in terms of functors and natural transformations
     \nat{\mu}: \func{T \comp T} \to \func{T}: \cat{C} \to \cat{C}
     \text{,}
   \end{equation}
-  called \emph{unit} and \emph{multiplication} of the monad,
-  respectively, such that, for all objects $a \in \catO{C}$,
+  called unit and multiplication of the monad, respectively, such
+  that, for all objects $a \in \catO{C}$,
   \begin{equation}
     \label{eq:monad-associativity}
     \natO{\mu}{a} \comp \natO{\mu}{\funcO{T}(a)} = \natO{\mu}{a} \comp \funcM{T}(\natO{\mu}{a})
@@ -164,7 +164,7 @@ they are defined only in terms of functors and natural transformations
   that is, such that the diagrams in Figures
   \ref{fig:monad-associativity} and \ref{fig:monad-unity} are
   commutative.
-  \begin{figure}[htbp]
+  \begin{figure}[htb]
     \begin{center}
       \begin{tikzpicture}[node distance=4cm]
         \node (ttt a)                  {$\funcO{T}(\funcO{T}(\funcO{T}(a)))$};
@@ -181,7 +181,7 @@ they are defined only in terms of functors and natural transformations
     \caption{Monadic associativity.}
     \label{fig:monad-associativity}
   \end{figure}
-  \begin{figure}[htbp]
+  \begin{figure}[htb]
     \begin{center}
       \begin{tikzpicture}[node distance=4cm]
         \node (it a)                 {$\funcO{I}(\funcO{T}(a))$};
@@ -222,7 +222,7 @@ they are defined only in terms of functors and natural transformations
   or, equivalently, the diagrams in Figures
   \ref{fig:monad-naturality-unit} and
   \ref{fig:monad-naturality-multiplication} are commutative.
-  \begin{figure}[htbp]
+  \begin{figure}[htb]
     \begin{center}
       \begin{tikzpicture}[node distance=4cm]
         \node (f a)                {$a$};
@@ -240,7 +240,7 @@ they are defined only in terms of functors and natural transformations
     \caption{Naturality of the \nat{\eta} natural transformation.}
     \label{fig:monad-naturality-unit}
   \end{figure}
-  \begin{figure}[htbp]
+  \begin{figure}[htb]
     \begin{center}
       \begin{tikzpicture}[node distance=4cm]
         \node (f a)                {$\funcO{T}(\funcO{T}(a))$};
@@ -264,7 +264,7 @@ they are defined only in terms of functors and natural transformations
   \label{re:monad-monoid}
 
   Formally, the definition of a monad is like that of a monoid $M$, as
-  described in Example \ref{ex:monoid}. The set $M$ of
+  described in Example \ref{ex:category-monoid}. The set $M$ of
   elements of the monoid is replaced by the endofunctor \func{T} from
   \cat{C} to \cat{C}, while the cartesian product $\times$ of two sets
   is replaced by composite of two functors, the binary operation $\mu:
@@ -343,7 +343,7 @@ explained, they do correspond to monads, but via Kleisli triples).
 
   %% \parencite[58]{moggi-1991}
 
-  Let \cat{C} be a category. A \emph{Kleisli triple}
+  Let \cat{C} be a category. A Kleisli triple
   \begin{equation}
     \label{eq:triple}
     \mon{T} = (\funcO{T}, \nat{\eta}, \monM{T}{\underscore})
@@ -361,7 +361,7 @@ explained, they do correspond to monads, but via Kleisli triples).
     \monM{T}{\underscore}: \catM{C} \to \catM{C}
     \text{,}
   \end{equation}
-  called \emph{extension}, which assigns to each morphism
+  called extension, which assigns to each morphism
   \begin{equation*}
     f: a \to \funcO{T}(b) \in \catM{C}
   \end{equation*}
@@ -524,7 +524,7 @@ As illustrated in Figure \ref{fig:monad-theory-triple}, these proofs
 are enough for stating the equivalence between the three alternative
 descriptions.
 
-\begin{figure}[htbp]
+\begin{figure}[htb]
   \begin{center}
     \begin{tikzpicture}
       \node (monad)                         {Monad};
@@ -958,7 +958,7 @@ which correspond to \eqref{eq:monad-naturality-unit} and
 \eqref{eq:monad-naturality-multiplication}, respectively.
 
 Monads in \hask are defined by the \texthaskell{Monad'} type class,
-whose declaration appears in Figure \ref{fig:monad-haskell} and which is not a standard type class. As usual,
+whose declaration appears below and which is not a standard type class. As usual,
 notice that monadic associativity and unity, that is,
 \eqref{eq:monad-associativity-haskell},
 \eqref{eq:monad-unity-left-haskell}, and
@@ -967,15 +967,11 @@ is, \eqref{eq:monad-naturality-return-haskell} and
 \eqref{eq:monad-naturality-join-haskell}, are not part of this
 declaration. As mentioned earlier, however, the latter need not be
 part of it because they are free theorems.
-\begin{figure}[htbp]
-  \begin{codehaskell}
+\begin{codehaskell}
 class Functor m => Monad' m where
   return :: a -> m a
   join   :: m (m a) -> m a
-  \end{codehaskell}
-  \caption{The \texthaskell{Monad'} type class.}
-  \label{fig:monad-haskell}
-\end{figure}
+\end{codehaskell}
 
 \todo{Surprise, surprise, where is \hask's identity functor?}
 
@@ -986,20 +982,15 @@ class Functor m => Monad' m where
   \ref{ex:triple-identity}, the identity monad in \hask is an
   intuitive way of learning to use the \texthaskell{Monad'} type
   class. It is just a redefinition of the identity functor, but its
-  instance declaration, which appears in Figure
-  \ref{fig:monad-identity-haskell}, gives a good idea of what
+  instance declaration, which appears below, gives a good idea of what
   \texthaskell{return} and \texthaskell{join} do.
 
-  \begin{figure}[htbp]
-    \begin{codehaskell}
+  \begin{codehaskell}
 instance Monad' Identity where
   return = Identity
 
   join (Identity mx) = mx
-    \end{codehaskell}
-    \caption{The \texthaskell{Identity} \texthaskell{Monad'}.}
-    \label{fig:monad-identity-haskell}
-  \end{figure}
+  \end{codehaskell}
 
   \begin{proof}
 
@@ -1043,19 +1034,14 @@ instance Monad' Identity where
   \end{equation}
 
   The \texthaskell{Monad'} instance declaration for the
-  \texthaskell{Maybe} type is shown in Figure
-  \ref{fig:monad-maybe-haskell}.
-  \begin{figure}[htbp]
-    \begin{codehaskell}
+  \texthaskell{Maybe} type is shown below.
+  \begin{codehaskell}
 instance Monad' Maybe where
   return = Just
 
   join Nothing   = Nothing
   join (Just mx) = mx
-    \end{codehaskell}
-    \caption{The \texthaskell{Maybe} monad in \hask.}
-    \label{fig:monad-maybe-haskell}
-  \end{figure}
+  \end{codehaskell}
 
   \begin{proof}
 
@@ -1182,18 +1168,13 @@ instance Monad' Maybe where
     \text{.}
   \end{equation}
 
-  Figure \ref{fig:monad-list-haskell} presents the instance
-  declaration for lists.
-  \begin{figure}[htbp]
-    \begin{codehaskell}
+  The instance declaration for lists is as follows:
+  \begin{codehaskell}
 instance Monad' [] where
   return x = [x]
 
   join = concat
-    \end{codehaskell}
-    \caption{The \texthaskell{[]} monad.}
-    \label{fig:monad-list-haskell}
-  \end{figure}
+  \end{codehaskell}
 
   \begin{proof}
 
@@ -1356,40 +1337,31 @@ which makes it clear that it assigns a function to another function.
 
 \todo{Specify the correspondence with the standard type class.}
 
-Kleisli triples in \hask are defined by the \texthaskell{Monad} type class,
-which corresponds to the minimal definition of the standard
-\texthaskell{Monad} type class and whose declaration appears in Figure
-\ref{fig:triple-haskell}. Notice that, as usual, this declaration does
-not include \eqref{eq:triple-associativity-haskell},
+Kleisli triples in \hask are defined by the \texthaskell{Monad} type
+class, which corresponds to the minimal definition of the standard
+\texthaskell{Monad} type class and whose declaration appears below.
+Notice that, as usual, this declaration does not include
+\eqref{eq:triple-associativity-haskell},
 \eqref{eq:triple-unity-left-haskell}, and
 \eqref{eq:triple-unity-right-haskell}.
-\begin{figure}[htbp]
-  \begin{codehaskell}
+\begin{codehaskell}
 class Monad m where
   return :: a -> m a
   bind   :: (a -> m b) -> m a -> m b
-  \end{codehaskell}
-  \caption{The \texthaskell{Monad} type class.}
-  \label{fig:triple-haskell}
-\end{figure}
+\end{codehaskell}
 
 The standard \texthaskell{Monad} type class is defined in terms of
-\texthaskell{(>>=)}, as in Figure \ref{fig:standard-triple-haskell}.
-Note that only the minimal definition is presented, that is,
-\texthaskell{(>>)} and \texthaskell{fail} are not included. This
-declaration is equivalent to that of Figure \ref{fig:triple-haskell},
-but the latter is more suitable for abstract manipulation and for
-comparing monads with Kleisli triples.
+\texthaskell{(>>=)}, as below. Note that only the minimal definition
+is presented, that is, \texthaskell{(>>)} and \texthaskell{fail} are
+not included. This declaration is equivalent to that above, but the
+latter is more suitable for abstract manipulation and for comparing
+monads with Kleisli triples.
 
-\begin{figure}[htbp]
-  \begin{codehaskell}
+\begin{codehaskell}
 class Monad m where
   return :: a -> m a
   (>>=)  :: m a -> (a -> m b) -> m b
-  \end{codehaskell}
-  \caption{The standard \texthaskell{Monad} type class.}
-  \label{fig:standard-triple-haskell}
-\end{figure}
+\end{codehaskell}
 
 \begin{remark}
   \label{re:triple-endofunctor}
@@ -1476,19 +1448,13 @@ respectively, which are the standard laws.
   (when compared with the identity monad of Example
   \ref{ex:monad-identity-haskell}) is a better way of showing that the
   identity monad is just a redefinition of the identity functor. Its
-  instance declaration appears in Figure
-  \ref{fig:triple-identity-haskell}.
-
-  \begin{figure}[htbp]
-    \begin{codehaskell}
+  instance declaration is:
+  \begin{codehaskell}
 instance Monad Identity where
   return = Identity
 
   bind f (Identity x) = f x
-    \end{codehaskell}
-    \caption{The \texthaskell{Identity} Kleisli triple.}
-    \label{fig:triple-identity-haskell}
-  \end{figure}
+  \end{codehaskell}
 
   \begin{proof}
 
@@ -1521,19 +1487,15 @@ instance Monad Identity where
     \text{\texthaskell{bind f (Just x) = f x}}
   \end{equation}
   yield the \texthaskell{Maybe} Kleisli triple in \hask. Its instance
-  declaration appears in Figure \ref{fig:triple-maybe-haskell}.
+  declaration is:
 
-  \begin{figure}[htbp]
-    \begin{codehaskell}
+  \begin{codehaskell}
 instance Monad Maybe where
   return = Just
 
   bind _ Nothing  = Nothing
   bind f (Just x) = f x
-    \end{codehaskell}
-    \caption{The \texthaskell{Maybe} monad.}
-    \label{fig:triple-maybe-haskell}
-  \end{figure}
+  \end{codehaskell}
 
   \begin{proof}
 
@@ -1615,19 +1577,14 @@ instance Monad Maybe where
   where \texthaskell{concat} is the function defined in Example
   \ref{ex:monad-list-haskell}.
 
-  The instance declaration for the list type constructor is shown in
-  Figure \ref{fig:triple-list-haskell}.
+  The instance declaration for the list type constructor is:
 
-  \begin{figure}[htbp]
-    \begin{codehaskell}
+  \begin{codehaskell}
 instance Monad [] where
   return x = [x]
 
   bind f xs = concat (map f xs)
-    \end{codehaskell}
-    \caption{The \texthaskell{[]} \texthaskell{Monad}.}
-    \label{fig:triple-list-haskell}
-  \end{figure}
+  \end{codehaskell}
 
   \begin{proof}
 
@@ -1908,10 +1865,10 @@ monad' = mkMonad' return join associativity unity-left unity-right
 
 The module \module{Abel.Category.Monad} also defines Kleisli triples
 or monads in extension form in Agda. The following definition
-corresponds to the type class declaration of Figure
-\ref{fig:triple-haskell}. As usual, this definition includes the
-monadic laws and naturalities, which means that any instance of the
-\textagda{Monad} type class \emph{is} a monad.
+corresponds to the type class declaration of Kleisli triples in
+Haskell. As usual, this definition includes the monadic laws and
+naturalities, which means that any instance of the \textagda{Monad}
+type class \emph{is} a monad.
 
 \begin{codeagda}
 record Monad (M : Set → Set) : Set₁ where
