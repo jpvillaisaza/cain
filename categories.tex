@@ -682,9 +682,9 @@ In Agda, types are called sets and there is an infinite hierarchy of
 universes \textagda{Set₀}, \textagda{Set₁}, \textagda{Set₂}, ..., such
 that \textagda{Set₀} is of type \textagda{Set₁}, \textagda{Set₁} is of
 type \textagda{Set₂}, and so on. The first universe, \textagda{Set₀}
-or \textagda{Set}, which is called the universe of small types, will
-be the only universe necessary for our development (\todo{From Andrés'
-  thesis}).
+or \textagda{Set}, which is called the universe of small types, and
+the second universe, \textagda{Set₁}, will be the only universes
+necessary for our development \parencite[§ 2.1]{sicardramirez-2014}.
 
 Let us now construct a category analogous to \hask, the category of
 Haskell types and functions, in Agda. The objects of this category are
@@ -716,8 +716,7 @@ id : {A : Set} → A → A
 id x = x
 \end{codeagda}
 And, for each pair of functions \textagda{f : A → B} and \textagda{g:
-  B → C}, there is a composite function defined as follows,
-\textagda{g ∘ f}:
+  B → C}, there is a composite function, \textagda{g ∘ f}:
 \begin{codeagda}
 infixr 9 _∘_
 
