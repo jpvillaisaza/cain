@@ -2,9 +2,10 @@
 \setdefaultlanguage{english}
 \setmainlanguage[variant=usmax]{english}
 
-\hyphenation{i-so-mor-phism}
+%% \usepackage[showframe]{geometry}
 
-%% \usepackage{color}
+\hyphenation{i-so-mor-phism}
+\hyphenation{Grund-leh-ren}
 
 \usepackage{amsmath}
 
@@ -95,6 +96,10 @@
 \addbibresource{cain.bib}
 \addbibresource{/home/jpvi/etc/bible/bible.bib}
 
+\DefineHyphenationExceptions{english}{
+  type-class-o-pe-dia Grund-leh-ren
+}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% hyperref
 
@@ -117,6 +122,11 @@
 \fi
 
 %% \makeindex %% detex -w cain.tex | sort -uf > foo
+
+\hypersetup{pdftitle={Category Theory Applied to Functional Programming}}
+\hypersetup{pdfauthor={Juan Pedro Villa Isaza}}
+\hypersetup{pdfkeywords={category theory, functional programming}}
+\hypersetup{pdfsubject={Systems Engineering undergraduate project}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% todo
