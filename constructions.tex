@@ -1,24 +1,24 @@
 \chapter{Constructions}
 \label{chap:constructions}
 
-In this auxiliary chapter we explore some basic constructions in
-categories. We will use these constructions for describing some
-concepts and examples in all the following chapters, especially
-Chapter \ref{chap:algebras}.
+In this chapter we explore some basic constructions in categories. We
+shall use these constructions for describing some concepts and
+examples in all the following chapters.
 
 \section{Isomorphisms}
 \label{sec:constructions-isomorphisms}
 
-We begin with the concept of isomorphism and some useful properties
-regarding isomorphisms such as uniqueness up to isomorphism.
+We shall often find the concept of isomorphism and the property of
+uniqueness up to isomorphism.
 
 \begin{definition}
   \label{def:isomorphism}
 
   %% \parencite[15]{pierce-1991}
 
-  Let \cat{C} be a category. A morphism $f: a \to b$ is an isomorphism
-  if there is an inverse morphism $f^{-1}: b \to a$ such that
+  Let $\cat{C}$ be a category. A morphism $f: a \to b$ is an
+  isomorphism if there is an inverse morphism $f^{-1}: b \to a$ such
+  that
   \begin{equation}
     \label{eq:isomorphism}
     f^{-1} \comp f = \idO{a}
@@ -28,27 +28,18 @@ regarding isomorphisms such as uniqueness up to isomorphism.
     f \comp f^{-1} = \idO{b}
     \text{.}
   \end{equation}
-  Objects $a$ and $b$ are isomorphic if there is an
-  isomorphism $f: a \to b$.
-
-\end{definition}
-
-\begin{definition}
-  \label{def:up-to-isomorphism}
-
-  %% \parencite[15]{pierce-1991}
-
-  Isomorphic objects are often said to be identical up to isomorphism.
-  Similarly, an object with some property is said to be unique up to
-  isomorphism if every object satisfying the property is isomorphic to
-  it.
+  Objects $a$ and $b$ are isomorphic if there is an isomorphism $f: a
+  \to b$. Isomorphic objects are often said to be identical up to
+  isomorphism. Similarly, an object with some property is said to be
+  unique up to isomorphism if every object satisfying the property is
+  isomorphic to it.
 
 \end{definition}
 
 \section{Initial and terminal objects}
 \label{sec:constructions-initial-terminal-objects}
 
-We continue with initial and terminal objects, which we will use for
+We define initial and terminal objects, which we shall use for
 describing algebras and initial algebras.
 
 \begin{definition}
@@ -56,8 +47,8 @@ describing algebras and initial algebras.
 
   %% \parencite[444]{poigne-1992}
 
-  Let \cat{C} be a category. An object $0$ is the initial object of
-  \cat{C} if, for all objects $a$, there is a unique morphism $0 \to
+  Let $\cat{C}$ be a category. An object $0$ is the initial object of
+  $\cat{C}$ if, for all objects $a$, there is a unique morphism $0 \to
   a$.
 
 \end{definition}
@@ -67,8 +58,8 @@ describing algebras and initial algebras.
 
   %% \parencite[439]{poigne-1992}
 
-  Let \cat{C} be a category. An object $1$ is the terminal object of
-  \cat{C} if, for all objects $a$, there is a unique morphism $a \to
+  Let $\cat{C}$ be a category. An object $1$ is the terminal object of
+  $\cat{C}$ if, for all objects $a$, there is a unique morphism $a \to
   1$.
 
 \end{definition}
@@ -79,23 +70,25 @@ describing algebras and initial algebras.
 
   \begin{proof}
 
-    Let \cat{C} be a category. If $0$ and $0'$ are initial objects of
-    \cat{C}, there are unique morphisms $0_{0'}: 0 \to 0'$ and
-    $0'_{0}: 0' \to 0 \in \catM{C}$. Moreover, there are unique
-    morphisms $0_{0} = \idO{0}$ and $0'_{0'} = \idO{0'} \in \catM{C}$.
-    Hence, $0'_{0} \comp 0_{0'} = \idO{0}$ and $0_{0'} \comp 0'_{0} =
-    \idO{0'}$. That is, $0$ is unique up to isomorphism.
+    Let $\cat{C}$ be a category with initial objects $0$ and $0'$.
+    There are unique morphisms $0_{0'}: 0 \to 0'$ and $0'_{0}: 0' \to
+    0$, and $0_{0} = \idO{0}$ and $0'_{0'} = \idO{0'}$. Hence, $0'_{0}
+    \comp 0_{0'} = \idO{0}$ and $0_{0'} \comp 0'_{0} = \idO{0'}$. That
+    is, $0$ is unique up to isomorphism.
 
-    Similarly, if $1$ and $1'$ are terminal objects of \cat{C}, there
-    are unique morphisms $1_{1'}: 1' \to 1$ and $1'_{1}: 1 \to 1' \in
-    \catM{C}$. Moreover, there are unique morphisms $1_{1} = \idO{1}$
-    and $1'_{1'} = \idO{1'} \in \catM{C}$. Hence, $1_{1'} \comp 1'_{1}
-    = \idO{1}$ and $1'_{1} \comp 1_{1'} = \idO{1'}$. That is, $1$ is
-    unique up to isomorphism.
+    Similarly, let $\cat{C}$ be a category with terminal objects $1$
+    and $1'$. There are unique morphisms $1_{1'}: 1' \to 1$ and
+    $1'_{1}: 1 \to 1'$, and $1_{1} = \idO{1}$ and $1'_{1'} =
+    \idO{1'}$. Hence, $1_{1'} \comp 1'_{1} = \idO{1}$ and $1'_{1}
+    \comp 1_{1'} = \idO{1'}$. That is, $1$ is unique up to
+    isomorphism.
 
   \end{proof}
 
 \end{lemma}
+
+As examples, we consider initial and terminal objects in the
+categories \set, \hask, and \agda.
 
 \begin{example}
   \label{ex:initial-terminal-objects-set}
@@ -118,11 +111,9 @@ describing algebras and initial algebras.
   \begin{codehaskell}
 data Void
   \end{codehaskell}
-  And the \texthaskell{absurd} function, as defined, for instance, in
-  Edward A. Kmett's \texthaskell{void} package until version
-  0.5.6\footnote{\url{http://hackage.haskell.org/package/void-0.5.6}.},
-  is the unique function required to show that it is indeed the
-  initial object:
+  The \texthaskell{absurd} function, as defined, for instance, in
+  \parencite{kmett-2012}, is the unique function required to show that
+  \texthaskell{Void} is indeed the initial object:
   \begin{codehaskell}
 absurd :: Void -> a
 absurd = absurd
@@ -131,8 +122,8 @@ absurd = absurd
   \begin{codehaskell}
 data () = ()
   \end{codehaskell}
-  And the \texthaskell{unit} function is the unique function required
-  to show that it really is the terminal object:
+  The \texthaskell{unit} function is the unique function required to
+  show that \texthaskell{()} really is the terminal object:
   \begin{codehaskell}
 unit :: a -> ()
 unit _ = ()
@@ -143,14 +134,14 @@ unit _ = ()
 \begin{example}
   \label{ex:initial-terminal-objects-agda}
 
-  Similarly, in Agda, the empty type, defined in \module{Data.Empty},
-  is the initial object:
+  In \agda, the empty type, defined in \module{Data.Empty}, is the
+  initial object:
   \begin{codeagda}
 data ⊥ : Set where
   \end{codeagda}
-  And the \textagda{⊥-elim} function, defined in
-  \module{Abel.Data.Empty}, is the unique function required to show
-  that it is indeed the initial object:
+  The \textagda{⊥-elim} function, defined in \module{Abel.Data.Empty},
+  is the unique function required to show that \textagda{⊥} is indeed
+  the initial object:
   \begin{codeagda}
 ⊥-elim : {A : Set} → ⊥ → A
 ⊥-elim ()
@@ -161,14 +152,14 @@ data ⊥ : Set where
 record ⊤ : Set where
   constructor tt
   \end{codeagda}
-  Or, equivalently, the empty type defined in \module{Data.Unit.Core}:
+  Or, equivalently, the unit type defined in \module{Data.Unit.Core}:
   \begin{codeagda}
 data Unit : Set where
   unit : Unit
   \end{codeagda}
   Finally, the \textagda{unit} function, defined in
   \module{Abel.Data.Unit}, is the unique function required to show
-  that it really is the terminal object:
+  that \textagda{Unit} really is the terminal object:
   \begin{codeagda}
 unit : {A : Set} → A → ⊤
 unit _ = tt
@@ -192,8 +183,10 @@ unit _ = tt
 \section{Products and coproducts}
 \label{sec:constructions-products-coproducts}
 
-We end with the concepts of product and coproduct, which correspond to
-Cartesian products and disjoiunt unions, respectively.
+In this section, we describe the concepts of product and coproduct,
+which correspond to Cartesian products and disjoint unions,
+respectively. As examples, we consider both constructions in the
+categories \set, \hask, and \agda.
 
 \begin{definition}
   \label{def:product}
@@ -214,8 +207,7 @@ Cartesian products and disjoiunt unions, respectively.
     \pi_{2} \comp \langle{f,g}\rangle = g
     \text{,}
   \end{equation}
-  that is, such that the diagram in Figure \ref{fig:product} is
-  commutative.
+  that is, the diagram in Figure \ref{fig:product} is commutative.
 
   \begin{figure}[htb]
     \begin{center}
@@ -269,7 +261,7 @@ Cartesian products and disjoiunt unions, respectively.
   \begin{equation*}
     \langle{f,g}\rangle(z) = (f(z),g(z))
   \end{equation*}
-  for all $z \in C$. Equations \eqref{eq:product} obviously hold.
+  for all $z \in C$. Equations \eqref{eq:product} hold.
 
 \end{example}
 
@@ -290,7 +282,7 @@ fst (x,_) = x
 snd :: (a,b) -> b
 snd (_,y) = y
   \end{codehaskell}
-  And the \texthaskell{fork} function is the function required to show
+  The \texthaskell{fork} function is the function required to show
   that tuples are indeed products:
   \begin{codehaskell}
 fork :: (c -> a) -> (c -> b) -> c -> (a,b)
@@ -299,11 +291,11 @@ fork f g z = (f z,g z)
 
 \end{example}
 
-\begin{example}
+\begin{example}[See module \module{Abel.Data.Product}]
   \label{ex:product-agda}
 
-  Similarly, in Agda, products and their projection functions are
-  defined in \module{Abel.Data.Product}, as follows:
+  In \agda, products and their projection functions are defined as
+  follows:
   \begin{codeagda}
 data _×_ (A B : Set) : Set where
   _,_ : A → B → A × B
@@ -314,8 +306,7 @@ proj₁ (x , _) = x
 proj₂ : {A B : Set} → A × B → B
 proj₂ (_ , y) = y
   \end{codeagda}
-  And the required function to show that products really are products,
-  defined in \module{Abel.Data.Product} as well, is:
+  The required function to satisfy the definition of products is:
   \begin{codeagda}
 ⟨_,_⟩ : {A B C : Set} → (C → A) → (C → B) → C → A × B
 ⟨_,_⟩ f g z = f z , g z
@@ -342,8 +333,7 @@ proj₂ (_ , y) = y
     [f,g] \comp \iota_{2} = g
     \text{,}
   \end{equation}
-  that is, such that the diagram in Figure \ref{fig:coproduct} is
-  commutative.
+  that is, the diagram in Figure \ref{fig:coproduct} is commutative.
 
   \begin{figure}[htb]
     \begin{center}
@@ -377,7 +367,7 @@ proj₂ (_ , y) = y
   In \set, the coproduct of two sets $A$ and $B$ consists of the
   disjoint union
   \begin{equation}
-    A + B = \{1\} \times A \cup \{2\} \times B
+    A + B = (\{1\} \times A) \cup (\{2\} \times B)
     \text{,}
   \end{equation}
   and two injection functions $\iota_{1}: A \to A + B$ and $\iota_{2}:
@@ -400,7 +390,7 @@ proj₂ (_ , y) = y
     [f,g](\iota_{2}(y)) = g(y)
   \end{equation}
   for all $x \in A$ and $y \in B$. Equations \eqref{eq:coproduct}
-  obviously hold.
+  hold.
 
 \end{example}
 
@@ -412,7 +402,7 @@ proj₂ (_ , y) = y
   \begin{codehaskell}
 data Either a b = Left a | Right b
   \end{codehaskell}
-  And the \texthaskell{either} function is the function required to
+  The \texthaskell{either} function is the function required to
   satisfy the definition of a coproduct:
   \begin{codehaskell}
 either :: (a -> c) -> (b -> c) -> Either a b -> c
@@ -422,18 +412,17 @@ either _ g (Right y) = g y
 
 \end{example}
 
-\begin{example}
+\begin{example}[See module \module{Abel.Data.Sum}]
   \label{ex:coproduct-agda}
 
-  In a similar way, in Agda, sums or disjoint unions, defined in
-  \module{Abel.Data.Sum}, are coproducts:
+  In \agda, sums or disjoint unions are coproducts:
   \begin{codeagda}
 data _+_ (A B : Set) : Set where
   inj₁ : (x : A) → A + B
   inj₂ : (y : B) → A + B
   \end{codeagda}
   Finally, the required function to show that sums are indeed
-  coproducts is defined in \module{Abel.Data.Sum}, too, as follows:
+  coproducts is defined as follows:
   \begin{codeagda}
 [_,_] : {A B C : Set} (f : A → C) (g : B → C) → A + B → C
 [_,_] f _ (inj₁ x) = f x

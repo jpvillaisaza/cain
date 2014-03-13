@@ -6,13 +6,12 @@
   define \emph{functor}...
 }{---\textcite[18]{maclane-1998}}
 
-In this chapter we explore functors. In Section \ref{sec:functors} we
-define mathematical functors, and in Sections
-\ref{sec:functors-haskell} and \ref{sec:functors-agda} we describe
-functors in Haskell and Agda, respectively.
+\todo{Introduction too short?}
 
-\section{Introduction}
-\label{sec:functors-introduction}
+In this chapter we explore functors. In Section \ref{sec:functors}, we
+define mathematical functors, and in Sections
+\ref{sec:functors-haskell} and \ref{sec:functors-agda}, we describe
+functors in Haskell and Agda, respectively.
 
 Mapping over lists, which is accomplished with the \texthaskell{map}
 function, is ``a dominant idiom in Haskell''
@@ -21,7 +20,7 @@ function, is ``a dominant idiom in Haskell''
 \begin{codehaskell}
 map :: (a -> b) -> [a] -> [b]
 \end{codehaskell}
-According to the documentation of the Haskell Prelude, given a
+According to the documentation of the Haskell Prelude\todo{Reference}, given a
 function \texthaskell{f} and a list \texthaskell{xs}, \texthaskell{map
   f xs} is the list obtained by applying \texthaskell{f} to each
 element in \texthaskell{xs}. In other words:
@@ -77,20 +76,20 @@ for better understanding what that means.
 \label{sec:functors}
 
 The concepts of functor and endofunctor are fundamental to our
-development. In detail:
+development.
 
 \begin{definition}
   \label{def:functor}
 
   %% \parencites[13]{maclane-1998}[428]{poigne-1992}
 
-  Let \cat{C} and \cat{D} be categories\footnote{Whenever a category
-    \cat{C} is mentioned, its sets of objects and morphisms, its
-    domain and codomain functions, and its identity and composition
-    functions (\catO{C} and \catM{C}, $\dom$ and $\cod$, and $\id$ and
-    $\comp$, respectively) are implicitly mentioned as well. See
-    Definition \ref{def:category}.}. A functor $\func{F}: \cat{C} \to
-  \cat{D}$ consists of an object function
+  Let \cat{C} and \cat{D} be categories\footnote{\todo{In the
+      sequel?}Whenever a category \cat{C} is mentioned, its sets of
+    objects and morphisms, its domain and codomain functions, and its
+    identity and composition functions (\catO{C} and \catM{C}, $\dom$
+    and $\cod$, and $\id$ and $\comp$, respectively) are implicitly
+    mentioned as well. See Definition \ref{def:category}.}. A functor
+  $\func{F}: \cat{C} \to \cat{D}$ consists of an object function
   %% Let $\cat{C}$ and $\cat{D}$ be categories. A functor $\func{F}:
   %% \cat{C} \to \cat{D}$ assigns to each object $a$ of $\cat{C}$ an
   %% object $\funcO{F}(a)$ of $\cat{D}$, and to each morphism $f: a \to
@@ -138,16 +137,17 @@ development. In detail:
 
   %% \parencites[13]{maclane-1998}[10--11]{marquis-2013}[431]{poigne-1992}
 
-  The power set operation yields a functor $\func{P}: \set \to \set$.
-  Its object function $\funcO{P}$ is the power set operation, that is,
-  given a set $A$, $\funcO{P}(A)$ is the set of all subsets of $A$:
+  The power set operation yields an endofunctor $\func{P}: \set \to
+  \set$. Its object function $\funcO{P}$ is the power set operation,
+  that is, given a set $A$, $\funcO{P}(A)$ is the set of all subsets
+  of $A$:
   \begin{equation}
     \label{eq:functor-power-set-object}
     \funcO{P}(A) = \{X \mid X \subseteq A\}
     \text{.}
   \end{equation}
-  And its morphism function $\funcM{P}$ assigns to each function $f: A
-  \to B$ a function $\funcM{P}(f): \funcO{P}(A) \to \funcO{P}(B)$ such
+  Its morphism function $\funcM{P}$ assigns to each function $f: A \to
+  B$ a function $\funcM{P}(f): \funcO{P}(A) \to \funcO{P}(B)$ such
   that
   \begin{equation}
     \label{eq:functor-power-set-morphism}
@@ -155,7 +155,7 @@ development. In detail:
   \end{equation}
   for all $X \in \funcO{P}(A)$.
 
-  \begin{proof}
+  \begin{proof}\todo{Of what?}
 
     We need to prove that \eqref{eq:functor-identity} and
     \eqref{eq:functor-composition} hold. In the first place:
@@ -194,8 +194,8 @@ development. In detail:
 
   %% \parencite[11]{marquis-2013}
 
-  Given a category \cat{C}, its identity functor $\func{I}: \cat{C}
-  \to \cat{C}$ sends all objects and morphisms of \cat{C} to
+  Given a category \cat{C}, its identity \todo{endofunctor} $\func{I}:
+  \cat{C} \to \cat{C}$ sends all objects and morphisms of \cat{C} to
   themselves. In detail, the object function $\funcO{I}: \catO{C} \to
   \catO{C}$ is defined as
   \begin{equation}
@@ -210,7 +210,7 @@ development. In detail:
   \end{equation}
   for all $f \in \catM{C}$.
 
-  \begin{proof}
+  \begin{proof}\todo{Of what?}
 
     We verify that \eqref{eq:functor-identity} and
     \eqref{eq:functor-composition} hold:
@@ -221,7 +221,7 @@ development. In detail:
         \eqby{\eqref{eq:functor-identity-object}}
       \step{$\idO{\funcO{I}(a)}$}
     \end{steps}
-    And:
+    And:\todo{Ugly}
     \begin{steps}
       \step{$\funcM{I}(g \comp f)$}
         \eqby{\eqref{eq:functor-identity-morphism} with $f = g \comp f$}
@@ -267,7 +267,7 @@ like \texthaskell{Either a} can be declared as an instance of
 \texthaskell{Functor}.
 
 The fact that \texthaskell{f} is a type constructor can be made
-explicit using the language option \texthaskell{KindSignatures}:
+explicit using the \texthaskell{KindSignatures} language option:
 \begin{codehaskell}
 class Functor (f :: * -> *) where
   fmap :: (a -> b) -> f a -> f b
@@ -277,8 +277,8 @@ object function of a mathematical functor (that is,
 \eqref{eq:functor-object}): it sends objects of \hask (types) to
 objects of \hask (types).
 
-Also, \texthaskell{fmap} is curried and can be rewritten with extra
-and unnecessary parentheses for emphasis:
+The \texthaskell{fmap} function is curried and can be rewritten with
+extra (and unnecessary parentheses):
 \begin{codehaskell}
 class Functor (f :: * -> *) where
   fmap :: (a -> b) -> (f a -> f b)
@@ -308,7 +308,7 @@ law in Haskell follows:
 \begin{codehaskell}
 fmap (id :: a -> a) = (id :: f a -> f a)
 \end{codehaskell}
-And the second law can be stated as:
+The second law can be stated as:
 \begin{codehaskell}
 fmap (g . f) = fmap g . fmap f
 \end{codehaskell}
@@ -318,6 +318,7 @@ of these laws amounts to proving that an instance of the
 
 \begin{remark}
 
+  \todo{Different approach? Not clear.}
   A different approach is that of \parencite{jeuring-2012}, which
   includes the implementation of a library for testing the laws of
   type classes such as \texthaskell{Functor}.
@@ -341,7 +342,7 @@ instance Functor Identity where
   %% isomorphic to \texthaskell{a}. See \parencite[§
   %%   4.2.3]{peytonjones-2003}.
 
-  \begin{proof}
+  \begin{proof}\todo{Of what?}
 
     See the proof of Example \ref{ex:functor-identity}.
 
@@ -355,12 +356,12 @@ instance Functor Identity where
   %% \parencites[147--148]{lipovaca-2011}[246]{osullivan-2008}[20--21]{yorgey-2009}
 
   A common example of functors in Haskell is the \texthaskell{Maybe}
-  functor. Its type constructor is, of course, the \texthaskell{Maybe}
-  type constructor:
+  functor. Its type constructor is the \texthaskell{Maybe} type
+  constructor:
   \begin{codehaskell}
 data Maybe a = Nothing | Just a
   \end{codehaskell}
-  And its \texthaskell{fmap} function is defined as follows:
+  Its \texthaskell{fmap} function is defined as follows:
   \begin{codehaskell}
 instance Functor Maybe where
   fmap _ Nothing  = Nothing
@@ -433,7 +434,7 @@ instance Functor Maybe where
 
   Another common example of functors in Haskell is the list functor.
   Its type constructor is \texthaskell{[]}, and its \texthaskell{fmap}
-  function is, obviously, the \texthaskell{map} function:
+  function is the \texthaskell{map} function:
   \begin{codehaskell}
 instance Functor [] where
   fmap _ []     = []
@@ -447,9 +448,8 @@ instance Functor [] where
   The \texthaskell{[]} type constructor sends types \texthaskell{a} to
   types \texthaskell{[a]}, that is, lists of \texthaskell{a}, and the
   \texthaskell{fmap} or \texthaskell{map} function, which we talked
-  about in Section \ref{sec:functors-introduction}, sends functions of
-  type \texthaskell{a -> b} to functions of type \texthaskell{[a] ->
-    [b]}.
+  about earlier, sends functions of type \texthaskell{a -> b} to
+  functions of type \texthaskell{[a] -> [b]}.
 
   \begin{proof}
 
@@ -716,8 +716,8 @@ instance Functor Maybe where
   fmap _ (Just _) = Nothing
   \end{codehaskell}
   Even though this definition of the \texthaskell{fmap} function is
-  accepted by Haskell, the following counterexample proves that it
-  violates the first functor law:
+  accepted by the Haskell type checker, the following counterexample
+  proves that it violates the first functor law:
   \begin{codehaskell}
 > fmap id (Just 0)
 Nothing
@@ -725,16 +725,16 @@ Nothing
 Just 0
   \end{codehaskell}
   Note that this is the only alternative declaration of the
-  \texthaskell{Maybe} functor.
+  \texthaskell{Maybe} functor.\todo{Why if that is not a functor?}
 
 \end{example}
 
 \begin{example}
   \label{ex:functor-bad-list-haskell}
 
-  We can also redefine the list functor (see Example
-  \ref{ex:functor-list-haskell}). Here is the declaration we discussed
-  in Section \ref{sec:functors-introduction}:
+  \todo{not redefine} We can also redefine the list functor (see
+  Example \ref{ex:functor-list-haskell}). Here is the declaration we
+  discussed at the beginning of the chapter:
   \begin{codehaskell}
 instance Functor [] where
   fmap _ []     = []
@@ -813,8 +813,9 @@ functor = mkFunctor fmap fmap-id fmap-∘
     fmap-∘ (just _) = refl
     fmap-∘ nothing  = refl
   \end{codeagda}
-  Clearly, this functor corresponds to the \texthaskell{Maybe} functor
-  in Haskell (see Example \ref{ex:functor-maybe-haskell}).
+  This functor corresponds to the \texthaskell{Maybe} functor in
+  Haskell (see Example \ref{ex:functor-maybe-haskell}). \todo{Not
+    completely sure because AB Set and a and b are polymorphic.}
 
 \end{example}
 
