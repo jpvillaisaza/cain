@@ -17,9 +17,9 @@ this idea with examples of parametrically polymorphic functions such
 as appending an element to a list, extracting the first component of a
 pair, reversing a list, etcetera.
 
-One such function is the \texthaskell{head} function, which extracts
-the first element of a list\footnote{Note that this is not the
-  standard \texthaskell{head} function.}:
+In Haskell, one such function is the \texthaskell{head} function,
+which extracts the first element of a list\footnote{Note that this is
+  not the standard \texthaskell{head} function.}:
 \begin{codehaskell}
 head :: [a] -> Maybe a
 head []    = Nothing
@@ -54,8 +54,8 @@ Or, equivalently, the diagram in Figure
       \draw [->] (f a) to node [swap] {\texthaskell{fmap f}} (f b);
       \draw [->] (g a) to node        {\texthaskell{fmap f}} (g b);
 
-      \draw [->] (f a) to node        {\texthaskell{head}} (g a);
-      \draw [->] (f b) to node [swap] {\texthaskell{head}} (g b);
+      \draw [->] (f a) to node        {\texthaskell{head}}   (g a);
+      \draw [->] (f b) to node [swap] {\texthaskell{head}}   (g b);
     \end{tikzpicture}
   \end{center}
   \caption{Naturality of the \texthaskell{head} function.}
@@ -65,58 +65,35 @@ Or, equivalently, the diagram in Figure
 Even if this is an intuitive property of the \texthaskell{head}
 function and proving it is quite simple, it says a lot about its
 behavior and the behavior of all the functions that are part of the
-family that it defines. More importantly, all of these facts are
+family that it defines. Most importantly, all of these facts are
 abstracted by natural transformations.
 
 \section{Natural transformations}
 \label{sec:naturals}
 
-The concepts of category, functor, and natural transformation are
-``what category theory is built on'' \parencite{nlab-category-theory}.
-We have already defined categories and functors, so we continue with
-natural transformations.
+Having defined categories and functors or morphisms of categories, let
+us now define natural transformations or morphisms of functors.
 
 \begin{definition}
   \label{def:natural}
 
   %% \parencites[16]{maclane-1998}[435--436]{poigne-1992}
 
-  Let $\func{F}: \cat{C} \to \cat{D}$ and $\func{G}: \cat{C} \to
-  \cat{D}$ be functors\footnote{Whenever a functor $\func{F}: \cat{C}
-    \to \cat{D}$ is mentioned, its object and morphism functions
-    (\funcO{F} and \funcM{F}, respectively) are implicitly mentioned
-    as well. See Definition \ref{def:functor}.} for categories \cat{C}
-  and \cat{D}. A natural transformation
-  \begin{equation}
-    \label{eq:natural}
+  Let $\func{F}$ and $\func{G}: \cat{C} \to \cat{D}$ be functors for
+  categories $\cat{C}$ and $\cat{D}$. A natural transformation
+  \begin{equation*}
     \nat{\tau}: \func{F} \to \func{G}: \cat{C} \to \cat{D}
-  \end{equation}
-  is a function
-  \begin{equation*}
-    \nat{\tau}: \catO{C} \to \catM{D}
   \end{equation*}
-  which assigns to each object $a \in \catO{C}$ a morphism
-  \begin{equation*}
-    \natO{\tau}{a}: \funcO{F}(a) \to \funcO{G}(a) \in \catM{D}
-    \text{,}
-  \end{equation*}
-  called a component of the natural transformation, such that, for all
-  morphisms $f: a \to b \in \catM{C}$,
+  assigns to each object $a$ in $\cat{C}$ a morphism $\natO{\tau}{a}:
+  \funcO{F}(a) \to \funcO{G}(a)$ in $\cat{D}$, called a component of
+  the natural transformation, such that, for all morphisms $f: a \to
+  b$ in $\cat{C}$,
   \begin{equation}
     \label{eq:naturality}
     \natO{\tau}{b} \comp \funcM{F}(f) = \funcM{G}(f) \comp \natO{\tau}{a}
     \text{,}
   \end{equation}
-  called naturality of the natural transformation, that is, such that
-  the diagram in Figure \ref{fig:naturality} is commutative.
-  Equivalently, a natural transformation \eqref{eq:natural} is a set
-  of morphisms of \catM{D}
-  \begin{equation*}
-    \nat{\tau} = \{\natO{\tau}{a}: \funcO{F}(a) \to \funcO{G}(a) \in
-    \catM{D} \mid a \in \catO{C}\}
-  \end{equation*}
-  indexed by the set of objects \catO{C} such that
-  \eqref{eq:naturality} holds.
+  that is, the diagram in Figure \ref{fig:naturality} is commutative.
 
   \begin{figure}[htb]
     \begin{center}
@@ -126,8 +103,8 @@ natural transformations.
         \node (g a) [right of=f a] {$\funcO{G}(a)$};
         \node (g b) [below of=g a] {$\funcO{G}(b)$};
 
-        \draw [->] (f a) to node [swap] {$\funcM{F}(f)$} (f b);
-        \draw [->] (g a) to node        {$\funcM{G}(f)$} (g b);
+        \draw [->] (f a) to node [swap] {$\funcM{F}(f)$}   (f b);
+        \draw [->] (g a) to node        {$\funcM{G}(f)$}   (g b);
 
         \draw [->] (f a) to node        {$\natO{\tau}{a}$} (g a);
         \draw [->] (f b) to node [swap] {$\natO{\tau}{b}$} (g b);
@@ -139,77 +116,100 @@ natural transformations.
 
 \end{definition}
 
+As an example, the identity morphisms of a category are the components
+of a natural transformation, and, interestingly, the identity axiom of
+the category is the naturality of the transformation.
+
 \begin{example}
   \label{ex:natural-identity}
 
-  Given a category \cat{C}, its identity function is a natural
-  transformation $\id: \func{I} \to \func{I}: \cat{C} \to \cat{C}$
-  from and into its identity functor (see Example
-  \ref{ex:functor-identity}), and its naturality is given by the
-  commutativity of either of the diagrams in Figure
-  \ref{fig:natural-identity}, that is, \eqref{eq:category-identity}.
+  Given a category $\cat{C}$, the identity natural transformation
+  $\id: \func{I} \to \func{I}: \cat{C} \to \cat{C}$ assigns to each
+  object $a$ the identity morphism $\idO{a}: a \to a$. This is a
+  natural transformation from and into the identity functor (see
+  Example \ref{ex:functor-identity}). Naturality is the commutativity
+  of either of the diagrams in Figure \ref{fig:natural-identity}, that
+  is, \eqref{eq:category-identity}.
 
   \begin{figure}[htb]
-    \begin{subfigure}[b]{0.5\linewidth}
-      \begin{center}
-        \begin{tikzpicture}
-          \node (f a)                {$a$};
-          \node (f b) [below of=f a] {$b$};
-          \node (g a) [right of=f a] {$a$};
-          \node (g b) [below of=g a] {$b$};
+    \begin{center}
+      \begin{subfigure}[t]{0.45\linewidth}
+        \begin{center}
+          \begin{tikzpicture}
+            \node (f a)                {$a$};
+            \node (f b) [below of=f a] {$b$};
+            \node (g a) [right of=f a] {$a$};
+            \node (g b) [below of=g a] {$b$};
 
-          \draw [->] (f a) to node [swap] {$f$} (f b);
-          \draw [->] (g a) to node        {$f$} (g b);
+            \draw [->] (f a) to node [swap] {$f$}       (f b);
+            \draw [->] (g a) to node        {$f$}       (g b);
 
-          \draw [->] (f a) to node        {$\idO{a}$} (g a);
-          \draw [->] (f b) to node [swap] {$\idO{b}$} (g b);
-        \end{tikzpicture}
-      \end{center}
-    \end{subfigure}
-    \begin{subfigure}[b]{0.5\linewidth}
-      \begin{center}
-        \begin{tikzpicture}
-          \node (f a)                {$\funcO{I}(a)$};
-          \node (f b) [below of=f a] {$\funcO{I}(b)$};
-          \node (g a) [right of=f a] {$\funcO{I}(a)$};
-          \node (g b) [below of=g a] {$\funcO{I}(b)$};
+            \draw [->] (f a) to node        {$\idO{a}$} (g a);
+            \draw [->] (f b) to node [swap] {$\idO{b}$} (g b);
+          \end{tikzpicture}
+        \end{center}
+      \end{subfigure}
+      \begin{subfigure}[t]{0.45\linewidth}
+        \begin{center}
+          \begin{tikzpicture}
+            \node (f a)                {$\funcO{I}(a)$};
+            \node (f b) [below of=f a] {$\funcO{I}(b)$};
+            \node (g a) [right of=f a] {$\funcO{I}(a)$};
+            \node (g b) [below of=g a] {$\funcO{I}(b)$};
 
-          \draw [->] (f a) to node [swap] {$\funcM{I}(f)$} (f b);
-          \draw [->] (g a) to node        {$\funcM{I}(f)$} (g b);
+            \draw [->] (f a) to node [swap] {$\funcM{I}(f)$} (f b);
+            \draw [->] (g a) to node        {$\funcM{I}(f)$} (g b);
 
-          \draw [->] (f a) to node        {$\idO{a}$} (g a);
-          \draw [->] (f b) to node [swap] {$\idO{b}$} (g b);
-        \end{tikzpicture}
-      \end{center}
-    \end{subfigure}
+            \draw [->] (f a) to node        {$\idO{a}$}      (g a);
+            \draw [->] (f b) to node [swap] {$\idO{b}$}      (g b);
+          \end{tikzpicture}
+        \end{center}
+      \end{subfigure}
+    \end{center}
     \caption{Naturality of the identity natural transformation.}
     \label{fig:natural-identity}
   \end{figure}
 
 \end{example}
 
+As an example of natural transformations as morphisms of functors, the
+identity and power set functors are related in a natural manner.
+
 \begin{example}
   \label{ex:natural-identity-power-set}
 
   %% \parencite[11]{marquis-2013}
 
-  We can naturally relate the identity and power set functors (see
-  Examples \ref{ex:functor-identity} and \ref{ex:functor-power-set},
-  respectively). Indeed, the function
-  \begin{equation*}
-    \nat{\eta}: \catO{\set} \to \catM{\set}
-    \text{,}
-  \end{equation*}
-  which assigns to each set $A$ a function $\natO{\eta}{A}:
-  \funcO{I}(A) \to \funcO{P}(A)$ such that, for all $x \in A$,
+  In $\set$, $\nat{\eta}: \func{I} \to \func{P}: \set \to \set$ is a
+  natural transformation which assigns to each set $A$ a function
+  $\natO{\eta}{A}: \funcO{I}(A) \to \funcO{P}(A)$ such that, for all
+  $x \in A$,
   \begin{equation}
     \label{eq:eta}
     \natO{\eta}{A}(x) = \{x\}
-    \text{,}
+    \text{.}
   \end{equation}
-  is a natural transformation $\nat{\eta}: \func{I} \to \func{P}: \set
-  \to \set$, and its naturality is given by the commutativity of the
-  diagram in Figure \ref{fig:naturality-identity-power-set}.
+  This is a natural transformation from the identity functor into the
+  power set functor (see Examples \ref{ex:functor-identity} and
+  \ref{ex:functor-power-set}, respectively). Naturality is the
+  commutativity of the diagram in Figure
+  \ref{fig:natural-identity-power-set}, which we shall prove as
+  follows. For a function $f: A \to B$ and an element $x \in A$:
+  \begin{steps}
+    \step{$(\natO{\eta}{B} \comp \funcM{I}(f))(x)$}
+      \eqby{\eqref{eq:set-composition} with $f = \funcM{I}(f)$ and $g = \natO{\eta}{B}$}
+    \step{$\natO{\eta}{B}(\funcM{I}(f)(x))$}
+      \eqby{\eqref{eq:functor-identity-morphism}}
+    \step{$\natO{\eta}{B}(f(x))$}
+      \eqby{\eqref{eq:eta} with $A = B$ and $x = f(x)$}
+    \step{$\{f(x)\}$}
+      \eqby{\eqref{eq:functor-power-set-morphism} with $X = \{x\}$}
+    \step{$\funcM{P}(f)(\{x\})$}
+      \eqby{\eqref{eq:eta}}
+    \step{$\funcM{P}(f)(\natO{\eta}{A}(x))$}
+      \eqby{\eqref{eq:set-composition} with $f = \natO{\eta}{A}$ and $g = \funcM{P}(f)$}
+    \step{$(\funcM{P}(f) \comp \natO{\eta}{A})(x)$}
+  \end{steps}
 
   \begin{figure}[htb]
     \begin{center}
@@ -219,37 +219,16 @@ natural transformations.
         \node (g a) [right of=f a] {$\funcO{P}(A)$};
         \node (g b) [below of=g a] {$\funcO{P}(B)$};
 
-        \draw [->] (f a) to node [swap] {$\funcM{I}(f)$} (f b);
-        \draw [->] (g a) to node        {$\funcM{P}(f)$} (g b);
+        \draw [->] (f a) to node [swap] {$\funcM{I}(f)$}   (f b);
+        \draw [->] (g a) to node        {$\funcM{P}(f)$}   (g b);
 
         \draw [->] (f a) to node        {$\natO{\eta}{A}$} (g a);
         \draw [->] (f b) to node [swap] {$\natO{\eta}{B}$} (g b);
       \end{tikzpicture}
     \end{center}
     \caption{Naturality of the $\eta$ natural transformation.}
-    \label{fig:naturality-identity-power-set}
+    \label{fig:natural-identity-power-set}
   \end{figure}
-
-  \begin{proof}
-
-    Given a function $f: A \to B$ and an element $x \in A$:
-    \begin{steps}
-      \step{$(\natO{\eta}{B} \comp \funcM{I}(f))(x)$}
-        \eqby{\eqref{eq:set-composition} with $f = \funcM{I}(f)$ and $g = \natO{\eta}{B}$}
-      \step{$\natO{\eta}{B}(\funcM{I}(f)(x))$}
-        \eqby{\eqref{eq:functor-identity-morphism}}
-      \step{$\natO{\eta}{B}(f(x))$}
-        \eqby{\eqref{eq:eta} with $A = B$ and $x = f(x)$}
-      \step{$\{f(x)\}$}
-        \eqby{\eqref{eq:functor-power-set-morphism} with $X = \{x\}$}
-      \step{$\funcM{P}(f)(\{x\})$}
-        \eqby{\eqref{eq:eta}}
-      \step{$\funcM{P}(f)(\natO{\eta}{A}(x))$}
-        \eqby{\eqref{eq:set-composition} with $f = \natO{\eta}{A}$ and $g = \funcM{P}(f)$}
-      \step{$(\funcM{P}(f) \comp \natO{\eta}{A})(x)$}
-    \end{steps}
-
-  \end{proof}
 
 \end{example}
 
@@ -267,17 +246,16 @@ In Haskell, polymorphic functions can be thought of as functions of
 functors in order to relate them to natural transformations. Given two
 functors with type constructors \texthaskell{f} and \texthaskell{g}, a
 natural transformation \texthaskell{tau} is a polymorphic function
-\begin{codehaskell}
-tau :: f a -> g a
-\end{codehaskell}
-Or, using the \texthaskell{ExplicitForAll} language option, a set of
-functions indexed by Haskell types:
+\texthaskell{tau :: f a -> g a} or, using the
+\texthaskell{ExplicitForAll} language option, a family of functions
+indexed by Haskell types:
 \begin{codehaskell}
 tau :: forall a. f a -> g a
 \end{codehaskell}
-The naturality of \texthaskell{tau} is the commutativity of the
-diagram in Figure \ref{fig:naturality-haskell}, that is, for all
-functions \texthaskell{f :: a -> b}:
+More precisely, each \texthaskell{tau} function is a component of a
+natural transformation. The naturality of \texthaskell{tau} is the
+commutativity of the diagram in Figure \ref{fig:naturality-haskell},
+that is, for all functions \texthaskell{f :: a -> b}:
 \begin{codehaskell}
 tau . fmap f = fmap f . tau
 \end{codehaskell}
@@ -314,15 +292,18 @@ naturality, it does not provide a proof of it. Parametricity does not
 require the definition of a polymorphic function (only its type), but
 proving naturality does.
 
+As examples, we consider the identity natural transformation, and the
+\texthaskell{head} and \texthaskell{last} functions, which show that
+proofs of naturality differ according to the definition.
+
 \begin{example}
   \label{ex:natural-identity-haskell}
 
-  Obviously, the identity function of \hask is a natural
-  transformation, and its naturality is the identity axiom (see
-  Section \ref{sec:category-haskell} and Example
+  The identity function of Haskell is a natural transformation.
+  Naturality is the identity axiom. See Example
   \ref{ex:natural-identity}, which establishes that the identity
-  function is a natural transformation regardless of which category it
-  belongs to).
+  morphisms are the components of a natural transformation regardless
+  of which category it belongs to.
 
 \end{example}
 
@@ -331,45 +312,43 @@ proving naturality does.
 
   We have already talked about the \texthaskell{head} function, which
   is a natural transformation from the list functor into the
-  \texthaskell{Maybe} functor. Its naturality is the commutativity of
-  the diagram in Figure \ref{fig:naturality-head-haskell}.
+  \texthaskell{Maybe} functor. Naturality is the commutativity of the
+  diagram in Figure \ref{fig:naturality-head-haskell}. Here is its
+  proof.
 
-  \begin{proof}
-
-    In the case of an empty list \texthaskell{[]}:
-    \begin{steps}
-      \steph{(head . fmap f) []}
-        \eqbydefh{(.)}
-      \steph{head (fmap f [])}
-        \eqbydefh{fmap}
-      \steph{head []}
-        \eqbydefh{head}
-      \steph{Nothing}
-        \eqbydefh{fmap}
-      \steph{fmap f Nothing}
-        \eqbydefh{head}
-      \steph{fmap f (head [])}
-        \eqbydefh{(.)}
-      \steph{(fmap f . head) []}
-    \end{steps}
-    And in the case of a nonempty list \texthaskell{(x:xs)}:
-    \begin{steps}
-      \steph{(head . fmap f) (x:xs)}
-        \eqbydefh{(.)}
-      \steph{head (fmap f (x:xs))}
-        \eqbydefh{fmap}
-      \steph{head (f x : fmap f xs)}
-        \eqbydefh{head}
-      \steph{Just (f x)}
-        \eqbydefh{fmap}
-      \steph{fmap f (Just x)}
-        \eqbydefh{head}
-      \steph{fmap f (head (x:xs))}
-        \eqbydefh{(.)}
-      \steph{(fmap f . head) (x:xs)}
-    \end{steps}
-
-  \end{proof}
+  \vspace{1em}
+  \case{\texthaskell{[]}}
+  \begin{steps}
+    \steph{(head . fmap f) []}
+      \eqbydefh{(.)}
+    \steph{head (fmap f [])}
+      \eqbydefh{fmap}
+    \steph{head []}
+      \eqbydefh{head}
+    \steph{Nothing}
+      \eqbydefh{fmap}
+    \steph{fmap f Nothing}
+      \eqbydefh{head}
+    \steph{fmap f (head [])}
+      \eqbydefh{(.)}
+    \steph{(fmap f . head) []}
+  \end{steps}
+  \case{\texthaskell{(x:xs)}}
+  \begin{steps}
+    \steph{(head . fmap f) (x:xs)}
+      \eqbydefh{(.)}
+    \steph{head (fmap f (x:xs))}
+      \eqbydefh{fmap}
+    \steph{head (f x : fmap f xs)}
+      \eqbydefh{head}
+    \steph{Just (f x)}
+      \eqbydefh{fmap}
+    \steph{fmap f (Just x)}
+      \eqbydefh{head}
+    \steph{fmap f (head (x:xs))}
+      \eqbydefh{(.)}
+    \steph{(fmap f . head) (x:xs)}
+  \end{steps}
 
 \end{example}
 
@@ -394,7 +373,64 @@ last . fmap f = fmap f . last
   \end{codehaskell}
   Intuitively, this means that mapping a function over a list and then
   extracting the last element of the list is equivalent to extracting
-  the last element of the list and then applying the function.
+  the last element of the list and then applying the function. In this
+  case, proving naturality requires induction, as follows.
+
+  \vspace{1em}
+  \case{\texthaskell{[]}}
+  \begin{steps}
+    \steph{(last . fmap f) []}
+      \eqbydefh{(.)}
+    \steph{last (fmap f [])}
+      \eqbydefh{fmap}
+    \steph{last []}
+      \eqbydefh{last}
+    \steph{Nothing}
+      \eqbydefh{fmap}
+    \steph{fmap f Nothing}
+      \eqbydefh{last}
+    \steph{fmap f (last [])}
+      \eqbydefh{(.)}
+    \steph{(fmap f . last) []}
+  \end{steps}
+  \case{\texthaskell{[x]}}
+  \begin{steps}
+    \steph{(last . fmap f) (x:[])}
+      \eqbydefh{(.)}
+    \steph{last (fmap f (x:[]))}
+      \eqbydefh{fmap}
+    \steph{last (f x : fmap f [])}
+      \eqbydefh{fmap}
+    \steph{last (f x : [])}
+      \eqbydefh{last}
+    \steph{Just (f x)}
+      \eqbydefh{fmap}
+    \steph{fmap f (Just x)}
+      \eqbydefh{last}
+    \steph{fmap f (last (x:[]))}
+      \eqbydefh{(.)}
+    \steph{(fmap f . last) (x:[])}
+  \end{steps}
+  \case{\texthaskell{(x:y:ys)}}
+  \begin{steps}
+    \steph{(last . fmap f) (x:y:ys)}
+      \eqbydefh{(.)}
+    \steph{last (fmap f (x:y:ys))}
+      \eqbydefh{fmap}
+    \steph{last (f x : fmap f (y:ys))}
+      \eqbydefh{last}
+    \steph{last (fmap f (y:ys))}
+      \eqbydefh{(.)}
+    \steph{(last . fmap f) (y:ys)}
+      \eqbyihh{}
+    \steph{(fmap f . last) (y:ys)}
+      \eqbydefh{(.)}
+    \steph{fmap f (last (y:ys))}
+      \eqbydefh{last}
+    \steph{fmap f (last (x:y:ys))}
+      \eqbydefh{(.)}
+    \steph{(fmap f . last) (x:y:ys)}
+  \end{steps}
 
   \begin{figure}[htb]
     \begin{center}
@@ -407,74 +443,13 @@ last . fmap f = fmap f . last
         \draw [->] (f a) to node [swap] {\texthaskell{fmap f}} (f b);
         \draw [->] (g a) to node        {\texthaskell{fmap f}} (g b);
 
-        \draw [->] (f a) to node        {\texthaskell{last}} (g a);
-        \draw [->] (f b) to node [swap] {\texthaskell{last}} (g b);
+        \draw [->] (f a) to node        {\texthaskell{last}}   (g a);
+        \draw [->] (f b) to node [swap] {\texthaskell{last}}   (g b);
       \end{tikzpicture}
     \end{center}
-    \caption{Naturality of the \texthaskell{last} function in Haskell.}
+    \caption{Naturality of the \texthaskell{last} function.}
     \label{fig:naturality-last-haskell}
   \end{figure}
-
-  \begin{proof}
-
-    We prove the naturality of the \texthaskell{last} function by
-    induction. In the case of an empty list \texthaskell{[]}:
-    \begin{steps}
-      \steph{(last . fmap f) []}
-        \eqbydefh{(.)}
-      \steph{last (fmap f [])}
-        \eqbydefh{fmap}
-      \steph{last []}
-        \eqbydefh{last}
-      \steph{Nothing}
-        \eqbydefh{fmap}
-      \steph{fmap f Nothing}
-        \eqbydefh{last}
-      \steph{fmap f (last [])}
-        \eqbydefh{(.)}
-      \steph{(fmap f . last) []}
-    \end{steps}
-    In the case of a singleton list \texthaskell{[x]} or
-    \texthaskell{(x:[])}:
-    \begin{steps}
-      \steph{(last . fmap f) (x:[])}
-        \eqbydefh{(.)}
-      \steph{last (fmap f (x:[]))}
-        \eqbydefh{fmap}
-      \steph{last (f x : fmap f [])}
-        \eqbydefh{fmap}
-      \steph{last (f x : [])}
-        \eqbydefh{last}
-      \steph{Just (f x)}
-        \eqbydefh{fmap}
-      \steph{fmap f (Just x)}
-        \eqbydefh{last}
-      \steph{fmap f (last (x:[]))}
-        \eqbydefh{(.)}
-      \steph{(fmap f . last) (x:[])}
-    \end{steps}
-    And in the case of a nonempty list \texthaskell{(x:y:ys)}:
-    \begin{steps}
-      \steph{(last . fmap f) (x:y:ys)}
-        \eqbydefh{(.)}
-      \steph{last (fmap f (x:y:ys))}
-        \eqbydefh{fmap}
-      \steph{last (f x : fmap f (y:ys))}
-        \eqbydefh{last}
-      \steph{last (fmap f (y:ys))}
-        \eqbydefh{(.)}
-      \steph{(last . fmap f) (y:ys)}
-        \eqbyihh{}
-      \steph{(fmap f . last) (y:ys)}
-        \eqbydefh{(.)}
-      \steph{fmap f (last (y:ys))}
-        \eqbydefh{last}
-      \steph{fmap f (last (x:y:ys))}
-        \eqbydefh{(.)}
-      \steph{(fmap f . last) (x:y:ys)}
-    \end{steps}
-
-  \end{proof}
 
 \end{example}
 
