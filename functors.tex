@@ -6,24 +6,18 @@
   define \emph{functor}...
 }{---\textcite[18]{maclane-1998}}
 
-\todo{Introduction too short?}
-
-In this chapter we explore functors. In Section \ref{sec:functors}, we
-define mathematical functors, and in Sections
-\ref{sec:functors-haskell} and \ref{sec:functors-agda}, we describe
-functors in Haskell and Agda, respectively.
-
-Mapping over lists, which is accomplished with the \texthaskell{map}
-function, is ``a dominant idiom in Haskell''
+In this chapter we explore mathematical functors, and functors in
+Haskell and Agda. Mapping over lists, which is accomplished with the
+\texthaskell{map} function, is ``a dominant idiom in Haskell''
 \parencite[146]{lipovaca-2011}. The type signature of the
 \texthaskell{map} function is:
 \begin{codehaskell}
 map :: (a -> b) -> [a] -> [b]
 \end{codehaskell}
-According to the documentation of the Haskell Prelude\todo{Reference}, given a
-function \texthaskell{f} and a list \texthaskell{xs}, \texthaskell{map
-  f xs} is the list obtained by applying \texthaskell{f} to each
-element in \texthaskell{xs}. In other words:
+According to \parencite[190]{marlow-2010}, given a function
+\texthaskell{f} and a list \texthaskell{xs}, \texthaskell{map f xs} is
+the list obtained by applying \texthaskell{f} to each element in
+\texthaskell{xs}. In other words:
 \begin{codehaskell}
 map f [x1, x2, ..., xn] = [f x1, f x2, ..., f xn]
 \end{codehaskell}
@@ -55,15 +49,16 @@ approach. This is achieved with the definition of the
 \texthaskell{Functor} type class, which is used for types that can be
 mapped over and which generalizes the \texthaskell{map} function as a
 \emph{uniform} action over a parameterized type such as
-\texthaskell{[a]} in \texthaskell{(a -> b) -> [a] -> [b]}.
+\texthaskell{[a]} or \texthaskell{Maybe a}.
 
-However, the definition of the \texthaskell{Functor} type class is not
+However, the definition of the \texthaskell{Functor} type class is not \todo{Is this confusing?}
 enough to determine what a ``uniform action over a parameterized
-type'' is. On the other hand, a comment in Haskell's documentation
-states that all instances of the \texthaskell{Functor} type class
-\emph{should} satisfy the functor laws. These laws, which are not part
-of the definition of functors in Haskell, guarantee that a ``uniform
-action over a parameterized type'' is actually uniform.
+type'' is. On the other hand, a comment in \parencite[p.
+  88]{peytonjones-2003} states that all instances of the
+\texthaskell{Functor} type class \emph{should} satisfy the functor
+laws. These laws, which are not part of the definition of functors in
+Haskell, guarantee that a ``uniform action over a parameterized type''
+is actually uniform.
 
 Functors in Haskell implement mathematical functors (that is, functors
 in category theory) and the functor laws correspond to the conditions
@@ -78,45 +73,26 @@ for better understanding what that means.
 The concepts of functor and endofunctor are fundamental to our
 development.
 
+Basically, functors or morphisms of categories map objects and
+morphisms of a category to objects and morphisms of another category.
+
 \begin{definition}
   \label{def:functor}
 
   %% \parencites[13]{maclane-1998}[428]{poigne-1992}
 
-  Let \cat{C} and \cat{D} be categories\footnote{\todo{In the
-      sequel?}Whenever a category \cat{C} is mentioned, its sets of
-    objects and morphisms, its domain and codomain functions, and its
-    identity and composition functions (\catO{C} and \catM{C}, $\dom$
-    and $\cod$, and $\id$ and $\comp$, respectively) are implicitly
-    mentioned as well. See Definition \ref{def:category}.}. A functor
-  $\func{F}: \cat{C} \to \cat{D}$ consists of an object function
-  %% Let $\cat{C}$ and $\cat{D}$ be categories. A functor $\func{F}:
-  %% \cat{C} \to \cat{D}$ assigns to each object $a$ of $\cat{C}$ an
-  %% object $\funcO{F}(a)$ of $\cat{D}$, and to each morphism $f: a \to
-  %% b$ of $\cat{C}$ a morphism
-  %% $\funcM{F}(f): \funcO{F}(a) \to \funcO{F}(b) \in \catM{D}$ such that,
-  \begin{equation}
-    \label{eq:functor-object}
-    \funcO{F}: \catO{C} \to \catO{D}
-  \end{equation}
-  and a morphism function
-  \begin{equation}
-    \label{eq:functor-morphism}
-    \funcM{F}: \catM{C} \to \catM{D}
-    \text{,}
-  \end{equation}
-  which assigns to each morphism $f: a \to b \in \catM{C}$ a morphism
-  \begin{equation*}
-    \funcM{F}(f): \funcO{F}(a) \to \funcO{F}(b) \in \catM{D}
-    \text{,}
-  \end{equation*}
-  such that, for all objects $a$ in \cat{C},
+  Let $\cat{C}$ and $\cat{D}$ be categories. A functor $\func{F}:
+  \cat{C} \to \cat{D}$ assigns to each object $a$ in $\cat{C}$ an
+  object $\funcO{F}(a)$ in $\cat{D}$, and to each morphism $f: a \to
+  b$ in $\cat{C}$ a morphism $\funcM{F}(f): \funcO{F}(a) \to
+  \funcO{F}(b)$ in $\cat{D}$, such that, for all objects $a$ in
+  $\cat{C}$,
   \begin{equation}
     \label{eq:functor-identity}
     \funcM{F}(\idO{a}) = \idO{\funcO{F}(a)}
     \text{,}
   \end{equation}
-  and, for all morphisms $f: a \to b$ and $g: b \to c$ in \cat{C},
+  and, for all morphisms $f: a \to b$ and $g: b \to c$ in $\cat{C}$,
   \begin{equation}
     \label{eq:functor-composition}
     \funcM{F}(g \comp f) = \funcM{F}(g) \comp \funcM{F}(f)
@@ -132,105 +108,102 @@ development.
 
 \end{definition}
 
+\todo{The power set operation yields and endofunctor in Set.}
+
 \begin{example}
   \label{ex:functor-power-set}
 
   %% \parencites[13]{maclane-1998}[10--11]{marquis-2013}[431]{poigne-1992}
 
-  The power set operation yields an endofunctor $\func{P}: \set \to
-  \set$. Its object function $\funcO{P}$ is the power set operation,
-  that is, given a set $A$, $\funcO{P}(A)$ is the set of all subsets
-  of $A$:
+  The power set functor $\func{P}: \set \to \set$ assigns to each set
+  $A$ the set of all subsets of $A$, that is,
   \begin{equation}
     \label{eq:functor-power-set-object}
     \funcO{P}(A) = \{X \mid X \subseteq A\}
-    \text{.}
+    \text{,}
   \end{equation}
-  Its morphism function $\funcM{P}$ assigns to each function $f: A \to
-  B$ a function $\funcM{P}(f): \funcO{P}(A) \to \funcO{P}(B)$ such
-  that
+  and to each function $f: A \to B$ a function $\funcM{P}(f):
+  \funcO{P}(A) \to \funcO{P}(B)$ such that for all $X \in
+  \funcO{P}(A)$,
   \begin{equation}
     \label{eq:functor-power-set-morphism}
     \funcM{P}(f)(X) = \{f(x) \mid x \in X\}
+    \text{.}
   \end{equation}
-  for all $X \in \funcO{P}(A)$.
-
-  \begin{proof}\todo{Of what?}
-
-    We need to prove that \eqref{eq:functor-identity} and
-    \eqref{eq:functor-composition} hold. In the first place:
-    \begin{steps}
-      \step{$\funcM{P}(\idO{A})(X)$}
-        \eqby{\eqref{eq:functor-power-set-morphism} with $f = \idO{A}$}
-      \step{$\{\idO{A}(x) \mid x \in X\}$}
-        \eqby{\eqref{eq:set-identity}}
-      \step{$\{x \mid x \in X\}$}
-        \eqbynothing
-      \step{$X$}
-        \eqby{\eqref{eq:set-identity} with $A = \funcO{P}(A)$ and $x = X$}
-      \step{$\idO{\funcO{P}(A)}(X)$}
-    \end{steps}
-    And, in the second place:
-    \begin{steps}
-      \step{$\funcM{P}(g \comp f)(X)$}
-        \eqby{\eqref{eq:functor-power-set-morphism} with $f = g \comp f$}
-      \step{$\{(g \comp f)(x) \mid x \in X\}$}
-        \eqby{\eqref{eq:set-composition}}
-      \step{$\{g(f(x)) \mid x \in X\}$}
-        \eqby{\eqref{eq:functor-power-set-morphism} with $f = g$ and $X = \{f(x) \mid x \in X\}$}
-      \step{$\funcM{P}(g)(\{f(x) \mid x \in X\})$}
-        \eqby{\eqref{eq:functor-power-set-morphism}}
-      \step{$\funcM{P}(g)(\funcM{P}(f)(X))$}
-        \eqby{\eqref{eq:set-composition} with $f = \funcM{P}(f)$, $g = \funcM{P}(g)$, and $x = X$}
-      \step{$(\funcM{P}(g) \comp \funcM{P}(f))(X)$}
-    \end{steps}
-
-  \end{proof}
+  In order to see that this defines a functor, we prove, in the first
+  place, that \eqref{eq:functor-identity} holds for all $X \in
+  \funcO{P}(A)$:
+  \begin{steps}
+    \step{$\funcM{P}(\idO{A})(X)$}
+      \eqby{\eqref{eq:functor-power-set-morphism} with $f = \idO{A}$}
+    \step{$\{\idO{A}(x) \mid x \in X\}$}
+      \eqby{\eqref{eq:set-identity}}
+    \step{$\{x \mid x \in X\}$}
+      \eqbynothing
+    \step{$X$}
+      \eqby{\eqref{eq:set-identity} with $A = \funcO{P}(A)$ and $x = X$}
+    \step{$\idO{\funcO{P}(A)}(X)$}
+  \end{steps}
+  In the second place, we prove that \eqref{eq:functor-composition}
+  holds for all $X \in \funcO{P}(A)$:
+  \begin{steps}
+    \step{$\funcM{P}(g \comp f)(X)$}
+      \eqby{\eqref{eq:functor-power-set-morphism} with $f = g \comp f$}
+    \step{$\{(g \comp f)(x) \mid x \in X\}$}
+      \eqby{\eqref{eq:set-composition}}
+    \step{$\{g(f(x)) \mid x \in X\}$}
+      \eqby{\eqref{eq:functor-power-set-morphism} with $f = g$ and $X = \{f(x) \mid x \in X\}$}
+    \step{$\funcM{P}(g)(\{f(x) \mid x \in X\})$}
+      \eqby{\eqref{eq:functor-power-set-morphism}}
+    \step{$\funcM{P}(g)(\funcM{P}(f)(X))$}
+      \eqby{\eqref{eq:set-composition} with $f = \funcM{P}(f)$, $g = \funcM{P}(g)$, and $x = X$}
+    \step{$(\funcM{P}(g) \comp \funcM{P}(f))(X)$}
+  \end{steps}
 
 \end{example}
+
+``There are many functors between two given categories, and the
+question of how they are connected suggests itself''
+\parencite[11]{marquis-2013}. For instance, there is always the
+identity functor from a category to itself.
 
 \begin{example}
   \label{ex:functor-identity}
 
   %% \parencite[11]{marquis-2013}
 
-  Given a category \cat{C}, its identity \todo{endofunctor} $\func{I}:
+  Let $\cat{C}$ be a category. The identity endofunctor $\func{I}:
   \cat{C} \to \cat{C}$ sends all objects and morphisms of \cat{C} to
-  themselves. In detail, the object function $\funcO{I}: \catO{C} \to
-  \catO{C}$ is defined as
+  themselves. In detail, for all objects $a$,
   \begin{equation}
     \label{eq:functor-identity-object}
     \funcO{I}(a) = a
+    \text{,}
   \end{equation}
-  for all $a \in \catO{C}$, and the morphism function $\funcM{I}:
-  \catM{C} \to \catM{C}$ as
+  and, for all morphisms $f$,
   \begin{equation}
     \label{eq:functor-identity-morphism}
     \funcM{I}(f) = f
+    \text{.}
   \end{equation}
-  for all $f \in \catM{C}$.
 
-  \begin{proof}\todo{Of what?}
-
-    We verify that \eqref{eq:functor-identity} and
-    \eqref{eq:functor-composition} hold:
-    \begin{steps}
-      \step{$\funcM{I}(\idO{a})$}
-        \eqby{\eqref{eq:functor-identity-morphism} with $f = \idO{a}$}
-      \step{$\idO{a}$}
-        \eqby{\eqref{eq:functor-identity-object}}
-      \step{$\idO{\funcO{I}(a)}$}
-    \end{steps}
-    And:\todo{Ugly}
-    \begin{steps}
-      \step{$\funcM{I}(g \comp f)$}
-        \eqby{\eqref{eq:functor-identity-morphism} with $f = g \comp f$}
-      \step{$g \comp f$}
-        \eqby{\eqref{eq:functor-identity-morphism} with $f = g$ and \eqref{eq:functor-identity-morphism}}
-      \step{$\funcM{I}(g) \comp \funcM{I}(f)$}
-    \end{steps}
-
-  \end{proof}
+  In the first place, we prove that \eqref{eq:functor-identity} holds:
+  \begin{steps}
+    \step{$\funcM{I}(\idO{a})$}
+      \eqby{\eqref{eq:functor-identity-morphism} with $f = \idO{a}$}
+    \step{$\idO{a}$}
+      \eqby{\eqref{eq:functor-identity-object}}
+    \step{$\idO{\funcO{I}(a)}$}
+  \end{steps}
+  In the second place, we prove that \eqref{eq:functor-composition}
+  holds:
+  \begin{steps}
+    \step{$\funcM{I}(g \comp f)$}
+      \eqby{\eqref{eq:functor-identity-morphism} with $f = g \comp f$}
+    \step{$g \comp f$}
+      \eqby{\eqref{eq:functor-identity-morphism} with $f = g$ and \eqref{eq:functor-identity-morphism}}
+    \step{$\funcM{I}(g) \comp \funcM{I}(f)$}
+  \end{steps}
 
 \end{example}
 
@@ -250,6 +223,8 @@ It is used for types that can be mapped over, and generalizes the
 parameterized type. Intuitively, functors represent containers or
 computational contexts, but we are more interested in their definition
 and its relation to that of mathematical functors.
+
+\todo{Did I explain kinds before?}
 
 It is important to note that \texthaskell{f} is a type constructor
 rather than a type (its kind is \texthaskell{* -> *} and not
@@ -273,9 +248,8 @@ class Functor (f :: * -> *) where
   fmap :: (a -> b) -> f a -> f b
 \end{codehaskell}
 The kind signature of \texthaskell{f} shows that it corresponds to the
-object function of a mathematical functor (that is,
-\eqref{eq:functor-object}): it sends objects of \hask (types) to
-objects of \hask (types).
+object function of a mathematical functor (that is, \funcO{F}): it
+sends objects of \hask (types) to objects of \hask (types).
 
 The \texthaskell{fmap} function is curried and can be rewritten with
 extra (and unnecessary parentheses):
@@ -284,19 +258,20 @@ class Functor (f :: * -> *) where
   fmap :: (a -> b) -> (f a -> f b)
 \end{codehaskell}
 The type of \texthaskell{fmap} shows that it corresponds to the
-morphism function of a mathematical functor (that is,
-\eqref{eq:functor-morphism}): it sends morphisms of \hask (functions)
-to morphisms of \hask (functions).
+morphism function of a mathematical functor (that is, \funcM{F}): it
+sends morphisms of \hask (functions) to morphisms of \hask
+(functions).
 
-In summary, instances of the \texthaskell{Functor} type class
-correspond to functors (more precisely, endofunctors) from \hask to
-\hask with the type constructor and the \texthaskell{fmap} function as
-the required object and morphism functions.
+In summary \todo{What about the laws?}, instances of the
+\texthaskell{Functor} type class correspond to functors (more
+precisely, endofunctors) from \hask to \hask with the type constructor
+and the \texthaskell{fmap} function as the required object and
+morphism functions.
 
-Although Haskell's documentation states that functors \emph{should}
-obey the functor laws, this is not mandatory when declaring an
-instance of the \texthaskell{Functor} type class. The first law can be
-stated as:
+Although Haskell's documentation \todo{ref} states that functors
+\emph{should} obey the functor laws, this is not mandatory when
+declaring an instance of the \texthaskell{Functor} type class. The
+first law can be stated as:
 \begin{codehaskell}
 fmap id = id
 \end{codehaskell}
@@ -325,6 +300,8 @@ of these laws amounts to proving that an instance of the
 
 \end{remark}
 
+\todo{Introduce the following example.}
+
 \begin{example}
   \label{ex:functor-identity-haskell}
 
@@ -342,13 +319,11 @@ instance Functor Identity where
   %% isomorphic to \texthaskell{a}. See \parencite[§
   %%   4.2.3]{peytonjones-2003}.
 
-  \begin{proof}\todo{Of what?}
-
-    See the proof of Example \ref{ex:functor-identity}.
-
-  \end{proof}
+  See the proof of Example \ref{ex:functor-identity}.
 
 \end{example}
+
+\todo{Introduce the following two examples.}
 
 \begin{example}
   \label{ex:functor-maybe-haskell}
@@ -374,56 +349,58 @@ instance Functor Maybe where
   sends functions \texthaskell{a -> b} to functions \texthaskell{Maybe
     a -> Maybe b}.
 
-  \begin{proof}
+  First, we prove that \eqref{eq:functor-identity} holds. In the case
+  of \texthaskell{Nothing}:
 
-    First, we prove that \eqref{eq:functor-identity} holds. In the
-    case of \texthaskell{Nothing}:
-    \begin{steps}
-      \steph{fmap id Nothing}
-        \eqbydefh{fmap}
-      \steph{Nothing}
-        \eqbydefh{id}
-      \steph{id Nothing}
-    \end{steps}
-    And in the case of \texthaskell{Just x}:
-    \begin{steps}
-      \steph{fmap id (Just x)}
-        \eqbydefh{fmap}
-      \steph{Just (id x)}
-        \eqbydefh{id}
-      \steph{Just x}
-        \eqbydefh{id}
-      \steph{id (Just x)}
-    \end{steps}
-    And, second, we prove that \eqref{eq:functor-composition} holds.
-    In the case of \texthaskell{Nothing}:
-    \begin{steps}
-      \steph{(fmap g . fmap f) Nothing}
-        \eqbydefh{(.)}
-      \steph{fmap g (fmap f Nothing)}
-        \eqbydefh{fmap}
-      \steph{fmap g Nothing}
-        \eqbydefh{fmap}
-      \steph{Nothing}
-        \eqbydefh{fmap}
-      \steph{fmap (g . f) Nothing}
-    \end{steps}
-    And in the case of \texthaskell{Just x}:
-    \begin{steps}
-      \steph{fmap (g . f) (Just x)}
-        \eqbydefh{fmap}
-      \steph{Just ((g . f) x)}
-        \eqbydefh{(.)}
-      \steph{Just (g (f x))}
-        \eqbydefh{fmap}
-      \steph{fmap g (Just (f x))}
-        \eqbydefh{fmap}
-      \steph{fmap g (fmap f (Just x))}
-        \eqbydefh{(.)}
-      \steph{(fmap g . fmap f) (Just x)}
-    \end{steps}
+  \vspace{1em}
+  \case{\texthaskell{Nothing}}
+  \begin{steps}
+    \steph{fmap id Nothing}
+      \eqbydefh{fmap}
+    \steph{Nothing}
+      \eqbydefh{id}
+    \steph{id Nothing}
+  \end{steps}
+  \case{\texthaskell{(Just x)}}
+  \begin{steps}
+    \steph{fmap id (Just x)}
+      \eqbydefh{fmap}
+    \steph{Just (id x)}
+      \eqbydefh{id}
+    \steph{Just x}
+      \eqbydefh{id}
+    \steph{id (Just x)}
+  \end{steps}
 
-  \end{proof}
+  And, second, we prove that \eqref{eq:functor-composition} holds.
+
+  \vspace{1em}
+  \case{\texthaskell{Nothing}}
+  \begin{steps}
+    \steph{(fmap g . fmap f) Nothing}
+      \eqbydefh{(.)}
+    \steph{fmap g (fmap f Nothing)}
+      \eqbydefh{fmap}
+    \steph{fmap g Nothing}
+      \eqbydefh{fmap}
+    \steph{Nothing}
+      \eqbydefh{fmap}
+    \steph{fmap (g . f) Nothing}
+  \end{steps}
+  \case{\texthaskell{Just x}}
+  \begin{steps}
+    \steph{fmap (g . f) (Just x)}
+      \eqbydefh{fmap}
+    \steph{Just ((g . f) x)}
+      \eqbydefh{(.)}
+    \steph{Just (g (f x))}
+      \eqbydefh{fmap}
+    \steph{fmap g (Just (f x))}
+      \eqbydefh{fmap}
+    \steph{fmap g (fmap f (Just x))}
+      \eqbydefh{(.)}
+    \steph{(fmap g . fmap f) (Just x)}
+  \end{steps}
 
 \end{example}
 
@@ -451,64 +428,68 @@ instance Functor [] where
   about earlier, sends functions of type \texthaskell{a -> b} to
   functions of type \texthaskell{[a] -> [b]}.
 
-  \begin{proof}
+  First, we prove \eqref{eq:functor-identity} by induction. In the
+  case of an empty list:
 
-    First, we prove \eqref{eq:functor-identity} by induction. In the
-    case of an empty list:
-    \begin{steps}
-      \steph{fmap id []}
-        \eqbydefh{fmap}
-      \steph{[]}
-        \eqbydefh{id}
-      \steph{id []}
-    \end{steps}
-    And in the case of a nonempty list \texthaskell{(x:xs)}:
-    \begin{steps}
-      \steph{fmap id (x:xs)}
-        \eqbydefh{fmap}
-      \steph{id x : fmap id xs}
-        \eqbydefh{id}
-      \steph{x : fmap id xs}
-        \eqbyihh{}
-      \steph{x:xs}
-        \eqbydefh{id}
-      \steph{id (x:xs)}
-    \end{steps}
-    And, second, we prove \eqref{eq:functor-composition}, also by
-    induction. In the case of an empty list:
-    \begin{steps}
-      \steph{(fmap g . fmap f) []}
-        \eqbydefh{(.)}
-      \steph{fmap g (fmap f [])}
-        \eqbydefh{fmap}
-      \steph{fmap g []}
-        \eqbydefh{fmap}
-      \steph{[]}
-        \eqbydefh{fmap}
-      \steph{fmap (g . f) []}
-    \end{steps}
-    And in the case of a nonempty list \texthaskell{(x:xs)}:
-    \begin{steps}
-      \steph{fmap (g . f) (x:xs)}
-        \eqbydefh{fmap}
-      \steph{(g . f) x : fmap (g . f) xs}
-        \eqbydefh{(.)}
-      \steph{g (f x) : fmap (g . f) xs}
-        \eqbyihh{}
-      \steph{g (f x) : (fmap g . fmap f) xs}
-        \eqbydefh{(.)}
-      \steph{g (f x) : fmap g (fmap f xs)}
-        \eqbydefh{fmap}
-      \steph{fmap g (f x : fmap f xs)}
-        \eqbydefh{fmap}
-      \steph{fmap g (fmap f (x:xs))}
-        \eqbydefh{(.)}
-      \steph{(fmap g . fmap f) (x:xs)}
-    \end{steps}
+  \vspace{1em}
+  \case{\texthaskell{[]}}
+  \begin{steps}
+    \steph{fmap id []}
+      \eqbydefh{fmap}
+    \steph{[]}
+      \eqbydefh{id}
+    \steph{id []}
+  \end{steps}
+  \case{\texthaskell{(x:xs)}}
+  \begin{steps}
+    \steph{fmap id (x:xs)}
+      \eqbydefh{fmap}
+    \steph{id x : fmap id xs}
+      \eqbydefh{id}
+    \steph{x : fmap id xs}
+      \eqbyihh{}
+    \steph{x:xs}
+      \eqbydefh{id}
+    \steph{id (x:xs)}
+  \end{steps}
+  And, second, we prove \eqref{eq:functor-composition}, also by
+  induction. In the case of an empty list:
 
-  \end{proof}
+  \vspace{1em}
+  \case{\texthaskell{[]}}
+  \begin{steps}
+    \steph{(fmap g . fmap f) []}
+      \eqbydefh{(.)}
+    \steph{fmap g (fmap f [])}
+      \eqbydefh{fmap}
+    \steph{fmap g []}
+      \eqbydefh{fmap}
+    \steph{[]}
+      \eqbydefh{fmap}
+    \steph{fmap (g . f) []}
+  \end{steps}
+  \case{\texthaskell{(x:xs)}}
+  \begin{steps}
+    \steph{fmap (g . f) (x:xs)}
+      \eqbydefh{fmap}
+    \steph{(g . f) x : fmap (g . f) xs}
+      \eqbydefh{(.)}
+    \steph{g (f x) : fmap (g . f) xs}
+      \eqbyihh{}
+    \steph{g (f x) : (fmap g . fmap f) xs}
+      \eqbydefh{(.)}
+    \steph{g (f x) : fmap g (fmap f xs)}
+      \eqbydefh{fmap}
+    \steph{fmap g (f x : fmap f xs)}
+      \eqbydefh{fmap}
+    \steph{fmap g (fmap f (x:xs))}
+      \eqbydefh{(.)}
+    \steph{(fmap g . fmap f) (x:xs)}
+  \end{steps}
 
 \end{example}
+
+\todo{Introduce the following three examples.}
 
 \begin{example}
   \label{ex:functor-product-haskell}
@@ -529,35 +510,32 @@ instance Functor ((,) a) where
   %% holds \parencite{yorgey-2009}. The first element of a tuple is never
   %% modified by \texthaskell{fmap}, it is fixed. Annotation?
 
-  \begin{proof}
+  We prove that \eqref{eq:functor-identity} and
+  \eqref{eq:functor-composition} hold. In the first place:
 
-    We prove that \eqref{eq:functor-identity} and
-    \eqref{eq:functor-composition} hold. In the first place:
-    \begin{steps}
-      \steph{fmap id (x, y)}
-        \eqbydefh{fmap}
-      \steph{(x, id y)}
-        \eqbydefh{id}
-      \steph{(x, y)}
-        \eqbydefh{id}
-      \steph{id (x, y)}
-    \end{steps}
-    And, in the second place:
-    \begin{steps}
-      \steph{(fmap h . fmap g) (x, y)}
-        \eqbydefh{(.)}
-      \steph{fmap h (fmap g (x, y))}
-        \eqbydefh{fmap}
-      \steph{fmap h (x, g y)}
-        \eqbydefh{fmap}
-      \steph{(x, h (g y))}
-        \eqbydefh{(.)}
-      \steph{(x, (h . g) y)}
-        \eqbydefh{fmap}
-      \steph{fmap (h . g) (x, y)}
-    \end{steps}
-
-  \end{proof}
+  \begin{steps}
+    \steph{fmap id (x, y)}
+      \eqbydefh{fmap}
+    \steph{(x, id y)}
+      \eqbydefh{id}
+    \steph{(x, y)}
+      \eqbydefh{id}
+    \steph{id (x, y)}
+  \end{steps}
+  And, in the second place:
+  \begin{steps}
+    \steph{(fmap h . fmap g) (x, y)}
+      \eqbydefh{(.)}
+    \steph{fmap h (fmap g (x, y))}
+      \eqbydefh{fmap}
+    \steph{fmap h (x, g y)}
+      \eqbydefh{fmap}
+    \steph{(x, h (g y))}
+      \eqbydefh{(.)}
+    \steph{(x, (h . g) y)}
+      \eqbydefh{fmap}
+    \steph{fmap (h . g) (x, y)}
+  \end{steps}
 
 \end{example}
 
@@ -590,56 +568,58 @@ instance Functor (Either a) where
   %% on the side which explains why it is empty
   %% \parencite{lipovaca-2011}.
 
-  \begin{proof}
 
-    We begin with the proof of \eqref{eq:functor-identity}. In the
-    case of a \texthaskell{Left x}:
-    \begin{steps}
-      \steph{fmap id (Left x)}
-        \eqbydefh{fmap}
-      \steph{Left x}
-        \eqbydefh{id}
-      \steph{id (Left x)}
-    \end{steps}
-    And in the case of a \texthaskell{Right y}:
-    \begin{steps}
-      \steph{fmap id (Right y)}
-        \eqbydefh{fmap}
-      \steph{Right (id y)}
-        \eqbydefh{id}
-      \steph{Right y}
-        \eqbydefh{id}
-      \steph{id (Right y)}
-    \end{steps}
-    We end with the proof of \eqref{eq:functor-composition}. In the
-    case of a \texthaskell{Left x}:
-    \begin{steps}
-      \steph{(fmap h . fmap g) (Left x)}
-        \eqbydefh{(.)}
-      \steph{fmap h (fmap g (Left x))}
-        \eqbydefh{fmap}
-      \steph{fmap h (Left x)}
-        \eqbydefh{fmap}
-      \steph{Left x}
-        \eqbydefh{fmap}
-      \steph{fmap (h . g) (Left x)}
-    \end{steps}
-    And in the case of a \texthaskell{Right y}:
-    \begin{steps}
-      \steph{(fmap h . fmap g) (Right y)}
-        \eqbydefh{(.)}
-      \steph{fmap h (fmap g (Right y))}
-        \eqbydefh{fmap}
-      \steph{fmap h (Right (g y))}
-        \eqbydefh{fmap}
-      \steph{Right (h (g y))}
-        \eqbydefh{(.)}
-      \steph{Right ((h . g) y)}
-        \eqbydefh{fmap}
-      \steph{fmap (h . g) (Right y)}
-    \end{steps}
+  We begin with the proof of \eqref{eq:functor-identity}. In the case
+  of a \texthaskell{Left x}:
 
-  \end{proof}
+  \vspace{1em}
+  \case{\texthaskell{(Left x)}}
+  \begin{steps}
+    \steph{fmap id (Left x)}
+      \eqbydefh{fmap}
+    \steph{Left x}
+      \eqbydefh{id}
+    \steph{id (Left x)}
+  \end{steps}
+  \case{\texthaskell{(Right y)}}
+  \begin{steps}
+    \steph{fmap id (Right y)}
+      \eqbydefh{fmap}
+    \steph{Right (id y)}
+      \eqbydefh{id}
+    \steph{Right y}
+      \eqbydefh{id}
+    \steph{id (Right y)}
+  \end{steps}
+  We end with the proof of \eqref{eq:functor-composition}.
+
+  \vspace{1em}
+  \case{\texthaskell{(Left x)}}
+  \begin{steps}
+    \steph{(fmap h . fmap g) (Left x)}
+      \eqbydefh{(.)}
+    \steph{fmap h (fmap g (Left x))}
+      \eqbydefh{fmap}
+    \steph{fmap h (Left x)}
+      \eqbydefh{fmap}
+    \steph{Left x}
+      \eqbydefh{fmap}
+    \steph{fmap (h . g) (Left x)}
+  \end{steps}
+  \case{\texthaskell{(Right y)}}
+  \begin{steps}
+    \steph{(fmap h . fmap g) (Right y)}
+      \eqbydefh{(.)}
+    \steph{fmap h (fmap g (Right y))}
+      \eqbydefh{fmap}
+    \steph{fmap h (Right (g y))}
+      \eqbydefh{fmap}
+    \steph{Right (h (g y))}
+      \eqbydefh{(.)}
+    \steph{Right ((h . g) y)}
+      \eqbydefh{fmap}
+    \steph{fmap (h . g) (Right y)}
+  \end{steps}
 
 \end{example}
 
@@ -672,36 +652,35 @@ instance Functor ((->) a) where
   %% available to be consulted in a read-only fashion. This is also why
   %% ((->) e) is sometimes referred to as the reader monad.
 
-  \begin{proof}
-
-    In the first place, we prove \eqref{eq:functor-identity}:
-    \begin{steps}
-      \steph{fmap id f}
-        \eqbydefh{fmap}
-      \steph{id . f}
-        \eqby{\eqref{eq:category-identity}}
-      \steph{f}
-        \eqbydefh{id}
-      \steph{id f}
-    \end{steps}
-    And, in the second place, we prove \eqref{eq:functor-composition}:
-    \begin{steps}
-      \steph{(fmap h . fmap g) f}
-        \eqbydefh{(.)}
-      \steph{fmap h (fmap g f)}
-        \eqbydefh{fmap}
-      \steph{fmap h (g . f)}
-        \eqbydefh{fmap}
-      \steph{h . (g . f)}
-        \eqby{\eqref{eq:category-associativity}}
-      \steph{(h . g) . f}
-        \eqbydefh{fmap}
-      \steph{fmap (h . g) f}
-    \end{steps}
-
-  \end{proof}
+  In the first place, we prove that \eqref{eq:functor-identity} holds:
+  \begin{steps}
+    \steph{fmap id f}
+      \eqbydefh{fmap}
+    \steph{id . f}
+      \eqby{\eqref{eq:category-identity}}
+    \steph{f}
+      \eqbydefh{id}
+    \steph{id f}
+  \end{steps}
+  In the second place, we prove that \eqref{eq:functor-composition}
+  holds:
+  \begin{steps}
+    \steph{(fmap h . fmap g) f}
+      \eqbydefh{(.)}
+    \steph{fmap h (fmap g f)}
+      \eqbydefh{fmap}
+    \steph{fmap h (g . f)}
+      \eqbydefh{fmap}
+    \steph{h . (g . f)}
+      \eqby{\eqref{eq:category-associativity}}
+    \steph{(h . g) . f}
+      \eqbydefh{fmap}
+    \steph{fmap (h . g) f}
+  \end{steps}
 
 \end{example}
+
+\todo{Introduce the following (counter)examples.}
 
 \begin{example}
   \label{ex:functor-bad-maybe-haskell}
@@ -791,6 +770,9 @@ record Functor (F : Set → Set) : Set₁ where
 The inclusion of the functor laws makes it impossible to define a
 functor which is not really a functor because all instances must prove
 that \textagda{F} and \textagda{fmap} satisfy the laws.
+
+\todo{Introduce examples of functors in Agda, which correspond to
+  examples in Haskell.}
 
 \begin{example}[See module \module{Abel.Data.Maybe.Functor}]
   \label{ex:functor-maybe-agda}
