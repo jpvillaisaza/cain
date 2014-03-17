@@ -613,17 +613,17 @@ initial algebra.
   In Haskell, natural numbers can be defined as an algebraic data
   type, as follows:
   \begin{codehaskell}
-data Nat = Zero | Suc Nat
+data Nat = Zero | Succ Nat
   \end{codehaskell}
   This declaration introduces a type \texthaskell{Nat} of kind
   \texthaskell{*}, and constructors \texthaskell{Zero} and
-  \texthaskell{Suc} with types
+  \texthaskell{Succ} with types
   \begin{equation*}
     \text{\texthaskell{Zero :: Nat}}
     \quad
     \text{and}
     \quad
-    \text{\texthaskell{Suc :: Nat -> Nat}}
+    \text{\texthaskell{Succ :: Nat -> Nat}}
     \text{.}
   \end{equation*}
   These data define an algebra over an endofunctor \texthaskell{N}:
@@ -635,13 +635,13 @@ instance Functor N where
   fmap f (S x) = S (f x)
 \end{codehaskell}
   In detail, this algebra is given by \texthaskell{Nat},
-  \texthaskell{Zero}, and \texthaskell{Suc}. Moreover, the algebra in
+  \texthaskell{Zero}, and \texthaskell{Succ}. Moreover, the algebra in
   question is the initial algebra of the category of algebras over
   \texthaskell{N}:
   \begin{codehaskell}
 fold :: a -> (a -> a) -> Nat -> a
-fold z s Zero    = z
-fold z s (Suc n) = s (fold z s n)
+fold z s Zero     = z
+fold z s (Succ n) = s (fold z s n)
   \end{codehaskell}
   In words, given an algebra over \texthaskell{N}, that is, a type
   \texthaskell{a}, a value \texthaskell{z} of type \texthaskell{a},
@@ -651,19 +651,19 @@ fold z s (Suc n) = s (fold z s n)
 
   For instance, given values \texthaskell{m} and \texthaskell{n} of
   type \texthaskell{Nat}, we define the addition of \texthaskell{m}
-  and \texthaskell{n} using \texthaskell{fold n Suc}, that is,
+  and \texthaskell{n} using \texthaskell{fold n Succ}, that is,
   \texthaskell{fold} for the \texthaskell{N}-algebra specified by
-  \texthaskell{Nat}, \texthaskell{n}, and \texthaskell{Suc}, as
+  \texthaskell{Nat}, \texthaskell{n}, and \texthaskell{Succ}, as
   follows:
   \begin{codehaskell}
 add :: Nat -> Nat -> Nat
-add m n = fold n Suc m
+add m n = fold n Succ m
   \end{codehaskell}
   This definition might be easier to understand if we compare it to
   the one yielded by using explicit recursion:
   \begin{codehaskell}
-add Zero    n = n
-add (Suc m) n = Suc (add m n)
+add Zero     n = n
+add (Succ m) n = Succ (add m n)
   \end{codehaskell}
 
   As another example, given values \texthaskell{m} and \texthaskell{n}
@@ -678,15 +678,15 @@ mul m n = fold Zero (add n) m
   \end{codehaskell}
   In this case, explicit recursion yields the following definition:
   \begin{codehaskell}
-mul Zero    n = Zero
-mul (Suc m) n = add n (mul m n)
+mul Zero     n = Zero
+mul (Succ m) n = add n (mul m n)
   \end{codehaskell}
 
 \end{example}
 
 Alternatively, we can consider \texthaskell{Nat} and
 \begin{equation*}
-  \text{\texthaskell{either (\textbackslash () -> Zero) Suc :: Either () Nat -> Nat}}
+  \text{\texthaskell{either (\textbackslash () -> Zero) Succ :: Either () Nat -> Nat}}
 \end{equation*}
 as an algebra over \texthaskell{Either ()} (see Example
 \ref{ex:functor-coproduct-haskell}). So, given a type \texthaskell{b}
@@ -696,7 +696,7 @@ and
 \end{equation*}
 we need a unique function \texthaskell{fold} such that
 \begin{equation*}
-  \text{\texthaskell{fold z s . either (\textbackslash () -> Zero) Suc}}
+  \text{\texthaskell{fold z s . either (\textbackslash () -> Zero) Succ}}
 \end{equation*}
 and
 \begin{equation*}
@@ -756,7 +756,7 @@ foldr n c (Cons x xs) = c x (foldr n c xs)
   follows:
   \begin{codehaskell}
 length :: List a -> Nat
-length = foldr Zero (\_ -> Suc)
+length = foldr Zero (\_ -> Succ)
   \end{codehaskell}
   As another example, two lists \texthaskell{xs} and \texthaskell{ys}
   of values of a type \texthaskell{a} can be appended using
@@ -777,7 +777,7 @@ map f = foldr Nil (Cons . f)
   compare them to the ones yielded by using explicit recursion:
   \begin{codehaskell}
 length Nil         = Zero
-length (Cons _ xs) = Suc (length xs)
+length (Cons _ xs) = Succ (length xs)
 
 append Nil         ys = ys
 append (Cons x xs) ys = Cons x (concat xs ys)
