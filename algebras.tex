@@ -46,20 +46,24 @@ homomorphisms.
   %% \parencite[15]{vene-2000}
 
   Let $\func{F}: \cat{C} \to \cat{C}$ be an endofunctor in a category
-  \cat{C}. An \func{F}-algebra $(a,\alpha)$ is an object $a \in
-  \catO{C}$, called the carrier of the algebra, and a morphism
-  $\alpha: \funcO{F}(a) \to a \in \catM{C}$.
+  $\cat{C}$. An \func{F}-algebra $(a,\alpha)$ is an object $a$, called
+  the carrier of the algebra, and a morphism $\alpha: \funcO{F}(a) \to
+  a$.
 
 \end{definition}
+
+As examples, we consider the initial object of a category, and natural
+numbers and lists in \set, which we shall describe again as examples
+of algebras in Haskell.
 
 \begin{example}
   \label{ex:algebra-initial-object}
 
   %% \parencite[18]{vene-2000}
 
-  Let \cat{C} be a category with an initial object $0 \in \catO{C}$.
-  Then $(0,\idO{0})$ is an algebra over the identity functor (see
-  Example \ref{ex:functor-identity}), that is, an \func{I}-algebra. In
+  Let \cat{C} be a category with an initial object $0$. Then
+  $(0,\idO{0})$ is an algebra over the identity functor (see Example
+  \ref{ex:functor-identity}), that is, an \func{I}-algebra. In
   particular, in \set, $(\emptyset,\idO{\emptyset})$ is an
   \func{I}-algebra.
 
@@ -76,15 +80,13 @@ homomorphisms.
   + \mathbb{N} \to \mathbb{N}$, as illustrated by the diagram in
   Figure \ref{fig:coproduct-natural}, yield an algebra
   $(\mathbb{N},[\zero,\suc])$ over an endofunctor $\func{N}: \set \to
-  \set$ whose object function $\funcO{N}: \catO\set \to \catO\set$
-  assigns to each set $A$ a set
+  \set$ whose object mapping assigns to each set $A$ a set
   \begin{equation*}
     \funcO{N}(A) = 1 + A
     \text{,}
   \end{equation*}
-  and whose morphism function $\funcM{N}: \catM\set \to \catM\set$
-  assigns to each function $f: A \to B$ a function $\funcM{N}(f): 1 +
-  A \to 1 + B$ such that
+  and whose morphism mapping assigns to each function $f: A \to B$ a
+  function $\funcM{N}(f): 1 + A \to 1 + B$ such that
   \begin{equation*}
     \funcM{N}(f) \comp \iota_{1} = \iota_{1}
     \quad
@@ -93,7 +95,7 @@ homomorphisms.
     \funcM{N}(f) \comp \iota_{2} = \iota_{2} \comp f
     \text{,}
   \end{equation*}
-  that is, such that
+  that is,
   \begin{equation*}
     \funcM{N}(f)(1,()) = (1,())
     \quad
@@ -147,15 +149,14 @@ homomorphisms.
   \to \listof{A}$, as illustrated by the diagram in Figure
   \ref{fig:coproduct-list}. In this way, $(\listof{A},[\nil,\cons])$
   is an algebra over an endofunctor $\func{L}^{A}: \set \to \set$
-  whose object function $\funcO{L}^{A}: \catO{\set} \to \catO{\set}$
-  assigns to each set $B$ a set
+  whose object mapping assigns to each set $B$ a set
   \begin{equation*}
     \funcO{L}^{A}(B) = 1 + A \times B
     \text{,}
   \end{equation*}
-  and whose morphism function $\funcM{L}^{A}: \catM{\set} \to
-  \catM{\set}$ assigns to each function $g: B \to C$ a function
-  $\funcM{L}^{A}(g): 1 + A \times B \to 1 + A \times C$ such that
+  and whose morphism mapping assigns to each function $g: B \to C$ a
+  function $\funcM{L}^{A}(g): 1 + A \times B \to 1 + A \times C$ such
+  that
   \begin{equation*}
     \funcM{L}^{A}(g)(1,()) = (1,())
     \quad
@@ -198,17 +199,17 @@ homomorphisms.
   %% \parencite[15]{vene-2000}
 
   Let $\func{F}: \cat{C} \to \cat{C}$ be an endofunctor in a category
-  \cat{C}. If $(a,\alpha)$ and $(b,\beta)$ are \func{F}-algebras, an
+  $\cat{C}$. If $(a,\alpha)$ and $(b,\beta)$ are \func{F}-algebras, an
   \func{F}-algebra homomorphism $f: (a,\alpha) \to (b,\beta)$ is a
-  morphism $f: a \to b \in \catM{C}$ such that
+  morphism $f: a \to b$ in $\cat{C}$ such that
   \begin{equation}
     \label{eq:algebra-homomorphism}
     \beta \comp \funcM{F}(f) = f \comp \alpha
     \text{,}
   \end{equation}
-  that is, such that the diagram in Figure
-  \ref{fig:algebra-homomorphism} is commutative. In this case,
-  $\dom(f) = (a,\alpha)$ and $\cod(f) = (b,\beta)$.
+  that is, the diagram in Figure \ref{fig:algebra-homomorphism} is
+  commutative. In this case, $\dom(f) = (a,\alpha)$ and $\cod(f) =
+  (b,\beta)$.
 
   \begin{figure}[htb]
     \begin{center}
@@ -241,22 +242,17 @@ homomorphisms.
   Let $\func{F}: \cat{C} \to \cat{C}$ be an endofunctor in a category
   \cat{C}. If $(a,\alpha)$ is an \func{F}-algebra, then its identity
   \func{F}-algebra homomorphism $\idO{(a,\alpha)}: (a,\alpha) \to
-  (a,\alpha)$ is the identity morphism $\idO{a}: a \to a \in
-  \catM{C}$.
-
-  \begin{proof}
-
-    We prove \eqref{eq:algebra-homomorphism} with $f =
-    \idO{(a,\alpha)}$:
-    \begin{steps}
-      \stepm{\alpha \comp \funcM{F}(\idO{a})}
-        \eqby{\eqref{eq:functor-identity}}
-      \stepm{\alpha \comp \idO{\funcO{F}(a)}}
-        \eqby{\eqref{eq:category-identity} with $f = \alpha$}
-      \stepm{\idO{a} \comp \alpha}
-    \end{steps}
-
-  \end{proof}
+  (a,\alpha)$ is the identity morphism $\idO{a}: a \to a$ in
+  $\cat{C}$. In order to see that this is an \func{F}-algebra
+  homomorphism, we prove \eqref{eq:algebra-homomorphism} with $f =
+  \idO{(a,\alpha)}$:
+  \begin{steps}
+    \stepm{\alpha \comp \funcM{F}(\idO{a})}
+      \eqby{\eqref{eq:functor-identity}}
+    \stepm{\alpha \comp \idO{\funcO{F}(a)}}
+      \eqby{\eqref{eq:category-identity} with $f = \alpha$}
+    \stepm{\idO{a} \comp \alpha}
+  \end{steps}
 
 \end{definition}
 
@@ -269,22 +265,18 @@ homomorphisms.
   (b,\beta) \to (c,\gamma)$ are two \func{F}-algebra homomorphisms,
   then their composite \func{F}-algebra homomorphism $g \comp f:
   (a,\alpha) \to (c,\gamma)$ is the composite morphism $g \comp f: a
-  \to c \in \catM{C}$.
-
-  \begin{proof}
-
-    We prove \eqref{eq:algebra-homomorphism} with $f = g \comp f$:
-    \begin{steps}
-      \stepm{\gamma \comp \funcM{F}(g \comp f)}
-        \eqby{\eqref{eq:functor-composition}}
-      \stepm{\gamma \comp \funcM{F}(g) \comp \funcM{F}(f)}
-        \eqby{\eqref{eq:algebra-homomorphism} with $f = g$}
-      \stepm{g \comp \beta \comp \funcM{F}(f)}
-        \eqby{\eqref{eq:algebra-homomorphism}}
-      \stepm{g \comp f \comp \alpha}
-    \end{steps}
-
-  \end{proof}
+  \to c$ in $\cat{C}$. In order to see that this is an
+  \func{F}-algebra homomorphism, we prove
+  \eqref{eq:algebra-homomorphism} with $f = g \comp f$:
+  \begin{steps}
+    \stepm{\gamma \comp \funcM{F}(g \comp f)}
+      \eqby{\eqref{eq:functor-composition}}
+    \stepm{\gamma \comp \funcM{F}(g) \comp \funcM{F}(f)}
+      \eqby{\eqref{eq:algebra-homomorphism} with $f = g$}
+    \stepm{g \comp \beta \comp \funcM{F}(f)}
+      \eqby{\eqref{eq:algebra-homomorphism}}
+    \stepm{g \comp f \comp \alpha}
+  \end{steps}
 
 \end{definition}
 
@@ -297,20 +289,11 @@ homomorphisms.
   \cat{C}. Then \func{F}-\alg is the category of \func{F}-algebras and
   \func{F}-algebra homomorphisms. Its objects are \func{F}-algebras,
   its morphisms are \func{F}-algebra homomorphisms, its identity
-  function $\id: \catO{\falg{F}} \to \catM{\falg{F}}$ assigns to each
-  \func{F}-algebra $(a, \alpha)$ its identity \func{F}-algebra
-  homomorphism, and its composition function $\comp\ : \catM{\falg{F}}
-  \times \catM{\falg{F}} \to \catM{\falg{F}}$ assigns to each pair of
-  \func{F}-algebra homomorphisms $f$ and $g$ with $\cod(f) = \dom(g)$
-  their composite \func{F}-algebra homomorphism.
-
-  \begin{proof}
-
-    Since \eqref{eq:category-associativity} and
-    \eqref{eq:category-identity} hold for \cat{C}, they hold for
-    \func{F}-\alg too.
-
-  \end{proof}
+  morphisms are identity \func{F}-algebra homomorphisms, and its
+  composite morphisms are composite \func{F}-algebra homomorphisms.
+  Since \eqref{eq:category-associativity} and
+  \eqref{eq:category-identity} hold for \cat{C}, they hold for
+  \func{F}-\alg too.
 
 \end{definition}
 
@@ -328,17 +311,17 @@ we move on to their initial objects (see Definition
   \func{F}-algebra of the category \func{F}-\alg if, for all
   \func{F}-algebras $(a,\alpha)$, there is a unique \func{F}-algebra
   homomorphism $\cata\alpha: (\mu\func{F},\inmo) \to (a,\alpha)$, that
-  is, a morphism $\cata\alpha: \mu\func{F} \to a \in \catM{C}$ such
+  is, a morphism $\cata\alpha: \mu\func{F} \to a$ in $\cat{C}$ such
   that
   \begin{equation}
     \label{eq:cata-charn}
     \alpha \comp \funcM{F}(\cata\alpha) = \cata\alpha \comp \inmo
     \text{,}
   \end{equation}
-  or, equivalently, such that the diagram in Figure
-  \ref{fig:cata-charn} is commutative. Such an \func{F}-algebra
-  homomorphism (that is, a unique \func{F}-algebra homomorphism from
-  the initial \func{F}-algebra) is called a catamorphism.
+  or, equivalently, the diagram in Figure \ref{fig:cata-charn} is
+  commutative. Such an \func{F}-algebra homomorphism (that is, a
+  unique \func{F}-algebra homomorphism from the initial
+  \func{F}-algebra) is called a catamorphism.
 
   \begin{figure}[htb]
     \begin{center}
@@ -362,8 +345,8 @@ we move on to their initial objects (see Definition
 \end{definition}
 
 Intuitively, the initial algebra denotes the collection of constructor
-functions for inductive data types, and the catamorphism is a simple
-iteration.
+functions for inductive data types. This statement is justified by a
+theorem, which we shall describe and prove using the following lemma.
 
 \begin{lemma}
   \label{lem:cata-refl-fusion}
@@ -460,7 +443,7 @@ identification of inductive types with initial algebras''
         \eqby{\eqref{eq:cata-refl}}
       \stepm{\idO{\mu\func{F}}}
     \end{steps}
-    And in the second place:
+    In the second place:
     \begin{steps}
       \stepm{\inmo^{-1} \comp \inmo}
         \eqby{\eqref{eq:lambek}}
@@ -481,19 +464,22 @@ identification of inductive types with initial algebras''
 
 This ``theorem shows that the carrier of the initial algebra is (up to
 isomorphism) a fixed point of the functor'' \parencite[18]{vene-2000}.
+We have already discussed three examples of algebras (the initial
+object of a category, natural numbers, and lists). We describe them
+again as initial algebras.
 
 \begin{example}
   \label{ex:initial-algebra-initial-object}
 
   %% \parencite[18]{vene-2000}
 
-  Let \cat{C} be a category with an initial object $0 \in \catO{C}$.
-  Then $(0,\idO{0})$, the \func{I}-algebra described in Example
+  Let \cat{C} be a category with an initial object $0$. Then
+  $(0,\idO{0})$, the \func{I}-algebra described in Example
   \ref{ex:algebra-initial-object}, is the initial \func{I}-algebra of
   the category \func{I}-\alg. Indeed, given an \func{I}-algebra
   $(a,\alpha)$, there is a unique \func{I}-algebra homomorphism
   $\cata{\alpha}: (0,\idO{0}) \to (a,\alpha)$ in which the underlying
-  morphism $\cata{\alpha}: 0 \to a \in \catM{C}$ is the unique
+  morphism $\cata{\alpha}: 0 \to a$ in $\cat{C}$ is the unique
   morphism given by the fact that $0$ is an initial object. The
   uniqueness of this morphism guarantees that
   \eqref{eq:algebra-homomorphism} holds. In particular, in \set,
