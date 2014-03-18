@@ -22,7 +22,7 @@ Boolean type, \texthaskell{Bool}, and the natural number type,
   number type by itself.}, and, as functions, take the
 constants-as-functions \texthaskell{()}, \texthaskell{True},
 \texthaskell{False}, and \texthaskell{Zero}, the functions
-\texthaskell{Suc}, \texthaskell{isZero}, and \texthaskell{not}, the
+\texthaskell{Succ}, \texthaskell{isZero}, and \texthaskell{not}, the
 identity functions, \texthaskell{id}, and composite functions such as
 \texthaskell{not . True}.
 
@@ -37,7 +37,7 @@ identity functions, \texthaskell{id}, and composite functions such as
       \draw [->] (unit) to node [swap] {\texthaskell{False}} (bool);
 
       \draw [->] (unit) to              node [swap] {\texthaskell{Zero}} (nat);
-      \draw [->] (nat)  to [loop above] node        {\texthaskell{Suc}}  (nat);
+      \draw [->] (nat)  to [loop above] node        {\texthaskell{Succ}}  (nat);
 
       \draw [->] (unit) to [loop below] node {\texthaskell{()}} (unit);
 
@@ -56,7 +56,7 @@ identity functions, \texthaskell{id}, and composite functions such as
 Now, observe that, according to the semantics of the language, some of
 the functions, such as \texthaskell{isZero . Zero} and
 \texthaskell{True}, are identical. Additionally, we could prove, for
-instance, that \texthaskell{id . Suc = Suc = Suc . id}, which
+instance, that \texthaskell{id . Succ = Succ = Succ . id}, which
 exemplifies that identity functions are identities for the composition
 of functions, which is associative.
 
@@ -66,12 +66,10 @@ respectively, and the statement that composition of functions is
 associative and has identities means that we are in fact dealing with
 a category.
 
-The remainder of this chapter is organized as follows. In Section
-\ref{sec:categories}, we define the concepts of category and
-commutative diagram, and give some examples of categories, including
-the category of sets and functions, and, in Sections
-\ref{sec:category-haskell} and \ref{sec:category-agda}, respectively,
-we describe categories of types and functions for Haskell and Agda.
+In the remainder of this chapter, we define the concepts of category
+and commutative diagram, and give some examples of categories,
+including the category of sets and functions. In addition, we describe
+categories of types and functions for Haskell and Agda.
 
 \section{Categories}
 \label{sec:categories}
@@ -289,6 +287,13 @@ in our development.
 
 \end{remark}
 
+As examples, we consider some common categories, including the empty
+category, the trivial category, discrete categories, the category of
+sets and functions, which is the motivating example of category
+theory, monoids, which help to better understand the idea of sets with
+structure as categories, and deductive systems, which is an
+interesting change of perspective.
+
 \begin{example}
   \label{ex:category-trivial}
 
@@ -393,38 +398,34 @@ in our development.
     (g \comp f)(x) = g(f(x))
     \text{.}
   \end{equation}
-
-  \begin{proof}
-
-    In the first place, we prove that the associativity axiom holds
-    for \set. Given functions $f: A \to B$, $g: B \to C$, and $h: C
-    \to D$, then, for all $x \in A$:
-    \begin{steps}
-      \stepm{(h \comp g \comp f)(x)}
-        \eqby{\eqref{eq:set-composition}}
-      \stepm{h((g \comp f)(x))}
-        \eqby{\eqref{eq:set-composition}}
-      \stepm{h(g(f(x)))}
-        \eqby{\eqref{eq:set-composition}}
-      \stepm{(h \comp g)(f(x))}
-        \eqby{\eqref{eq:set-composition}}
-      \stepm{((h \comp g) \comp f)(x)}
-    \end{steps}
-    And, in the second place, we prove that the identity axiom holds
-    for \set. Given a function $f: A \to B$, then, for all $x \in A$:
-    \begin{steps}
-      \stepm{(\idO{B} \comp f)(x)}
-        \eqby{\eqref{eq:set-composition}}
-      \stepm{\idO{B}(f(x))}
-        \eqby{\eqref{eq:set-identity}}
-      \stepm{f(x)}
-        \eqby{\eqref{eq:set-identity}}
-      \stepm{f(\idO{A}(x))}
-        \eqby{\eqref{eq:set-composition}}
-      \stepm{(f \comp \idO{A})(x)}
-    \end{steps}
-
-  \end{proof}
+  Now, let us prove that this is a category. In the first place, we
+  prove that the associativity axiom holds for \set. Given functions
+  $f: A \to B$, $g: B \to C$, and $h: C \to D$, then, for all $x \in
+  A$:
+  \begin{steps}
+    \stepm{(h \comp g \comp f)(x)}
+      \eqby{\eqref{eq:set-composition}}
+    \stepm{h((g \comp f)(x))}
+      \eqby{\eqref{eq:set-composition}}
+    \stepm{h(g(f(x)))}
+      \eqby{\eqref{eq:set-composition}}
+    \stepm{(h \comp g)(f(x))}
+      \eqby{\eqref{eq:set-composition}}
+    \stepm{((h \comp g) \comp f)(x)}
+  \end{steps}
+  In the second place, we prove that the identity axiom holds for
+  \set. Given a function $f: A \to B$, then, for all $x \in A$:
+  \begin{steps}
+    \stepm{(\idO{B} \comp f)(x)}
+      \eqby{\eqref{eq:set-composition}}
+    \stepm{\idO{B}(f(x))}
+      \eqby{\eqref{eq:set-identity}}
+    \stepm{f(x)}
+      \eqby{\eqref{eq:set-identity}}
+    \stepm{f(\idO{A}(x))}
+      \eqby{\eqref{eq:set-composition}}
+    \stepm{(f \comp \idO{A})(x)}
+  \end{steps}
 
   \begin{remark}
     \label{re:foundations}
@@ -439,15 +440,15 @@ in our development.
     members of themselves. For this reason, we ought to assume, for
     instance, that there is a big enough set, the universe, and take
     the objects of \set to be the sets which are members of the
-    universe, that is, small sets. However, we will not go into detail
-    about mathematical foundations of category theory\footnote{For a
-      full account on mathematical foundations of category theory, see
-      \parencites[§ 1.8]{awodey-2010}[§ I.6]{maclane-1998}.}.
+    universe, that is, small sets. However, we shall not go into
+    detail about mathematical foundations of category
+    theory\footnote{For a full account on mathematical foundations of
+      category theory, see \parencites[§ 1.8]{awodey-2010}[§
+        I.6]{maclane-1998}.}.
 
   \end{remark}
 
 \end{example}
-
 
 \begin{example}
   \label{ex:category-monoid}
@@ -474,9 +475,10 @@ in our development.
     %% \parencite[420--421]{poigne-1992}
 
     \catbf{Mon} is the category of monoids and monoid homomorphisms,
-    which we will not describe here. This category is just one example
-    of the fact that any notion of sets with structure together with
-    morphisms that preserve that structure define a category.
+    which we shall not describe here. This category is just one
+    example of the fact that any notion of sets with structure
+    together with morphisms that preserve that structure define a
+    category.
 
   \end{remark}
 
@@ -500,15 +502,18 @@ in our development.
 
 \end{example}
 
+Before we move on, let us revisit the motivating example of the subset
+of Haskell, which we shall complete in the following section.
+
 \begin{example}
   \label{ex:category-haskell}
 
   %% \parencites[Example 1.1.15]{pierce-1991}[7--11]{pitt-1986}
 
-  Before we move on, let us revisit the motivating example of the
-  subset of Haskell, which corresponds to a category. Its objects are
-  the types \texthaskell{()}, \texthaskell{Bool}, and
-  \texthaskell{Nat}, and its morphisms are the constants-as-functions
+  The motivating example of the subset of Haskell corresponds to a
+  category. Its objects are the types \texthaskell{()},
+  \texthaskell{Bool}, and \texthaskell{Nat}, and its morphisms are the
+  constants-as-functions
   \begin{itemize}
   \item
     \texthaskell{() :: () -> ()},
@@ -523,7 +528,7 @@ in our development.
   the functions
   \begin{itemize}
   \item
-    \texthaskell{Suc :: Nat -> Nat},
+    \texthaskell{Succ :: Nat -> Nat},
 
   \item
     \texthaskell{not :: Bool -> Bool}, and
@@ -538,16 +543,16 @@ in our development.
     \texthaskell{not . True}, \texthaskell{not . (not . True) :: () -> Bool}, ...,
 
   \item
-    \texthaskell{Suc . Zero}, \texthaskell{Suc . (Suc . Zero) :: () -> Nat}, ...,
+    \texthaskell{Succ . Zero}, \texthaskell{Succ . (Succ . Zero) :: () -> Nat}, ...,
 
   \item
-    \texthaskell{isZero . Zero}, \texthaskell{isZero . (Suc . Zero) :: () -> Bool}, ...,
+    \texthaskell{isZero . Zero}, \texthaskell{isZero . (Succ . Zero) :: () -> Bool}, ...,
 
   \item
     et cetera.
 
   \end{itemize}
-  We will not prove the associativity and identity axioms yet, but,
+  We shall not prove the associativity and identity axioms yet, but,
   evidently, this subset of Haskell is a category. What would result
   if we considered all of Haskell?
 
@@ -566,13 +571,16 @@ omit.
 In a nutshell, \hask is the category of Haskell types and functions.
 As expected, the objects of this category are Haskell types, that is,
 nullary type constructors or type expressions with kind
-\texthaskell{*}. For instance, the Boolean type, \texthaskell{Bool}:
+\texthaskell{*}\footnote{In Haskell, type expressions are classified
+  into different kinds, which are like types of types. See
+  \parencite[§ 4.1.1]{peytonjones-2003}.}. For instance, the Boolean
+type, \texthaskell{Bool}:
 \begin{codehaskell}
 data Bool = False | True
 \end{codehaskell}
 The natural number type, \texthaskell{Nat}:
 \begin{codehaskell}
-data Nat = Zero | Suc Nat
+data Nat = Zero | Succ Nat
 \end{codehaskell}
 The integer types, \texthaskell{Int} and \texthaskell{Integer}, the
 floating-point number types, \texthaskell{Float} and
@@ -594,7 +602,7 @@ undefined = undefined
 As a consequence, values of type \texthaskell{Bool} include
 \texthaskell{True} and \texthaskell{False}, but also
 \texthaskell{undefined}, values of type \texthaskell{Nat} include
-\texthaskell{Zero} and \texthaskell{Suc Zero}, but also
+\texthaskell{Zero} and \texthaskell{Succ Zero}, but also
 \texthaskell{undefined}, and so forth, which is a
 difficulty\footnote{See
   \url{http://www.haskell.org/haskellwiki/Hask}.}. For this reason, by
@@ -640,38 +648,33 @@ And the identity axiom becomes, for all functions \texthaskell{f :: a
 \begin{codehaskell}
 id . f = f = f . id
 \end{codehaskell}
+Both axioms follow immediately from rewriting using definitions. In
+the first place:
+\begin{steps}
+  \steph{(h . (g . f)) x}
+    \eqbydefh{(.)}
+  \steph{h ((g . f) x)}
+    \eqbydefh{(.)}
+  \steph{h (g (f x))}
+    \eqbydefh{(.)}
+  \steph{(h . g) (f x)}
+    \eqbydefh{(.)}
+  \steph{((h . g) . f) x}
+\end{steps}
+In the second place:
+\begin{steps}
+  \steph{(id . f) x}
+    \eqbydefh{(.)}
+  \steph{id (f x)}
+    \eqbydefh{id}
+  \steph{f x}
+    \eqbydefh{id}
+  \steph{f (id x)}
+    \eqbydefh{(.)}
+  \steph{(f . id) x}
+\end{steps}
 
-\begin{proof}
-
-  Both axioms follow immediately from rewriting using definitions. In
-  the first place:
-  \begin{steps}
-    \steph{(h . (g . f)) x}
-      \eqbydefh{(.)}
-    \steph{h ((g . f) x)}
-      \eqbydefh{(.)}
-    \steph{h (g (f x))}
-      \eqbydefh{(.)}
-    \steph{(h . g) (f x)}
-      \eqbydefh{(.)}
-    \steph{((h . g) . f) x}
-  \end{steps}
-  And, in the second place:
-  \begin{steps}
-    \steph{(id . f) x}
-      \eqbydefh{(.)}
-    \steph{id (f x)}
-      \eqbydefh{id}
-    \steph{f x}
-      \eqbydefh{id}
-    \steph{f (id x)}
-      \eqbydefh{(.)}
-    \steph{(f . id) x}
-  \end{steps}
-
-\end{proof}
-
-From now on, we will use \hask as described above as Haskell's
+From now on, we shall use \hask as described above as Haskell's
 category\footnote{Note that this is not an attempt to answer the
   question of Haskell's category.}.
 
@@ -699,7 +702,7 @@ And the natural number type, \textagda{Nat}:
 \begin{codeagda}
 data ℕ : Set where
   zero : ℕ
-  suc  : ℕ → ℕ
+  succ : ℕ → ℕ
 \end{codeagda}
 And the morphisms of this category are functions between small types.
 For instance, \textagda{not}:
@@ -738,9 +741,9 @@ identity : {A B : Set} {f : A → B}
 identity _ = refl , refl
 \end{codeagda}
 
-From now on, we will use this category as Agda's
+From now on, we shall use this category as Agda's
 category\footnote{Note that this is not an attempt to answer the
-  question of Agda's category.}.
+  question of Agda's category.} and call it \agda.
 
 \section{References}
 \label{sec:categories-references}
