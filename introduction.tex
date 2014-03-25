@@ -222,19 +222,22 @@ important for Chapter \ref{chap:functors}, and not so necessary for
 the rest. Such as isomorphisms, initial and terminal objects, products
 and coproducts. Includes examples in \set, in Haskell, and Agda.
 
-Chapter \ref{chap:functors} studies functors. Mathematical, in Haskell
-and Agda.
+In Chapter \ref{chap:functors}, we study mathematical functors and
+endofunctors, and their relation to functors in Haskell and Agda.
 
-Chapter \ref{chap:naturals} describes natural transformations. And
-natural transformations or polymorphic functions in Haskell.
+In Chapter \ref{chap:naturals}, we describe natural transformations
+and see polymorphic functions in Haskell as that.
 
-Chapter \ref{chap:monads} is about monads. And Kleisli triples. And in
-Haskell and Agda.
+In Chapter \ref{chap:monads}, we study monads and Kleisli triples, and
+their relation to both concepts in both Haskell and Agda. We prove the
+correspondence between these two.
 
-Chapter \ref{chap:algebras} is about algebras over endofunctors. Just
-in Haskell.
+In Chapter \ref{chap:algebras}, we study algebras and initial algebras
+over endofunctors, and their relation to algebraic data types in
+Haskell. We focus on the foldr function.
 
-Additionally, in Chapter \ref{chap:conclusions}, we
+Additionally, in Chapter \ref{chap:conclusions}, we present our
+conclusions.
 
 Each chapter... \todo{Each chapter has a similar structure. A
   motivation, theory, and Haskell. Some chapters include an analysis
@@ -243,8 +246,6 @@ Each chapter... \todo{Each chapter has a similar structure. A
   is a mention or citation of a source of information. Each chapter
   should have references to books covering the subject in greater
   depth. Each chapter is referenced.}
-
-Finally, in Appendix \ref{chap:references}, we...
 
 \begin{figure}[htb]
   \begin{center}
@@ -263,7 +264,6 @@ Finally, in Appendix \ref{chap:references}, we...
       \draw [->] (naturals)      to (monads);
 
       \draw [->] (functors)      to (algebras);
-
     \end{tikzpicture}
   \end{center}
   \caption{Overview of the project.}
@@ -276,5 +276,102 @@ And Abel in
 \begin{center}
   \url{https://github.com/jpvillaisaza/abel}
 \end{center}
+
+\section*{References}
+
+\todo{\parencite{marquis-2013}, which includes: general definitions,
+  examples, and applications; brief historical sketch; philosophical
+  significance; and a programmatic reading guide.}
+
+\todo{Regarding natural transformations (Chapter \ref{chap:naturals}),
+  \parencite{eilenberg-maclane-1945} defines them on two arguments (for
+  concordant functors covariant in one argument and contravariant in
+  the other). If the second argument (that is, the contravariant one)
+  is ignored, the definition is very similar to that of
+  \parencite{maclane-1998}, which is the basis of Definition
+  \ref{def:natural}. This gives a good idea of the evolution of the
+  definition of ``natural transformation.''}
+
+\todo{nLab and MathWorld.}
+
+\todo{Haskell's wiki.}
+
+\todo{Oxford Dictionaries and Merriam-Webster.}
+
+%% Mac Lane (1998) es la referencia estándar de teoría de categorías.
+%% Aunque el texto no ha sido estudiado directamente, todos los textos
+%% relacionados con teoría de categorías lo señalan como la referencia
+%% estándar y como la guía principal para estudiar teoría de categorías
+%% desde las matemáticas.
+
+%% Poigné (1992) es una referencia para estudiar las aplicaciones de
+%% teoría de categorías a informática. Fue el texto guía consultado para
+%% la elaboración de esta propuesta y está basado en la notación de la
+%% primera edición de Mac Lane (1998). El estudio preliminar permite
+%% concluir que es una buena referencia central para el desarrollo del
+%% proyecto.
+
+%% Pierce (1991) es una referencia introductoria para estudiar las
+%% aplicaciones de teoría de categorías a informática. Es una resumen de
+%% teoría de categorías y de algunas de sus aplicaciones, y contiene una
+%% bibliografía anotada para encontrar más referencias sobre el tema.
+
+\parencite[§ 4]{pierce-1991}
+
+Pierce 1991, chapter 4. Further reading. This chapter lists and
+briefly describes the available textbooks, introductory articles, and
+general reference works on category theory. The last sections gives a
+more eclectic sampling of research papers applying category theory in
+computing science.
+
+4.1 textbooks 4.2 introductory articles 4.3 reference books 4.4
+selected research articles
+
+%% Bird y de Moor (1997) es una referencia estándar para estudiar las
+%% aplicaciones de la teoría de categorías a la informática. Algunas
+%% partes de dicho libro fueron consultadas para la elaboración de esta
+%% propuesta. Como es el texto guía de algunos cursos de teoría de
+%% categorías, también es una de las referencias centrales para el
+%% desarrollo del proyecto.
+
+%% Marquis (2010) es un artículo introductorio y filosófico de teoría de
+%% categorías en general. Es un buen artículo para el estudio preliminar
+%% del tema y contiene una extensa bibliografía anotada para encontrar
+%% las referencias más importnantes en los distintos enfoques de teoría
+%% de categorías.
+
+The following book provides an accessible approach to category theory
+and categorical logic: \parencite{awodey-2010}
+
+The standard reference on category theory is unquestionably:
+\parencite{maclane-1998}
+
+General books on category theory, books and articles with a
+philosophical bent, books and papers on categorical logic,
+applications of category theory, major books and papers of the history
+of category theory.
+
+\parencites{eilenberg-maclane-1942}{eilenberg-maclane-1945}
+
+\parencite[48--56]{marquis-2013} (Useful) programmatic reading guide
+
+\parencite{bird-demoor-1997}
+
+\parencite{lipovaca-2011}
+\parencite{osullivan-2008}
+
+\parencite{elkins-2009}
+\parencite{yorgey-2009}
+
+%% TODO citation for the frontispiece
+
+\paragraph{Frontispiece}
+
+The illustration in page \pageref{fig:hatter}, John Tenniel's
+\emph{Hatter engaging in rhetoric}, is taken from the Tenniel
+illustrations for Lewis Carroll's \emph{Alice's Adventures in
+  Wonderland}\footnote{\url{http://www.gutenberg.org/ebooks/114}.}.
+
+\nocite{*}
 
 \clearemptydoublepage

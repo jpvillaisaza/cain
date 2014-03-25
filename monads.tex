@@ -6,8 +6,8 @@
   substance simple...
 }{---\textcite[1]{leibniz-1714}}
 
-%% In this chapter we explore monads and their relation to monads in
-%% Haskell and Agda.
+In this chapter we explore monads and Kleisli triples, and their
+relation to monads in Haskell and Agda.
 
 In Haskell, given two types \texthaskell{a} and \texthaskell{b}, the
 Cartesian product\footnote{This definition is adapted from
@@ -70,38 +70,20 @@ category theory and have the advantage of being defined only in terms
 of functors and natural transformations, which make them more suitable
 for abstract manipulation \parencite[60]{moggi-1991}.
 
-\section{Monads}
+
+
+In the remainder of this chapter, we define the concepts of monad and
+Kleisli triple, we prove that monads and Kleisli triples are
+equivalents, and we study both constructs in Haskell and Agda.
+
+Examples of notions of computation: partiality, nondeterminism, side
+effects, exceptions, continuations, interactive input, interactive
+output. \parencite[58]{moggi-1991}.
+
+\section{Monads and Kleisli triples}
 \label{sec:monads}
 
-...
-
-\todo{(Idea) Notions of computation as triples.}
-
-\todo{Introduce Example \ref{ex:notions-computation}.}
-
-\begin{examples}
-  \label{ex:notions-computation}
-
-  %% \parencite[58]{moggi-1991}
-
-  Notions of computation:
-  \begin{itemize}
-  \item
-    \emph{Partiality}
-  \item
-    \emph{Nondeterminism}
-  \item
-    \emph{Side effects}
-  \item
-    \emph{Exceptions}
-  \item
-    \emph{Continuations}
-  \item
-    \emph{Interactive input}
-  \item
-    \emph{Interactive output}
-  \end{itemize}
-\end{examples}
+\todo{Introduce the following subsections.}
 
 \subsection*{Monads}
 
@@ -111,28 +93,20 @@ category theory and more suitable for abstract manipulation because
 they are defined only in terms of functors and natural transformations
 \parencite[60]{moggi-1991}.
 
-\todo{Note about the identity natural transformation}
-\todo{Note about the two equality lines in the second commutative diagram above.}
+\todo{Note about the identity natural transformation} \todo{Note about
+  the two equality lines in the second commutative diagram above.}
 
 \begin{definition}
   \label{def:monad}
 
   %% \parencite[137]{maclane-1998}
 
-  Let \cat{C} be a category. A monad
-  \begin{equation}
-    \label{eq:monad}
-    \mon{T} = (\func{T}, \nat{\eta}, \nat{\mu})
-  \end{equation}
-  in \cat{C} consists of an endofunctor
-  \begin{equation}
-    \label{eq:monad-}
-    \func{T}: \cat{C} \to \cat{C}
-    \text{,}
-  \end{equation}
-  together with two natural transformations\footnote{Whenever a
-    natural transformation is mentioned, its naturality is implicitly
-    mentioned as well. See Definition \ref{def:natural}.}
+  Let $\cat{C}$ be a category. A monad $\mon{T} = (\func{T},
+  \nat{\eta}, \nat{\mu})$ in \cat{C} consists of an endofunctor
+  $\func{T}: \cat{C} \to \cat{C}$, together with two natural
+  transformations\footnote{Whenever a natural transformation is
+    mentioned, its naturality is implicitly mentioned as well. See
+    Definition \ref{def:natural}.}
   \begin{equation}
     \label{eq:monad-unit}
     \nat{\eta}: \func{I} \to \func{T}: \cat{C} \to \cat{C}
@@ -144,7 +118,7 @@ they are defined only in terms of functors and natural transformations
     \text{,}
   \end{equation}
   called unit and multiplication of the monad, respectively, such
-  that, for all objects $a \in \catO{C}$,
+  that, for all objects $a$,
   \begin{equation}
     \label{eq:monad-associativity}
     \natO{\mu}{a} \comp \natO{\mu}{\funcO{T}(a)} = \natO{\mu}{a} \comp \funcM{T}(\natO{\mu}{a})
@@ -161,9 +135,23 @@ they are defined only in terms of functors and natural transformations
     \natO{\mu}{a} \comp \funcM{T}(\natO{\eta}{a}) = \idO{\funcO{T}(a)}
     \text{,}
   \end{equation}
-  that is, such that the diagrams in Figures
-  \ref{fig:monad-associativity} and \ref{fig:monad-unity} are
-  commutative.
+  that is, the diagrams in Figures \ref{fig:monad-associativity} and
+  \ref{fig:monad-unity} are commutative. Since \nat{\eta} and
+  \nat{\mu} are natural transformations, then, for all morphisms $f: a
+  \to \funcO{T}(b)$,
+  \begin{equation}
+    \label{eq:monad-naturality-unit}
+    \natO{\eta}{\funcO{T}(b)} \comp f = \funcM{T}(f) \comp \natO{\eta}{a}
+  \end{equation}
+  and
+  \begin{equation}
+    \label{eq:monad-naturality-multiplication}
+    \natO{\mu}{\funcO{T}(b)} \comp \funcM{T}(\funcM{T}(f)) = \funcM{T}(f) \comp \natO{\mu}{a}
+    \text{,}
+  \end{equation}
+  that is, the diagrams in Figures \ref{fig:monad-naturality-unit} and
+  \ref{fig:monad-naturality-multiplication} are commutative.
+
   \begin{figure}[htb]
     \begin{center}
       \begin{tikzpicture}[node distance=4cm]
@@ -181,6 +169,7 @@ they are defined only in terms of functors and natural transformations
     \caption{Monadic associativity.}
     \label{fig:monad-associativity}
   \end{figure}
+
   \begin{figure}[htb]
     \begin{center}
       \begin{tikzpicture}[node distance=4cm]
@@ -206,22 +195,6 @@ they are defined only in terms of functors and natural transformations
     \label{fig:monad-unity}
   \end{figure}
 
-  Additionally, since \nat{\eta} and \nat{\mu} are natural
-  transformations, then, for all morphisms $f: a \to \funcO{T}(b) \in
-  \catM{C}$,
-  \begin{equation}
-    \label{eq:monad-naturality-unit}
-    \natO{\eta}{\funcO{T}(b)} \comp f = \funcM{T}(f) \comp \natO{\eta}{a}
-  \end{equation}
-  and
-  \begin{equation}
-    \label{eq:monad-naturality-multiplication}
-    \natO{\mu}{\funcO{T}(b)} \comp \funcM{T}(\funcM{T}(f)) = \funcM{T}(f) \comp \natO{\mu}{a}
-    \text{,}
-  \end{equation}
-  or, equivalently, the diagrams in Figures
-  \ref{fig:monad-naturality-unit} and
-  \ref{fig:monad-naturality-multiplication} are commutative.
   \begin{figure}[htb]
     \begin{center}
       \begin{tikzpicture}[node distance=4cm]
@@ -240,6 +213,7 @@ they are defined only in terms of functors and natural transformations
     \caption{Naturality of the \nat{\eta} natural transformation.}
     \label{fig:monad-naturality-unit}
   \end{figure}
+
   \begin{figure}[htb]
     \begin{center}
       \begin{tikzpicture}[node distance=4cm]
@@ -258,6 +232,7 @@ they are defined only in terms of functors and natural transformations
     \caption{Naturality of the \nat{\mu} natural transformation.}
     \label{fig:monad-naturality-multiplication}
   \end{figure}
+
 \end{definition}
 
 \begin{remark}
@@ -288,45 +263,37 @@ they are defined only in terms of functors and natural transformations
 \begin{terminology}
   \label{ter:monad}
 
-  Although the common term for monads is monad, alternatives
-  include standard construction, which is the original term
+  Although the common term for monads is monad, alternatives include
+  standard construction, which is the original term
   \parencite[30]{manes-1976}, algebraic theory in monoid form
   \parencite[29]{manes-1976}, and triple
-  \parencites[83]{barr-2005}[372]{barr-wells-2012}.
-  %% , which seems to be the only current alternative.
-  We choose monad because of Remark
-  \ref{re:monad-monoid} and reserve triple for effectively
-  distinguishing between monads and triples, as explained in page
-  \pageref{ter:triple}.
+  \parencites[83]{barr-2005}[372]{barr-wells-2012}. We choose monad
+  because of Remark \ref{re:monad-monoid} and reserve Kleisli triple
+  for effectively distinguishing between monads and Kleisli triples,
+  as explained in page \pageref{ter:triple}.
 
 \end{terminology}
+
+\todo{Introduce the following example.}
 
 \begin{example}
   \label{ex:monad-identity}
 
   The identity or trivial monad is just a reformulation of the
-  identity functor for a given category. Compare the following example
-  with Example \ref{ex:triple-identity}.
-
-  Given a category \cat{C}, its identity function
-  \eqref{eq:category-identity} and its identity endofunctor (Example
+  identity functor for a given category. Compare this with Example
+  \ref{ex:triple-identity}. Given a category \cat{C}, its identity
+  mapping and its identity endofunctor (see Example
   \ref{ex:functor-identity}) yield a monad
   \begin{equation*}
     \mon{I} = (\func{I}, \id, \id)
   \end{equation*}
-  in \cat{C}, called the identity monad in \cat{C}.
-
-  \begin{proof}
-
-    Equations \eqref{eq:monad-associativity},
-    \eqref{eq:monad-unity-left}, and \eqref{eq:monad-unity-right} hold
-    by \eqref{eq:category-identity}, and
-    \eqref{eq:monad-naturality-unit} and
-    \eqref{eq:monad-naturality-multiplication} hold because \nat{\id}
-    is a natural transformation, as demonstrated in Example
-    \ref{ex:natural-identity}.
-
-  \end{proof}
+  in \cat{C}, called the identity monad in \cat{C}. Equations
+  \eqref{eq:monad-associativity}, \eqref{eq:monad-unity-left}, and
+  \eqref{eq:monad-unity-right} hold by \eqref{eq:category-identity},
+  and \eqref{eq:monad-naturality-unit} and
+  \eqref{eq:monad-naturality-multiplication} hold because \nat{\id} is
+  a natural transformation, as demonstrated in Example
+  \ref{ex:natural-identity}.
 
 \end{example}
 
@@ -343,57 +310,36 @@ explained, they do correspond to monads, but via Kleisli triples).
 
   %% \parencite[58]{moggi-1991}
 
-  Let \cat{C} be a category. A Kleisli triple
-  \begin{equation}
-    \label{eq:triple}
-    \mon{T} = (\funcO{T}, \nat{\eta}, \monM{T}{\underscore})
-  \end{equation}
-  in \cat{C} consists of an object function
-  \begin{equation}
-    \label{eq:triple-}
-    \funcO{T}: \catO{C} \to \catO{C}
-    \text{,}
-  \end{equation}
-  a transformation \nat{\eta} \eqref{eq:monad-unit}, and a morphism
-  function
-  \begin{equation}
-    \label{eq:triple-extension}
-    \monM{T}{\underscore}: \catM{C} \to \catM{C}
-    \text{,}
-  \end{equation}
-  called extension, which assigns to each morphism
-  \begin{equation*}
-    f: a \to \funcO{T}(b) \in \catM{C}
-  \end{equation*}
-  a morphism
-  \begin{equation*}
-    \monM{T}{f}: \funcO{T}(a) \to \funcO{T}(b) \in \catM{C}
-    \text{,}
-  \end{equation*}
-  such that, for all morphisms $f: a \to \funcO{T}(b) \in \catM{C}$
-  and $g: b \to \funcO{T}(c) \in \catM{C}$,
+  Let $\cat{C}$ be a category. A Kleisli triple $\mon{T} = (\funcO{T},
+  \nat{\eta}, \monM{T}{\underscore})$ in $\cat{C}$, where $\nat{\eta}$
+  is a transformation \eqref{eq:monad-unit}, assigns to each object
+  $a$ an object $\funcO{T}(a)$, and to each morphism $f: a \to
+  \funcO{T}(b)$ a morphism $\monM{T}{f}: \funcO{T}(a) \to
+  \funcO{T}(b)$, such that, for all morphisms $f: a \to \funcO{T}(b)$
+  and $g: b \to \funcO{T}(c)$,
   \begin{equation}
     \label{eq:triple-associativity}
     \monM{T}{g} \comp \monM{T}{f} = \monM{T}{(\monM{T}{g} \comp f)}
     \text{,}
   \end{equation}
-  for all morphisms $f: a \to \funcO{T}(b) \in \catM{C}$,
+  for all morphisms $f: a \to \funcO{T}(b)$,
   \begin{equation}
     \label{eq:triple-unity-left}
     \monM{T}{f} \comp \natO{\eta}{a} = f
     \text{,}
   \end{equation}
-  and, for all objects $a \in \catO{C}$,
+  and, for all objects $a$,
   \begin{equation}
     \label{eq:triple-unity-right}
     \monM{T}{\natO{\eta}{a}} = \idO{\funcO{T}(a)}
     \text{,}
   \end{equation}
-  or, equivalently, such that the diagrams in Figures
-  \ref{fig:triple-associativity} and \ref{fig:triple-unity} are
-  commutative, and \eqref{eq:triple-unity-right}.
+  that is, the diagrams in Figures \ref{fig:triple-associativity} and
+  \ref{fig:triple-unity} are commutative, and
+  \eqref{eq:triple-unity-right}.
+
   \begin{figure}[htb]
-    \begin{subfigure}[b]{0.5\linewidth}
+    \begin{subfigure}[b]{0.45\linewidth}
       \begin{center}
         \begin{tikzpicture}
           \node (t a)                {$\funcO{T}(a)$};
@@ -408,7 +354,7 @@ explained, they do correspond to monads, but via Kleisli triples).
       \caption{Kleisli triple associativity.}
       \label{fig:triple-associativity}
     \end{subfigure}
-    \begin{subfigure}[b]{0.5\linewidth}
+    \begin{subfigure}[b]{0.45\linewidth}
       \begin{center}
         \begin{tikzpicture}
           \node (a)                  {$a$};
@@ -425,6 +371,7 @@ explained, they do correspond to monads, but via Kleisli triples).
     \end{subfigure}
     \caption{}
   \end{figure}
+
 \end{definition}
 
 \begin{remark}
@@ -463,33 +410,30 @@ explained, they do correspond to monads, but via Kleisli triples).
 
 \end{remark*}
 
-...
+\todo{Introduce the following examples. Up to the reader to read
+  them.}
+
+As example, we describe the identity or trivial monad as a Kleisli
+triple.
 
 \begin{example}
   \label{ex:triple-identity}
 
   The most basic example of a Kleisli triple is the identity or
   trivial Kleisli triple, which is just a reformulation of the
-  identity functor, just like Example \ref{ex:monad-identity}.
-
-  Given a category \cat{C}, its identity function
-  \eqref{eq:category-identity}, and the object and morphism functions
-  of its identity endofunctor (Example \ref{ex:functor-identity})
-  yield a Kleisli triple
+  identity functor, just like Example \ref{ex:monad-identity}. Given a
+  category \cat{C}, its identity mapping, and the object and morphism
+  mappings of its identity endofunctor (see Example
+  \ref{ex:functor-identity}) yield a Kleisli triple
   \begin{equation*}
     \mon{I} = (\funcO{I}, \id, \funcM{I})
     \text{,}
   \end{equation*}
-  in \cat{C}, called the identity Kleisli triple.
-
-  \begin{proof}
-
-    Equation \eqref{eq:triple-associativity} holds by
-    \eqref{eq:category-associativity}, and \eqref{eq:triple-unity-left}
-    and \eqref{eq:triple-unity-right} hold by
-    \eqref{eq:category-identity}.
-
-  \end{proof}
+  in $\cat{C}$, called the identity Kleisli triple. Equation
+  \eqref{eq:triple-associativity} holds by
+  \eqref{eq:category-associativity}, and \eqref{eq:triple-unity-left}
+  and \eqref{eq:triple-unity-right} hold by
+  \eqref{eq:category-identity}.
 
 \end{example}
 
@@ -498,16 +442,9 @@ explained, they do correspond to monads, but via Kleisli triples).
 
   %% \parencite[60]{moggi-1991}
 
-  \hfill
-  \begin{description}
-  \item[Partiality]
-  \item[Nondeterminism]
-  \item[Side effects]
-  \item[Exceptions]
-  \item[Continuations]
-  \item[Interactive input]
-  \item[Interactive output]
-  \end{description}
+  Partiality, nondeterminism, side effects, exceptions, continuations,
+  interactive input and output.
+
 \end{examples}
 
 \subsection*{Monads $=$ Kleisli triples}
@@ -539,60 +476,39 @@ descriptions.
   \label{fig:monad-theory-triple}
 \end{figure}
 
-Lemma \ref{lem:monad-to-triple} states that a Kleisli triple can be obtained
-from a monad. Note that, since monads are defined in terms of functors
-and natural transformations, this lemma is simpler than its converse.
+First, we state that a Kleisli triple can be obtained from a monad.
+Since monads are defined in terms of functors and natural
+transformations, the following lemma is simpler than its converse.
 
 \begin{lemma}
   \label{lem:monad-to-triple}
 
+  %% \parencite[61]{moggi-1991}
+
   Let $\mon{T} = (\func{T}, \nat{\eta}, \nat{\mu})$ be a monad in a
-  category \cat{C}. Then
+  category $\cat{C}$. Then
   \begin{equation*}
     \mon{T} = (\funcO{T}, \nat{\eta}, \monM{}{\underscore})
     \text{,}
   \end{equation*}
-  where \funcO{T} is the object function of the endofunctor \func{T},
-  \nat{\eta} is the underlying transformation of the natural
-  transformation \nat{\eta}, and $\monM{}{\underscore}: \catM{C} \to \catM{C}$
-  is a morphism function which assigns to each morphism $f : a \to
-  \funcO{T}(b) \in \catM{C}$ a morphism $\monM{}{f}: \funcO{T}(a) \to
-  \funcO{T}(b) \in \catM{C}$ defined by\footnote{This definition is
-    taken from \parencite[61]{moggi-1991}.}
+  where $\funcO{T}$ is the object mapping of the endofunctor
+  $\func{T}$, $\nat{\eta}$ is the underlying transformation of the
+  natural transformation $\nat{\eta}$, and $\monM{}{\underscore}$
+  assigns to each morphism $f : a \to \funcO{T}(b)$ a morphism
+  $\monM{}{f}: \funcO{T}(a) \to \funcO{T}(b)$ defined by
   \begin{equation}
     \label{eq:monad-to-triple-extension}
     \monM{}{f} = \natO{\mu}{b} \comp \funcM{T}(f)
     \text{,}
   \end{equation}
-  is a Kleisli triple in \cat{C}.
+  is a Kleisli triple in $\cat{C}$.
 
   \begin{proof}
 
-    As
-    \begin{steps}
-      \stepm{\monM{}{\natO{\eta}{a}}}
-        \eqbydef{$\monM{}{\natO{\eta}{a}}$ \eqref{eq:monad-to-triple-extension}}
-      \stepm{\natO{\mu}{a} \comp \funcM{T}(\natO{\eta}{a})}
-        \eqby{\eqref{eq:monad-unity-right}}
-      \stepm{\idO{\funcO{T}(a)}},
-    \end{steps}
-    \eqref{eq:triple-unity-left} holds. Equation \eqref{eq:triple-unity-right}
-    holds because
-    \begin{steps}
-      \stepm{\monM{}{f} \comp \natO{\eta}{a}}
-        \eqbydef{$\monM{}{f}$ \eqref{eq:monad-to-triple-extension}}
-      \stepm{\natO{\mu}{b} \comp \funcM{T}(f) \comp \natO{\eta}{a}}
-        \eqby{\eqref{eq:monad-naturality-unit}}
-      \stepm{\natO{\mu}{b} \comp \natO{\eta}{\funcO{T}(b)} \comp f}
-        \eqby{\eqref{eq:monad-unity-left} with $a = b$}
-      \stepm{\idO{\funcO{T}(b)} \comp f}
-        \eqby{\eqref{eq:category-identity}}
-      \stepm{f}.
-    \end{steps}
-    And, since
+    First, we prove that \eqref{eq:triple-associativity} holds:
     \begin{steps}
       \stepm{\monM{}{g} \comp \monM{}{f}}
-        \eqbydef{$\monM{}{f}$ and $\monM{}{g}$ \eqref{eq:monad-to-triple-extension}}
+        \eqby{\eqref{eq:monad-to-triple-extension} with $f = f$ and $f = g$}
       \stepm{\natO{\mu}{c} \comp \funcM{T}(g) \comp \natO{\mu}{b} \comp \funcM{T}(f)}
         \eqby{\eqref{eq:monad-naturality-multiplication} with $f = g$}
       \stepm{\natO{\mu}{c} \comp \natO{\mu}{\funcO{T}(c)} \comp \funcM{T}(\funcM{T}(g)) \comp \funcM{T}(f)}
@@ -602,106 +518,121 @@ and natural transformations, this lemma is simpler than its converse.
       \stepm{\natO{\mu}{c} \comp \funcM{T}(\natO{\mu}{c}) \comp \funcM{T}(\funcM{T}(g) \comp f)}
         \eqby{\eqref{eq:functor-composition} with $f = \funcM{T}(g) \comp f$ and $g = \natO{\mu}{c}$}
       \stepm{\natO{\mu}{c} \comp \funcM{T}(\natO{\mu}{c} \comp \funcM{T}(g) \comp f)}
-        \eqbydef{$\monM{}{g}$ and \monM{}{(\monM{}{g} \comp f)} \eqref{eq:monad-to-triple-extension}}
-      \stepm{\monM{}{(\monM{}{g} \comp f)}},
+        \eqby{\eqref{eq:monad-to-triple-extension} with $f = g$ and $f = \monM{}{g} \comp f$}
+      \stepm{\monM{}{(\monM{}{g} \comp f)}}
     \end{steps}
-    \eqref{eq:triple-associativity} holds.
+    Now, we prove that \eqref{eq:triple-unity-left} holds:
+    \begin{steps}
+      \stepm{\monM{}{f} \comp \natO{\eta}{a}}
+        \eqby{\eqref{eq:monad-to-triple-extension}}
+      \stepm{\natO{\mu}{b} \comp \funcM{T}(f) \comp \natO{\eta}{a}}
+        \eqby{\eqref{eq:monad-naturality-unit}}
+      \stepm{\natO{\mu}{b} \comp \natO{\eta}{\funcO{T}(b)} \comp f}
+        \eqby{\eqref{eq:monad-unity-left} with $a = b$}
+      \stepm{\idO{\funcO{T}(b)} \comp f}
+        \eqby{\eqref{eq:category-identity}}
+      \stepm{f}
+    \end{steps}
+    Finally, we prove that \eqref{eq:triple-unity-right} holds:
+    \begin{steps}
+      \stepm{\monM{}{\natO{\eta}{a}}}
+        \eqby{\eqref{eq:monad-to-triple-extension} with $f = \natO{\eta}{a}$}
+      \stepm{\natO{\mu}{a} \comp \funcM{T}(\natO{\eta}{a})}
+        \eqby{\eqref{eq:monad-unity-right}}
+      \stepm{\idO{\funcO{T}(a)}}
+    \end{steps}
 
   \end{proof}
 
 \end{lemma}
 
-The object function of a Kleisli triple can be extended to define an
-endofunctor. Lemma \ref{prop:triple-to-endofunctor} states that
-an endofunctor can be derived from a Kleisli triple.
+The object mapping of a Kleisli triple can be extended to define an
+endofunctor, as proven in the following lemma.
 
 \begin{proposition}
   \label{prop:triple-to-endofunctor}
 
-  If $\mon{T} = (\funcO{T}, \nat{\eta}, \monM{}{\underscore})$ is a Kleisli triple in
-  a category \cat{C}, then
-  \begin{equation*}
-    \func{T} = (\funcO{T}, \funcM{T})
-    \text{,}
-  \end{equation*}
-  where $\funcM{T}: \catM{C} \to \catM{C}$ is a morphism function
-  which assigns to each morphism $f: a \to b \in \catM{C}$ a morphism
-  $\funcM{T}(f): \funcO{T}(a) \to \funcO{T}(b) \in \catM{C}$ defined
-  by\footnote{This definition is taken from
-    \parencite[61]{moggi-1991}.}
+  %% \parencite[61]{moggi-1991}
+
+  Let $\cat{C}$ be a category. If $\mon{T} = (\funcO{T}, \nat{\eta},
+  \monM{}{\underscore})$ is a Kleisli triple in $\cat{C}$, then
+  $\func{T} = (\funcO{T}, \funcM{T})$, which assigns to each morphism
+  $f: a \to b$ a morphism $\funcM{T}(f): \funcO{T}(a) \to
+  \funcO{T}(b)$ defined by
   \begin{equation}
     \label{eq:triple-to-endofunctor-morphism-function}
     \funcM{T}(f) = \monM{}{(\natO{\eta}{b} \comp f)}
     \text{,}
   \end{equation}
-  is an endofunctor in \cat{C}.
+  is an endofunctor in $\cat{C}$.
 
   \begin{proof}
 
-    Equation \eqref{eq:functor-identity} holds because
+    In the first place, we prove that \eqref{eq:functor-identity}
+    holds:
     \begin{steps}
       \stepm{\funcM{T}(\idO{a})}
-        \eqbydef{$\funcM{T}(\idO{a})$ \eqref{eq:triple-to-endofunctor-morphism-function}}
+        \eqby{\eqref{eq:triple-to-endofunctor-morphism-function} with $f = \idO{a}$}
       \stepm{\monM{}{(\natO{\eta}{a} \comp \idO{a})}}
         \eqby{\eqref{eq:category-identity} with $f = \natO{\eta}{a}$}
-      \stepm{\monM{}{\natO{\eta}{a}}}.
+      \stepm{\monM{}{\natO{\eta}{a}}}
     \end{steps}
-    And \eqref{eq:functor-composition} holds because
+    In the second place, we prove that \eqref{eq:functor-composition}
+    holds:
     \begin{steps}
       \stepm{\funcM{T}(g \comp f)}
-        \eqbydef{$\funcM{T}(g \comp f)$ \eqref{eq:triple-to-endofunctor-morphism-function}}
+        \eqby{\eqref{eq:triple-to-endofunctor-morphism-function} with $f = g \comp f$}
       \stepm{\monM{}{(\natO{\eta}{c} \comp g \comp f)}}
         \eqby{\eqref{eq:triple-unity-left} with $f = \natO{\eta}{c} \comp g$}
       \stepm{\monM{}{(\monM{}{(\natO{\eta}{c} \comp g)} \comp \natO{\eta}{b} \comp f)}}
         \eqby{\eqref{eq:triple-associativity} with $f = \natO{\eta}{b} \comp f$ and $g = \natO{\eta}{c} \comp g$}
       \stepm{\monM{}{(\natO{\eta}{c} \comp g)} \comp \monM{}{(\natO{\eta}{b} \comp f)}}
-        \eqbydef{$\funcM{T}(f)$ and $\funcM{T}(g)$ \eqref{eq:triple-to-endofunctor-morphism-function}}
-      \stepm{\funcM{T}(g) \comp \funcM{T}(f)}.
+        \eqby{\eqref{eq:triple-to-endofunctor-morphism-function} with $f = f$ and $f = g$}
+      \stepm{\funcM{T}(g) \comp \funcM{T}(f)}
     \end{steps}
 
   \end{proof}
 
 \end{proposition}
 
-Since \func{T} is an endofunctor, it is now possible to ask if
-\nat{\eta} is a natural transformation. Lemma
-\ref{prop:triple-to-monad-unit} states and proves that it is.
+Now, since $\func{T}$ is an endofunctor, we state and prove that
+$\nat{\eta}$ is a natural transformation.
 
 \begin{proposition}
   \label{prop:triple-to-monad-unit}
 
-  If $\mon{T} = (\funcO{T}, \nat{\eta}, \monM{}{\underscore})$ is a Kleisli triple in
-  a category \cat{C}, then the transformation \nat{\eta} is natural.
+  If $\mon{T} = (\funcO{T}, \nat{\eta}, \monM{}{\underscore})$ is a
+  Kleisli triple in a category $\cat{C}$, then the transformation
+  $\nat{\eta}$ is natural.
 
   \begin{proof}
 
-    As
+    We prove that \eqref{eq:naturality} holds for $\nat{\eta}$:
     \begin{steps}
       \stepm{\natO{\eta}{\funcO{T}(b)} \comp f}
         \eqby{\eqref{eq:triple-unity-left} with $f = \natO{\eta}{\funcO{T}(b)} \comp f$}
       \stepm{\monM{}{(\natO{\eta}{\funcO{T}(b)} \comp f)} \comp \natO{\eta}{a}}
-        \eqbydef{$\funcM{T}(f)$ \eqref{eq:triple-to-endofunctor-morphism-function}}
-      \stepm{\funcM{T}(f) \comp \natO{\eta}{a}},
+        \eqby{\eqref{eq:triple-to-endofunctor-morphism-function}}
+      \stepm{\funcM{T}(f) \comp \natO{\eta}{a}}
     \end{steps}
-    \nat{\eta} is natural.
 
   \end{proof}
 
 \end{proposition}
 
-Lemma \ref{prop:triple-to-monad-multiplication} defines the
-multiplication function of a monad given a Kleisli triple, and proves that it
-is a natural transformation.
+Next, we define the multiplication of a monad given a Kleisli triple,
+and prove that it is a natural transformation.
 
 \begin{proposition}
   \label{prop:triple-to-monad-multiplication}
 
-  If $\mon{T} = (\funcO{T}, \nat{\eta}, \monM{}{\underscore})$ is a Kleisli triple in
-  a category \cat{C}, then a function $\nat{\mu}: \catO{C} \to
-  \catM{C}$ which assigns to each object $a \in \catO{C}$ a morphism
-  $\natO{\mu}{a}: \funcO{T}(\funcO{T}(a)) \to \funcO{T}(a) \in
-  \catM{C}$ defined by\footnote{This definition is taken from
-    \parencite[61]{moggi-1991}.}
+  %% \parencite[61]{moggi-1991}
+
+  Let $\cat{C}$ be a category. If $\mon{T} = (\funcO{T}, \nat{\eta},
+  \monM{}{\underscore})$ is a Kleisli triple in $\cat{C}$, then a
+  transformation $\nat{\mu}$ which assigns to each object $a$ a
+  morphism $\natO{\mu}{a}: \funcO{T}(\funcO{T}(a)) \to \funcO{T}(a)$
+  defined by
   \begin{equation}
     \label{eq:triple-to-monad-multiplication}
     \natO{\mu}{a} = \monM{}{\idO{\funcO{T}(a)}}
@@ -711,14 +642,14 @@ is a natural transformation.
 
   \begin{proof}
 
-    Since
+    We prove that \eqref{eq:naturality} holds for $\nat{\mu}$:
     \begin{steps}
       \stepm{\natO{\mu}{\funcO{T}(b)} \comp \funcM{T}(\funcM{T}(f))}
-        \eqbydef{$\natO{\mu}{\funcO{T}(b)}$ \eqref{eq:triple-to-monad-multiplication}}
+        \eqby{\eqref{eq:triple-to-monad-multiplication} with $a = \funcO{T}(b)$}
       \stepm{\monM{}{\idO{\funcO{T}(\funcO{T}(b))}} \comp \funcM{T}(\funcM{T}(f))}
-        \eqbydef{$\funcM{T}(f)$ \eqref{eq:triple-to-endofunctor-morphism-function}}
+        \eqby{\eqref{eq:triple-to-endofunctor-morphism-function}}
       \stepm{\monM{}{\idO{\funcO{T}(\funcO{T}(b))}} \comp \funcM{T}(\monM{}{(\natO{\eta}{\funcO{T}(b)} \comp f)})}
-        \eqbydef{$\funcM{T}(\monM{}{(\natO{\eta}{\funcO{T}(b)} \comp f)})$ \eqref{eq:triple-to-endofunctor-morphism-function}}
+        \eqby{\eqref{eq:triple-to-endofunctor-morphism-function} with $f = \monM{}{(\natO{\eta}{\funcO{T}(b)} \comp f)}$}
       \stepm{\monM{}{\idO{\funcO{T}(\funcO{T}(b))}} \comp \monM{}{(\natO{\eta}{\funcO{T}(\funcO{T}(b))} \comp \monM{}{(\natO{\eta}{\funcO{T}(b)} \comp f)})}}
         \eqby{\eqref{eq:triple-associativity} with $f = \natO{\eta}{\funcO{T}(\funcO{T}(b))} \comp \monM{}{(\natO{\eta}{\funcO{T}(b)} \comp f)}$ and $g = \idO{\funcO{T}(\funcO{T}(b))}$}
       \stepm{\monM{}{(\monM{}{\idO{\funcO{T}(\funcO{T}(b))}} \comp \natO{\eta}{\funcO{T}(\funcO{T}(b))} \comp \monM{}{(\natO{\eta}{\funcO{T}(b)} \comp f)})}}
@@ -730,44 +661,42 @@ is a natural transformation.
       \stepm{\monM{}{(\monM{}{(\natO{\eta}{\funcO{T}(b)} \comp f)} \comp \idO{\funcO{T}(a)})}}
         \eqby{\eqref{eq:triple-associativity} with $f = \idO{\funcO{T}(a)}$ and $g = \natO{\eta}{\funcO{T}(b)} \comp f$}
       \stepm{\monM{}{(\natO{\eta}{\funcO{T}(b)} \comp f)} \comp \monM{}{\idO{\funcO{T}(a)}}}
-        \eqbydef{$\funcM{T}(f)$ \eqref{eq:triple-to-endofunctor-morphism-function}}
+        \eqby{\eqref{eq:triple-to-endofunctor-morphism-function}}
       \stepm{\funcM{T}(f) \comp \monM{}{\idO{\funcO{T}(a)}}}
-        \eqbydef{$\natO{\mu}{a}$ \eqref{eq:triple-to-monad-multiplication}}
-      \stepm{\funcM{T}(f) \comp \natO{\mu}{a}},
+        \eqby{\eqref{eq:triple-to-monad-multiplication}}
+      \stepm{\funcM{T}(f) \comp \natO{\mu}{a}}
     \end{steps}
-    then \nat{\mu} is natural.
 
   \end{proof}
 
 \end{proposition}
 
-Lemma \ref{lem:triple-to-monad} states that a monad can be obtained
-from a Kleisli triple using the constructions from the three propositions
-above.
+Now, we state that a monad can be obtained from a Kleisli triple using
+the constructions from the three lemmas above.
 
 \begin{lemma}
   \label{lem:triple-to-monad}
 
-  Let $\mon{T} = (\funcO{T}, \nat{\eta}, \monM{}{\underscore})$ be a Kleisli triple in
-  a category \cat{C}. Then
+  Let $\mon{T} = (\funcO{T}, \nat{\eta}, \monM{}{\underscore})$ be a
+  Kleisli triple in a category $\cat{C}$. Then
   \begin{equation*}
     \mon{T} = (\func{T}, \nat{\eta}, \nat{\mu})
     \text{,}
   \end{equation*}
-  where \func{T} is the endofunctor in \cat{C} defined by Lemma
-  \ref{prop:triple-to-endofunctor}, \nat{\eta} is the transformation
+  where $\func{T}$ is the endofunctor in $\cat{C}$ defined by Lemma
+  \ref{prop:triple-to-endofunctor}, $\nat{\eta}$ is the transformation
   \nat{\eta} regarded as a natural transformation (see Lemma
   \ref{prop:triple-to-monad-unit}), and $\nat{\mu}: \func{T} \comp
   \func{T} \to \func{T}: \cat{C} \to \cat{C}$ is the natural
   transformation defined by Lemma
-  \ref{prop:triple-to-monad-multiplication}, is a monad in \cat{C}.
+  \ref{prop:triple-to-monad-multiplication}, is a monad in $\cat{C}$.
 
   \begin{proof}
 
-    As
+    First, we prove that \eqref{eq:monad-associativity} holds:
     \begin{steps}
       \stepm{\natO{\mu}{a} \comp \natO{\mu}{\funcO{T}(a)}}
-        \eqbydef{$\natO{\mu}{a}$ and $\natO{\mu}{\funcO{T}(a)}$ \eqref{eq:triple-to-monad-multiplication}}
+        \eqby{\eqref{eq:triple-to-monad-multiplication} with $a = a$ and $a = \funcO{T}(a)$}
       \stepm{\monM{}{\idO{\funcO{T}(a)}} \comp \monM{}{\idO{\funcO{T}(\funcO{T}(a))}}}
         \eqby{\eqref{eq:triple-associativity} with $f = \idO{\funcO{T}(\funcO{T}(a))}$ and $g = \idO{\funcO{T}(a)}$}
       \stepm{\monM{}{(\monM{}{\idO{\funcO{T}(a)}} \comp \idO{\funcO{T}(\funcO{T}(a))})}}
@@ -779,25 +708,25 @@ above.
       \stepm{\monM{}{(\monM{}{\idO{\funcO{T}(a)}} \comp \natO{\eta}{\funcO{T}(a)} \comp \monM{}{\idO{\funcO{T}(a)}})}}
         \eqby{\eqref{eq:triple-associativity} with $f = \natO{\eta}{\funcO{T}(a)} \comp \monM{}{\idO{\funcO{T}(a)}}$ and $g = \idO{\funcO{T}(a)}$}
       \stepm{\monM{}{\idO{\funcO{T}(a)}} \comp \monM{}{(\natO{\eta}{\funcO{T}(a)} \comp \monM{}{\idO{\funcO{T}(a)}})}}
-        \eqbydef{$\natO{\mu}{a}$ \eqref{eq:triple-to-monad-multiplication}}
+        \eqby{\eqref{eq:triple-to-monad-multiplication}}
       \stepm{\natO{\mu}{a} \comp \monM{}{(\natO{\eta}{\funcO{T}(a)} \comp \natO{\mu}{a})}}
-        \eqbydef{$\funcM{T}(\natO{\mu}{a})$ \eqref{eq:triple-to-endofunctor-morphism-function}}
-      \stepm{\natO{\mu}{a} \comp \funcM{T}(\natO{\mu}{a})},
+        \eqby{\eqref{eq:triple-to-endofunctor-morphism-function} with $f = \natO{\mu}{a}$}
+      \stepm{\natO{\mu}{a} \comp \funcM{T}(\natO{\mu}{a})}
     \end{steps}
-    \eqref{eq:monad-associativity} holds. And, since
+    Now, we prove that \eqref{eq:monad-unity-left} holds:
     \begin{steps}
       \stepm{\natO{\mu}{a} \comp \natO{\eta}{\funcO{T}(a)}}
-        \eqbydef{$\natO{\mu}{a}$ \eqref{eq:triple-to-monad-multiplication}}
+        \eqby{\eqref{eq:triple-to-monad-multiplication}}
       \stepm{\monM{}{\idO{\funcO{T}(a)}} \comp \natO{\eta}{\funcO{T}(a)}}
         \eqby{\eqref{eq:triple-unity-left} with $f = \idO{\funcO{T}(a)}$}
       \stepm{\idO{\funcO{T}(a)}}
     \end{steps}
-    and
+    Finally, we prove that \eqref{eq:monad-unity-right} holds:
     \begin{steps}
       \stepm{\natO{\mu}{a} \comp \funcM{T}(\natO{\eta}{a})}
-        \eqbydef{$\natO{\mu}{a}$ \eqref{eq:triple-to-monad-multiplication}}
+        \eqby{\eqref{eq:triple-to-monad-multiplication}}
       \stepm{\monM{}{\idO{\funcO{T}(a)}} \comp \funcM{T}(\natO{\eta}{a})}
-        \eqbydef{$\funcM{T}(\natO{\eta}{a})$ \eqref{eq:triple-to-endofunctor-morphism-function}}
+        \eqby{\eqref{eq:triple-to-endofunctor-morphism-function} with $f = \natO{\eta}{a}$}
       \stepm{\monM{}{\idO{\funcO{T}(a)}} \comp \monM{}{(\natO{\eta}{\funcO{T}(a)} \comp \natO{\eta}{a})}}
         \eqby{\eqref{eq:triple-associativity} with $f = \natO{\eta}{\funcO{T}(a)} \comp \natO{\eta}{a}$ and $g = \idO{\funcO{T}(a)}$}
       \stepm{\monM{}{(\monM{}{\idO{\funcO{T}(a)}} \comp \natO{\eta}{\funcO{T}(a)} \comp \natO{\eta}{a})}}
@@ -806,17 +735,15 @@ above.
         \eqby{\eqref{eq:category-identity} with $f = \natO{\eta}{a}$}
       \stepm{\monM{}{\natO{\eta}{a}}}
         \eqby{\eqref{eq:triple-unity-right}}
-      \stepm{\idO{\funcO{T}(a)}},
+      \stepm{\idO{\funcO{T}(a)}}
     \end{steps}
-    then \eqref{eq:monad-unity-left} and \eqref{eq:monad-unity-right}
-    hold.
 
   \end{proof}
 
 \end{lemma}
 
-Finally, Theorem \ref{the:monad-triple} proves that monads and Kleisli triples
-are equivalent.
+Finally, in the following theorem, we prove that monads and Kleisli
+triples are equivalent.
 
 \begin{theorem}
   \label{the:monad-triple}
@@ -825,23 +752,17 @@ are equivalent.
 
   \begin{proof}
 
-    The correspondence between monads and Kleisli triples is given by Lemma
-    \ref{lem:monad-to-triple}, which proves that a Kleisli triple can be
-    derived from a monad, and Lemma \ref{lem:triple-to-monad}, which proves
-    that a monad can be derived from a Kleisli triple.
+    The correspondence between monads and Kleisli triples is given by
+    Lemma \ref{lem:monad-to-triple}, which proves that a Kleisli
+    triple can be derived from a monad, and Lemma
+    \ref{lem:triple-to-monad}, which proves that a monad can be
+    derived from a Kleisli triple.
 
   \end{proof}
 
 \end{theorem}
 
-\begin{example}
-  \label{ex:monad-triple-identity}
-
-\end{example}
-
-\todo{These theorems will be mentioned in Section \ref{sec:monads-agda}.}
-
-\section{Monads in Haskell}
+\section{Monads and Kleisli triples in Haskell}
 \label{sec:monads-haskell}
 
 When discussing monads, there are three possibilities, as previously
@@ -860,8 +781,8 @@ form are very similar to the laws of a category).
 \subsection*{Monads}
 
 A monad in \hask consists of an endofunctor \texttt{m}, which
-corresponds to \eqref{eq:monad-}, together with two parametrically
-polymorphic functions
+corresponds to the endofunctor of a monad, together with two
+parametrically polymorphic functions
 \begin{equation}
   \label{eq:monad-return-haskell}
   \text{\texthaskell{return :: a -> m a}}
@@ -973,7 +894,7 @@ class Functor m => Monad' m where
   join   :: m (m a) -> m a
 \end{codehaskell}
 
-\todo{Surprise, surprise, where is \hask's identity functor?}
+\todo{Introduce the following examples (identity, maybe, list).}
 
 \begin{example}
   \label{ex:monad-identity-haskell}
@@ -981,8 +902,9 @@ class Functor m => Monad' m where
   Unlike Examples \ref{ex:monad-identity} and
   \ref{ex:triple-identity}, the identity monad in \hask is an
   intuitive way of learning to use the \texthaskell{Monad'} type
-  class. It is just a redefinition of the identity functor, but its
-  instance declaration, which appears below, gives a good idea of what
+  class. It is just a redefinition of the identity functor (see
+  Example \ref{ex:functor-identity-haskell}), but its instance
+  declaration, which appears below, gives a good idea of what
   \texthaskell{return} and \texthaskell{join} do.
 
   \begin{codehaskell}
@@ -992,11 +914,7 @@ instance Monad' Identity where
   join (Identity mx) = mx
   \end{codehaskell}
 
-  \begin{proof}
-
-    ...
-
-  \end{proof}
+  Proof...
 
 \end{example}
 
@@ -1005,36 +923,8 @@ instance Monad' Identity where
 
   The \texthaskell{Maybe} monad in \hask consists of the
   \texthaskell{Maybe} endofunctor (Example
-  \ref{ex:functor-maybe-haskell}), a unit function
-  \begin{equation*}
-    \text{\texthaskell{return :: a -> Maybe a}}
-    \text{,}
-  \end{equation*}
-  defined by
-  \begin{equation}
-    \label{eq:maybe-return}
-    \text{\texthaskell{return = Just}}
-    \text{,}
-  \end{equation}
-  and a multiplication function
-  \begin{equation*}
-    \text{\texthaskell{join :: Maybe (Maybe a) -> Maybe a}}
-    \text{,}
-  \end{equation*}
-  defined by
-  \begin{equation}
-    \label{eq:maybe-join-nothing}
-    \text{\texthaskell{join Nothing = Nothing}}
-  \end{equation}
-  and
-  \begin{equation}
-    \label{eq:maybe-join-just}
-    \text{\texthaskell{join (Just mx) = mx}}
-    \text{.}
-  \end{equation}
-
-  The \texthaskell{Monad'} instance declaration for the
-  \texthaskell{Maybe} type is shown below.
+  \ref{ex:functor-maybe-haskell})... The \texthaskell{Monad'} instance
+  declaration for the \texthaskell{Maybe} type is shown below.
   \begin{codehaskell}
 instance Monad' Maybe where
   return = Just
@@ -1043,132 +933,85 @@ instance Monad' Maybe where
   join (Just mx) = mx
   \end{codehaskell}
 
-  \begin{proof}
+  First, we prove that \eqref{eq:monad-associativity} holds:
 
-    Equation \eqref{eq:monad-associativity-haskell} holds because
-    \begin{steps}
-      \steph{(join . join) Nothing}
-        \eqbydef{\texthaskell{(.)}}
-      \steph{join (join Nothing)}
-        \eqbydef{\texthaskell{join} \eqref{eq:maybe-join-nothing}}
-      \steph{join Nothing}
-        \eqbydef{\texthaskell{fmap}}
-      \steph{join (fmap join Nothing)}
-        \eqbydef{\texthaskell{(.)}}
-      \steph{(join . fmap join) Nothing}
-    \end{steps}
-    and
-    \begin{steps}
-      \steph{(join . join) (Just mmx)}
-        \eqbydef{\texthaskell{(.)}}
-      \steph{join (join (Just mmx))}
-        \eqbydef{\texthaskell{join} \eqref{eq:maybe-join-just}}
-      \steph{join mmx}
-        \eqbydef{\texthaskell{join} \eqref{eq:maybe-join-just}}
-      \steph{join (Just (join mmx))}
-        \eqbydef{\texthaskell{fmap}}
-      \steph{join (fmap join (Just mmx))}
-        \eqbydef{\texthaskell{(.)}}
-      \steph{(join . fmap join) (Just mmx)}.
-    \end{steps}
-    As
-    \begin{steps}
-      \steph{(join . return) mx}
-        \eqbydef{\texthaskell{(.)}}
-      \steph{join (return mx)}
-        \eqbydef{\texthaskell{return} \eqref{eq:maybe-return}}
-      \steph{join (Just mx)}
-        \eqbydef{\texthaskell{join} \eqref{eq:maybe-join-just}}
-      \steph{mx}
-        \eqbydef{\texthaskell{id}}
-      \steph{id mx},
-    \end{steps}
-    \eqref{eq:monad-unity-left} holds. And, since
-    \begin{steps}
-      \steph{(join . fmap return) Nothing}
-        \eqbydef{\texthaskell{(.)}}
-      \steph{join (fmap return Nothing)}
-        \eqbydef{\texthaskell{fmap}}
-      \steph{join Nothing}
-        \eqbydef{\texthaskell{join} \eqref{eq:maybe-join-nothing}}
-      \steph{Nothing}
-        \eqbydef{\texthaskell{id}}
-      \steph{id Nothing}
-    \end{steps}
-    and
-    \begin{steps}
-      \steph{(join . fmap return) (Just x)}
-        \eqbydef{\texthaskell{(.)}}
-      \steph{join (fmap return (Just x))}
-        \eqbydef{\texthaskell{fmap}}
-      \steph{join (Just (return x))}
-        \eqbydef{\texthaskell{join} \eqref{eq:maybe-join-just}}
-      \steph{return x}
-        \eqbydef{\texthaskell{return} \eqref{eq:maybe-return}}
-      \steph{Just x}
-        \eqbydef{\texthaskell{id}}
-      \steph{id (Just x)},
-    \end{steps}
-    then \eqref{eq:monad-unity-right-haskell} holds.
+  \vspace{1em}
+  \caseh{Nothing}
+  \begin{steps}
+    \steph{(join . join) Nothing}
+      \eqbydefh{(.)}
+    \steph{join (join Nothing)}
+      \eqbydefh{join}
+    \steph{join Nothing}
+      \eqbydefh{fmap}
+    \steph{join (fmap join Nothing)}
+      \eqbydefh{(.)}
+    \steph{(join . fmap join) Nothing}
+  \end{steps}
+  \caseh{(Just mmx)}
+  \begin{steps}
+    \steph{(join . join) (Just mmx)}
+      \eqbydefh{(.)}
+    \steph{join (join (Just mmx))}
+      \eqbydefh{join}
+    \steph{join mmx}
+      \eqbydefh{join}
+    \steph{join (Just (join mmx))}
+      \eqbydefh{fmap}
+    \steph{join (fmap join (Just mmx))}
+      \eqbydefh{(.)}
+    \steph{(join . fmap join) (Just mmx)}
+  \end{steps}
+  We prove that \eqref{eq:monad-unity-left} holds:
+  \begin{steps}
+    \steph{(join . return) mx}
+      \eqbydef{\texthaskell{(.)}}
+    \steph{join (return mx)}
+      \eqbydef{\texthaskell{return}}
+    \steph{join (Just mx)}
+      \eqbydef{\texthaskell{join}}
+    \steph{mx}
+      \eqbydef{\texthaskell{id}}
+    \steph{id mx}
+  \end{steps}
+  Finally, we prove that \eqref{eq:monad-unity-right} holds:
 
-  \end{proof}
+  \vspace{1em}
+  \caseh{Nothing}
+  \begin{steps}
+    \steph{(join . fmap return) Nothing}
+      \eqbydefh{(.)}
+    \steph{join (fmap return Nothing)}
+      \eqbydefh{fmap}
+    \steph{join Nothing}
+      \eqbydefh{join}
+    \steph{Nothing}
+      \eqbydefh{id}
+    \steph{id Nothing}
+  \end{steps}
+  \caseh{(Just x)}
+  \begin{steps}
+    \steph{(join . fmap return) (Just x)}
+      \eqbydefh{(.)}
+    \steph{join (fmap return (Just x))}
+      \eqbydefh{fmap}
+    \steph{join (Just (return x))}
+      \eqbydefh{join}
+    \steph{return x}
+      \eqbydefh{return}
+    \steph{Just x}
+      \eqbydefh{id}
+    \steph{id (Just x)}
+  \end{steps}
 
 \end{example}
 
 \begin{example}
   \label{ex:monad-list-haskell}
 
-  The list monad in \hask consists of the list endofunctor (Example
-  \ref{ex:functor-list-haskell}, a unit function
-  \begin{equation*}
-    \text{\texthaskell{return :: a -> [a]}}
-  \end{equation*}
-  defined by
-  \begin{equation}
-    \label{eq:list-return}
-    \text{\texthaskell{return x = [x]}}
-    \text{,}
-  \end{equation}
-  and a multiplication function
-  \begin{equation*}
-    \text{\texthaskell{join :: [[a]] -> [a]}}
-  \end{equation*}
-  defined by
-  \begin{equation}
-    \label{eq:list-join}
-    \text{\texthaskell{join = concat}}
-    \text{,}
-  \end{equation}
-  where
-  \begin{equation*}
-    \text{\texthaskell{concat :: [[a]] -> [a]}}
-  \end{equation*}
-  is given by
-  \begin{equation}
-    \label{eq:list-concat-nil}
-    \text{\texthaskell{concat [] = []}}
-  \end{equation}
-  and
-  \begin{equation}
-    \label{eq:list-concat-cons}
-    \text{\texthaskell{concat (xs:xss) = xs ++ concat xss}}
-    \text{,}
-  \end{equation}
-  and
-  \begin{equation*}
-    \text{\texthaskell{(++) :: [a] -> [a] -> [a]}}
-  \end{equation*}
-  is given by
-  \begin{equation}
-    \text{\texthaskell{[] ++ ys = ys}}
-  \end{equation}
-  and
-  \begin{equation}
-    \text{\texthaskell{(x:xs) ++ ys = x : xs ++ ys}}
-    \text{.}
-  \end{equation}
-
-  The instance declaration for lists is as follows:
+  In \hask, the list monad in \hask consists of the list endofunctor
+  (Example \ref{ex:functor-list-haskell}). The instance declaration
+  for lists is as follows:
   \begin{codehaskell}
 instance Monad' [] where
   return x = [x]
@@ -1176,61 +1019,107 @@ instance Monad' [] where
   join = concat
   \end{codehaskell}
 
-  \begin{proof}
+  \begin{codehaskell}
+concat :: [[a]] -> [a]
+concat []       = []
+concat (xs:xss) = xs ++ concat xss
+  \end{codehaskell}
+  and
+  \begin{codehaskell}
+(++) :: [a] -> [a] -> [a]
+[]     ++ ys = ys
+(x:xs) ++ ys = x : xs ++ ys
+  \end{codehaskell}
 
-    \hfill
+  We prove, by induction, that \eqref{eq:monad-associativity} holds:
 
-    \begin{steps}
-      \steph{join (join xsss)}
+  \vspace{1em}
+  \caseh{[]}
+  \begin{steps}
+    \steph{(join . join) []}
+      \eqbydefh{join}
+    \steph{(concat . concat) []}
+      \eqbydefh{(.)}
+    \steph{concat (concat [])}
+      \eqbydefh{concat}
+    \steph{concat []}
+      \eqbydefh{fmap}
+    \steph{concat (fmap concat [])}
+      \eqbydefh{(.)}
+    \steph{(concat . fmap concat) []}
+      \eqbydefh{join}
+    \steph{(join . fmap join) []}
+  \end{steps}
+  \caseh{(xss:xsss)}
+  \begin{steps}
+    \steph{(join . join) (xss:xsss)}
+      \eqbydefh{join}
+    \steph{(concat . concat) (xss:xsss)}
+      \eqbydefh{(.)}
+    \steph{concat (concat (xss:xsss))}
+      \eqbydefh{concat}
+    \steph{concat (xss ++ concat xsss)}
+      \eqbydefh{}
+    \steph{concat xss ++ concat (concat xsss)}
+      \eqbyih
+    \steph{concat xss ++ concat (fmap concat xsss)}
+      \eqbydefh{}
+    \steph{concat (concat xss : fmap concat xsss)}
+      \eqbydefh{fmap}
+    \steph{concat (fmap concat (xss:xsss))}
+      \eqbydefh{(.)}
+    \steph{(concat . fmap concat) (xss:xsss)}
+      \eqbydefh{join}
+    \steph{(join . fmap join) (xss:xsss)}
+  \end{steps}
+  Now, we prove that \eqref{eq:monad-unity-left} holds:
+  \begin{steps}
+    \steph{(join . return) xs}
 
-      \steph{join (fmap join xsss)}
-    \end{steps}
+    \steph{(concat . return) xs}
 
-    \begin{steps}
-      \steph{(join . return) xs}
+    \steph{concat (return xs)}
 
-      \steph{join (return xs)}
+    \steph{concat [xs]}
 
-      \steph{concat [xs]}
+    \steph{xs}
+      \eqbydefh{id}
+    \steph{id xs}
+  \end{steps}
+  Finally, we prove, by induction, that \eqref{eq:monad-unity-right}
+  holds:
 
-      \steph{concat (xs:[])}
+  \vspace{1em}
+  \caseh{[]}
+  \begin{steps}
+    \steph{(join . fmap return) []}
 
-      \steph{xs ++ concat []}
+    \steph{concat (fmap return [])}
+      \eqbydefh{fmap}
+    \steph{concat []}
+      \eqbydefh{concat}
+    \steph{[]}
+      \eqbydefh{id}
+    \steph{id []}
+  \end{steps}
+  \caseh{(x:xs)}
+  \begin{steps}
+    \steph{(join . fmap return) (x:xs)}
 
-      \steph{xs ++ []}
+    \steph{concat (fmap return (x:xs))}
 
-      \steph{xs}
+    \steph{concat (return x : fmap return xs)}
 
-      \steph{id xs}
-    \end{steps}
+    \steph{return x ++ concat (fmap return xs)}
+      \eqbyih
+    \steph{return x ++ id xs}
 
-    \begin{steps}
-      \steph{(join . fmap return) []}
-
-      \steph{join (fmap return [])}
-
-      \steph{concat []}
-
-      \steph{[]}
-
-      \steph{id []}
-    \end{steps}
-
-    \begin{steps}
-      \steph{(join . fmap return) (x:xs)}
-
-      \steph{join (fmap return (x:xs))}
-
-      \steph{concat (return x : fmap return xs}
-
-      \steph{return x ++ concat (fmap return xs)}
-
-      \steph{return x ++ xs}
-
-      \steph{x:xs}
-    \end{steps}
-
-  \end{proof}
+    \steph{[x] ++ xs}
+      \eqbydefh{(++)}
+    \steph{(x:xs)}
+      \eqbydefh{id}
+    \steph{id (x:xs)}
+  \end{steps}
 
 \end{example}
 
@@ -1239,22 +1128,20 @@ instance Monad' [] where
 \todo{\texthaskell{bind} is actually \texthaskell{=<<}.}
 
 Similary, a Kleisli triple in \hask consists of a type constructor
-\texthaskell{m}, which corresponds to \eqref{eq:triple-}, a
+\texthaskell{m}, which corresponds to the object mapping, a
 parametrically polymorphic function \texthaskell{return}
 \eqref{eq:monad-return-haskell}, which corresponds to
 \eqref{eq:monad-unit}, and a function
-\begin{equation}
-  \label{eq:triple-alternative-bind-haskell}
+\begin{equation*}
   \text{\texthaskell{(>>=) :: m a -> (a -> m b) -> m b}}
   \text{,}
-\end{equation}
+\end{equation*}
 or, better,
-\begin{equation}
-  \label{eq:triple-bind-haskell}
+\begin{equation*}
   \text{\texthaskell{bind :: (a -> m b) -> m a -> m b}}
   \text{,}
-\end{equation}
-which corresponds to \eqref{eq:triple-extension}, such that, for all
+\end{equation*}
+which corresponds to the extension, such that, for all
 functions
 \begin{equation*}
   \text{\texthaskell{f :: a -> m b}} \in \catM{\hask}
@@ -1322,7 +1209,7 @@ respectively, or, equivalently, such that the diagrams in Figures
 \end{figure}
 
 Section \ref{sec:functors-haskell} details the correspondence between
-an object function such as \eqref{eq:triple-} and a type constructor.
+an object function such as To and a type constructor.
 An important, and inevitable, difference between Definition
 \ref{def:triple} and Kleisli triples in Haskell is that the former would not
 require \texthaskell{return} to be a natural transformation, but it is
@@ -1420,25 +1307,27 @@ and
 \end{steps}
 \eqref{eq:triple-unity-right-haskell}, \eqref{eq:triple-unity-left-haskell},
 and \eqref{eq:triple-associativity-haskell} become
-\begin{equation}
+\begin{equation*}
   \text{\texthaskell{mx >>= return = mx}}
   \text{,}
-\end{equation}
-\begin{equation}
+\end{equation*}
+\begin{equation*}
   \text{\texthaskell{return x >>= f = f x}}
   \text{,}
-\end{equation}
+\end{equation*}
 and
-\begin{equation}
+\begin{equation*}
   \text{\texthaskell{(mx >>= f) >>= g = mx >>= (\textbackslash x -> f x >>= g)}}
   \text{,}
-\end{equation}
+\end{equation*}
 respectively, which are the standard laws.
 
 \todo{These laws in terms of \texthaskell{>>=} are rather weird to
   understand. This could be easier with yet another way of expressing
   monads and Kleisli triples: algebraic theories in clone form and the
   operator \texthaskell{<=<}.}
+
+\todo{Introduce the following examples (identity, maybe, list).}
 
 \begin{example}
   \label{ex:triple-identity-haskell}
@@ -1456,11 +1345,7 @@ instance Monad Identity where
   bind f (Identity x) = f x
   \end{codehaskell}
 
-  \begin{proof}
-
-    ...
-
-  \end{proof}
+  Proof...
 
 \end{example}
 
@@ -1472,20 +1357,10 @@ instance Monad Identity where
   \begin{equation*}
     \text{\texthaskell{return :: a -> Maybe a}}
   \end{equation*}
-  defined by \eqref{eq:maybe-return}, and a multiplication function
+  defined by..., and a multiplication function
   \begin{equation*}
     \text{\texthaskell{bind :: (a -> Maybe b) -> Maybe a -> Maybe b}}
   \end{equation*}
-  defined by
-  \begin{equation}
-    \label{eq:maybe-bind-nothing}
-    \text{\texthaskell{bind \_ Nothing = Nothing}}
-  \end{equation}
-  and
-  \begin{equation}
-    \label{eq:maybe-bind-just}
-    \text{\texthaskell{bind f (Just x) = f x}}
-  \end{equation}
   yield the \texthaskell{Maybe} Kleisli triple in \hask. Its instance
   declaration is:
 
@@ -1497,62 +1372,64 @@ instance Monad Maybe where
   bind f (Just x) = f x
   \end{codehaskell}
 
-  \begin{proof}
+  We prove that \eqref{eq:triple-associativity} holds:
 
-    \hfill
-    \begin{steps}
-      \steph{bind return Nothing}
-        \eqbydefh{bind}
-      \steph{Nothing}
-        \eqbydefh{id}
-      \steph{id Nothing}
-    \end{steps}
+  \vspace{1em}
+  \caseh{Nothing}
+  \begin{steps}
+    \steph{bind return Nothing}
+      \eqbydefh{bind}
+    \steph{Nothing}
+      \eqbydefh{id}
+    \steph{id Nothing}
+  \end{steps}
+  \caseh{(Just x)}
+  \begin{steps}
+    \steph{bind return (Just x)}
+      \eqbydefh{return}
+    \steph{return x}
+      \eqbydefh{return}
+    \steph{Just x}
+      \eqbydefh{id}
+    \steph{id (Just x)}
+  \end{steps}
+  We prove that \eqref{eq:triple-unity-left} holds:
+  \begin{steps}
+    \steph{(bind f . return) x}
+      \eqbydefh{(.)}
+    \steph{bind f (return x)}
+      \eqbydefh{return}
+    \steph{bind f (Just x)}
+      \eqbydefh{bind}
+    \steph{f x}
+  \end{steps}
+  Finally, we prove that \eqref{eq:triple-unity-right} holds:
 
-    \begin{steps}
-      \steph{bind return (Just x)}
-        \eqbydefh{return}
-      \steph{return x}
-        \eqbydefh{return}
-      \steph{Just x}
-        \eqbydefh{id}
-      \steph{id (Just x)}
-    \end{steps}
-
-    \begin{steps}
-      \steph{(bind f . return) x}
-        \eqbydefh{(.)}
-      \steph{bind f (return x)}
-        \eqbydefh{return}
-      \steph{bind f (Just x)}
-        \eqbydefh{bind}
-      \steph{f x}
-    \end{steps}
-
-    \begin{steps}
-      \steph{(bind g . bind f) Nothing}
-        \eqbydefh{(.)}
-      \steph{bind g (bind f Nothing)}
-        \eqbydefh{bind}
-      \steph{bind g Nothing}
-        \eqbydefh{bind}
-      \steph{Nothing}
-        \eqbydefh{bind}
-      \steph{bind (bind g . f) Nothing}
-    \end{steps}
-
-    \begin{steps}
-      \steph{(bind g . bind f) (Just x)}
-        \eqbydefh{(.)}
-      \steph{bind g (bind f (Just x))}
-        \eqbydefh{bind}
-      \steph{bind g (f x)}
-        \eqbydefh{(.)}
-      \steph{(bind g . f) x}
-        \eqbydefh{bind}
-      \steph{bind (bind g . f) (Just x)}
-    \end{steps}
-
-  \end{proof}
+  \vspace{1em}
+  \caseh{Nothing}
+  \begin{steps}
+    \steph{(bind g . bind f) Nothing}
+      \eqbydefh{(.)}
+    \steph{bind g (bind f Nothing)}
+      \eqbydefh{bind}
+    \steph{bind g Nothing}
+      \eqbydefh{bind}
+    \steph{Nothing}
+      \eqbydefh{bind}
+    \steph{bind (bind g . f) Nothing}
+  \end{steps}
+  \caseh{(Just x)}
+  \begin{steps}
+    \steph{(bind g . bind f) (Just x)}
+      \eqbydefh{(.)}
+    \steph{bind g (bind f (Just x))}
+      \eqbydefh{bind}
+    \steph{bind g (f x)}
+      \eqbydefh{(.)}
+    \steph{(bind g . f) x}
+      \eqbydefh{bind}
+    \steph{bind (bind g . f) (Just x)}
+  \end{steps}
 
 \end{example}
 
@@ -1564,21 +1441,11 @@ instance Monad Maybe where
   \begin{equation*}
     \text{\texthaskell{return :: a -> [a]}}
   \end{equation*}
-  defined by \eqref{eq:list-return}, and an extension function
+  defined by... and an extension function
   \begin{equation*}
     \text{\texthaskell{bind :: (a -> [b]) -> [a] -> [b]}}
   \end{equation*}
-  defined by
-  \begin{equation}
-    \label{eq:list-bind}
-    \text{\texthaskell{bind f = concat . map f}}
-    \text{,}
-  \end{equation}
-  where \texthaskell{concat} is the function defined in Example
-  \ref{ex:monad-list-haskell}.
-
   The instance declaration for the list type constructor is:
-
   \begin{codehaskell}
 instance Monad [] where
   return x = [x]
@@ -1586,44 +1453,7 @@ instance Monad [] where
   bind f xs = concat (map f xs)
   \end{codehaskell}
 
-  \begin{proof}
-
-    \hfill
-    \begin{steps}
-      \steph{bind return []}
-        \eqbydefh{bind}
-      \steph{concat (map return [])}
-        \eqbydefh{map}
-      \steph{concat []}
-        \eqbydefh{concat}
-      \steph{[]}
-        \eqbydefh{id}
-      \steph{id []}
-    \end{steps}
-
-    \begin{steps}
-      \steph{bind return (x:xs)}
-        \eqbydefh{bind}
-      \steph{concat (map return (x:xs))}
-        \eqbydefh{map}
-      \steph{concat (return x : map return xs)}
-        \eqbydefh{concat}
-      \steph{return x ++ concat (map return xs)}
-        \eqbydefh{bind}
-      \steph{return x ++ bind return xs}
-        \eqbyih
-      \steph{return x ++ id xs}
-        \eqbydefh{id}
-      \steph{return x ++ xs}
-        \eqbydefh{return}
-      \steph{[x] ++ xs}
-        \eqbydefh{(++)}
-      \steph{x:xs}
-        \eqbydefh{id}
-      \steph{id (x:xs)}
-    \end{steps}
-
-  \end{proof}
+  Proof...
 
 \end{example}
 
@@ -1682,7 +1512,7 @@ class Functor m => Monad'' m where
   join = bind id
 \end{codehaskell}
 
-\section{Monads in Agda}
+\section{Monads and Kleisli triples in Agda}
 \label{sec:monads-agda}
 
 ...
@@ -1722,8 +1552,9 @@ record Monad' {M : Set → Set} (functor : Functor M) : Set₁ where
   bind f = join ∘ fmap f
 \end{codeagda}
 
-Compare the following example with Examples \ref{ex:monad-identity}
-and \ref{ex:monad-identity-haskell}.
+\todo{Introduce the following examples.} Compare the following example
+with Examples \ref{ex:monad-identity} and
+\ref{ex:monad-identity-haskell}.
 
 \begin{example}
   \label{ex:monad-identity-agda}
@@ -1918,6 +1749,7 @@ to the \textagda{bind} function.
 
 The following example should be compared with Examples
 \ref{ex:triple-identity} and \ref{ex:triple-identity-haskell}.
+\todo{Introduce all three examples.}
 
 \begin{example}
   \label{ex:triple-id-agda}
@@ -2037,6 +1869,10 @@ monad = mkMonad return bind associativity unity-left unity-right
 \section{References}
 \label{sec:monads-references}
 
-\todo{...}
+The definitions of monad and Kleisli triple are based on
+\parencite[137]{maclane-1998} and \parencite[58]{moggi-1991},
+respectively, and the theorems of the correspondence between monads
+and Kleisli triples are based on \parencites[24,
+  26--29]{manes-1976}[61]{moggi-1991}.
 
 \clearemptydoublepage
