@@ -699,58 +699,49 @@ triples are equivalent.
 \section{Monads and Kleisli triples in Haskell}
 \label{sec:monads-haskell}
 
-When discussing monads, there are three possibilities, as previously
-mentioned: monads (in monoid form), monads in extension form (Kleisli
-triples), and monads in clone form. Since monads in extension form are
-easier to justify from a computational point of view, this
-representation is the one found in functional programming languages
-like Haskell. We study monads (in monoid form) first and then Kleisli
-triples. Note, however, that studying only Kleisli triples would be
-enough, but monads have some mathematical advantages and are more
-intuitive in some cases. Finally, studying monads in clone form would
-also imply some mathematical advantages (just like the monadic laws
-are very similar to the laws of a monoid, the monadic laws in clone
-form are very similar to the laws of a category).
+When discussing monads, there are three possibilities: monads (in
+monoid form), Kleisli triples or monads in extension form, and monads
+in clone form. Kleisli triples are easier to justify from a
+computational point of view and correspond to the representation that
+is found in functional programming languages like Haskell and Agda. On
+the other hand, monads have some mathematical advantages and are more
+intuitive in some cases. In this section, we describe both
+representations in Haskell.
 
 \subsection*{Monads}
 
-A monad in \hask consists of an endofunctor \texttt{m}, which
-corresponds to the endofunctor of a monad, together with two
-parametrically polymorphic functions
-\begin{equation}
-  \label{eq:monad-return-haskell}
-  \text{\texthaskell{return :: a -> m a}}
-\end{equation}
-and
-\begin{equation}
-  \label{eq:monad-join-haskell}
-  \text{\texthaskell{join :: m (m a) -> m a}}
-  \text{,}
-\end{equation}
-which correspond to \eqref{eq:monad-unit} and
-\eqref{eq:monad-multiplication}, respectively, in such a way that, for
+In \hask, a monad consists of an endofunctor, together with two
+parametrically polymorphic functions, as follows\footnote{Note that
+  this is not a standard type class.}:
+\begin{codehaskell}
+class Functor m => Monad' m where
+  return :: a -> m a
+  join   :: m (m a) -> m a
+\end{codehaskell}
+The endofunctor \texthaskell{m} corresponds to the endofunctor
+$\func{T}$ of a monad, and the \texthaskell{return} and
+\texthaskell{join} functions correspond to the unit and multiplication
+natural transformations of a monad, $\nat{\eta}$ and $\nat{\mu}$,
+respectively.
+
+in such a way that, for
 all types \texthaskell{a} $\in \catO{\hask}$, the diagrams in Figures
 \ref{fig:monad-associativity-haskell} and
 \ref{fig:monad-unity-haskell} are commutative, or, equivalently,
-\begin{equation}
-  \label{eq:monad-associativity-haskell}
-  \text{\texthaskell{join . join = join . fmap join}}
-  \text{,}
-\end{equation}
-\begin{equation}
-  \label{eq:monad-unity-left-haskell}
-  \text{\texthaskell{join . return = id}}
-  \text{,}
-\end{equation}
+\begin{codehaskell}
+join . join = join . fmap join
+\end{codehaskell}
+\begin{codehaskell}
+join . return = id
+\end{codehaskell}
 and
-\begin{equation}
-  \label{eq:monad-unity-right-haskell}
-  \text{\texthaskell{join . fmap return = id}}
-  \text{,}
-\end{equation}
+\begin{codehaskell}
+join . fmap return = id
+\end{codehaskell}
 which correspond to \eqref{eq:monad-associativity},
 \eqref{eq:monad-unity-left}, and \eqref{eq:monad-unity-right},
 respectively.
+
 \begin{figure}[htb]
   \begin{center}
     \begin{tikzpicture}[node distance=4cm]
@@ -768,6 +759,7 @@ respectively.
   \caption{Monadic associativity in \hask.}
   \label{fig:monad-associativity-haskell}
 \end{figure}
+
 \begin{figure}[htb]
   \begin{center}
     \begin{tikzpicture}[node distance=4cm]
@@ -791,44 +783,35 @@ respectively.
 \end{figure}
 
 Additionally, since \texthaskell{return}
-\eqref{eq:monad-return-haskell} and \texthaskell{join}
-\eqref{eq:monad-join-haskell} are parametrically polymorphic
+and \texthaskell{join}
+are parametrically polymorphic
 functions, then, by parametricity (see Section
 \ref{sec:naturals-haskell}), for all functions
-\begin{equation*}
-  \text{\texthaskell{f :: a -> m b}} \in \catM{\hask}
-  \text{,}
-\end{equation*}
-\begin{equation}
-  \label{eq:monad-naturality-return-haskell}
-  \text{\texthaskell{return . f = fmap f . return}}
-\end{equation}
+\begin{codehaskell}
+f :: a -> m b
+\end{codehaskell}
+\begin{codehaskell}
+return . f = fmap f . return
+\end{codehaskell}
 and
-\begin{equation}
-  \label{eq:monad-naturality-join-haskell}
-  \text{\texthaskell{join . fmap (fmap f) = fmap f . join}}
-  \text{,}
-\end{equation}
+\begin{codehaskell}
+join . fmap (fmap f) = fmap f . join
+\end{codehaskell}
 which correspond to \eqref{eq:monad-naturality-unit} and
 \eqref{eq:monad-naturality-multiplication}, respectively.
 
 Monads in \hask are defined by the \texthaskell{Monad'} type class,
-whose declaration appears below and which is not a standard type class. As usual,
-notice that monadic associativity and unity, that is,
-\eqref{eq:monad-associativity-haskell},
-\eqref{eq:monad-unity-left-haskell}, and
-\eqref{eq:monad-unity-right-haskell}, and monadic naturalities, that
-is, \eqref{eq:monad-naturality-return-haskell} and
-\eqref{eq:monad-naturality-join-haskell}, are not part of this
-declaration. As mentioned earlier, however, the latter need not be
-part of it because they are free theorems.
-\begin{codehaskell}
-class Functor m => Monad' m where
-  return :: a -> m a
-  join   :: m (m a) -> m a
-\end{codehaskell}
+whose declaration appears below and which is not a standard type
+class. As usual, notice that monadic associativity and unity, and
+monadic naturalities, are not part of this declaration. As mentioned
+earlier, however, the latter need not be part of it because they are
+free theorems.
 
-\todo{Introduce the following examples (identity, maybe, list).}
+As examples, we consider \todo{Introduce the following examples
+  (identity, maybe, list).}
+
+As examples, we consider the identity or trivial monad, and two of the
+most common monads in Haskell, Maybe and the list monad.
 
 \begin{example}
   \label{ex:monad-identity-haskell}
@@ -841,12 +824,17 @@ class Functor m => Monad' m where
   declaration, which appears below, gives a good idea of what
   \texthaskell{return} and \texthaskell{join} do.
 
+
   \begin{codehaskell}
 instance Monad' Identity where
+  return :: a -> Identity a
   return = Identity
 
+  join :: Identity (Identity a) -> Identity a
   join (Identity mx) = mx
   \end{codehaskell}
+
+  \todo{Using the InstanceSigs language option}
 
   Proof...
 
@@ -861,12 +849,13 @@ instance Monad' Identity where
   declaration for the \texthaskell{Maybe} type is shown below.
   \begin{codehaskell}
 instance Monad' Maybe where
+  return :: a -> Maybe a
   return = Just
 
+  join :: Maybe (Maybe a) -> Maybe a
   join Nothing   = Nothing
   join (Just mx) = mx
   \end{codehaskell}
-
   First, we prove that \eqref{eq:monad-associativity} holds:
 
   \vspace{1em}
@@ -948,8 +937,10 @@ instance Monad' Maybe where
   for lists is as follows:
   \begin{codehaskell}
 instance Monad' [] where
+  return :: a -> [a]
   return x = [x]
 
+  join :: [[a]] -> [a]
   join = concat
   \end{codehaskell}
 
@@ -1063,82 +1054,74 @@ concat (xs:xss) = xs ++ concat xss
 
 Similary, a Kleisli triple in \hask consists of a type constructor
 \texthaskell{m}, which corresponds to the object mapping, a
-parametrically polymorphic function \texthaskell{return}
-\eqref{eq:monad-return-haskell}, which corresponds to
+parametrically polymorphic function \texthaskell{return}, which corresponds to
 \eqref{eq:monad-unit}, and a function
-\begin{equation*}
-  \text{\texthaskell{(>>=) :: m a -> (a -> m b) -> m b}}
-  \text{,}
-\end{equation*}
+\begin{codehaskell}
+(>>=) :: m a -> (a -> m b) -> m b
+\end{codehaskell}
 or, better,
+\begin{codehaskell}
+bind :: (a -> m b) -> m a -> m b
+\end{codehaskell}
+which corresponds to the extension, such that, for all functions
 \begin{equation*}
-  \text{\texthaskell{bind :: (a -> m b) -> m a -> m b}}
-  \text{,}
-\end{equation*}
-which corresponds to the extension, such that, for all
-functions
-\begin{equation*}
-  \text{\texthaskell{f :: a -> m b}} \in \catM{\hask}
+  \text{\texthaskell{f :: a -> m b}}
   \quad
   \text{and}
   \quad
-  \text{\texthaskell{g :: b -> m c}} \in \catM{\hask}
+  \text{\texthaskell{g :: b -> m c}}
   \text{,}
 \end{equation*}
-\begin{equation}
-  \label{eq:triple-associativity-haskell}
-  \text{\texthaskell{bind g . bind f = bind (bind g . f)}}
-  \text{,}
-\end{equation}
-for all functions \texthaskell{f :: a -> m b} $\in \catM{\hask}$,
-\begin{equation}
-  \label{eq:triple-unity-left-haskell}
-  \text{\texthaskell{bind f . return = f}}
-  \text{,}
-\end{equation}
+\begin{codehaskell}
+bind g . bind f = bind (bind g . f)
+\end{codehaskell}
+for all functions \texthaskell{f :: a -> m b},
+\begin{codehaskell}
+bind f . return = f
+\end{codehaskell}
 and
-\begin{equation}
-  \label{eq:triple-unity-right-haskell}
-  \text{\texthaskell{bind return = id}}
-  \text{,}
-\end{equation}
+\begin{codehaskell}
+bind return = id
+\end{codehaskell}
 which correspond to \eqref{eq:triple-associativity},
 \eqref{eq:triple-unity-left}, and \eqref{eq:triple-unity-right},
 respectively, or, equivalently, such that the diagrams in Figures
 \ref{fig:triple-associativity-haskell} and
-\ref{fig:triple-unity-haskell} are commutative, and
-\eqref{eq:triple-unity-right-haskell}.
+\ref{fig:triple-unity-haskell} are commutative, and right unity.
+
 \begin{figure}[htb]
-  \begin{subfigure}[b]{0.5\linewidth}
-    \begin{center}
-      \begin{tikzpicture}
-        \node (t a)                {\texthaskell{m a}};
-        \node (t b) [right of=t a] {\texthaskell{m b}};
-        \node (t c) [below of=t b] {\texthaskell{m c}};
+  \begin{center}
+    \begin{subfigure}[b]{0.45\linewidth}
+      \begin{center}
+        \begin{tikzpicture}
+          \node (t a)                {\texthaskell{m a}};
+          \node (t b) [right of=t a] {\texthaskell{m b}};
+          \node (t c) [below of=t b] {\texthaskell{m c}};
 
-        \draw [->] (t a) to node        {\texthaskell{bind f}}            (t b);
-        \draw [->] (t a) to node [swap] {\texthaskell{bind (bind g . f)}} (t c);
-        \draw [->] (t b) to node        {\texthaskell{bind g}}            (t c);
-      \end{tikzpicture}
-    \end{center}
-    \caption{Monadic associativity.}
-    \label{fig:triple-associativity-haskell}
-  \end{subfigure}
-  \begin{subfigure}[b]{0.5\linewidth}
-    \begin{center}
-      \begin{tikzpicture}
-        \node (a)                  {\texthaskell{a}};
-        \node (t a) [right of=a]   {\texthaskell{m a}};
-        \node (t b) [below of=t a] {\texthaskell{m b}};
+          \draw [->] (t a) to node        {\texthaskell{bind f}}            (t b);
+          \draw [->] (t a) to node [swap] {\texthaskell{bind (bind g . f)}} (t c);
+          \draw [->] (t b) to node        {\texthaskell{bind g}}            (t c);
+        \end{tikzpicture}
+      \end{center}
+      \caption{Monadic associativity.}
+      \label{fig:triple-associativity-haskell}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.45\linewidth}
+      \begin{center}
+        \begin{tikzpicture}
+          \node (a)                  {\texthaskell{a}};
+          \node (t a) [right of=a]   {\texthaskell{m a}};
+          \node (t b) [below of=t a] {\texthaskell{m b}};
 
-        \draw [->] (a)   to node        {\texthaskell{return}} (t a);
-        \draw [->] (a)   to node [swap] {\texthaskell{f}}      (t b);
-        \draw [->] (t a) to node        {\texthaskell{bind f}} (t b);
-      \end{tikzpicture}
-    \end{center}
-    \caption{Monadic unity.}
-    \label{fig:triple-unity-haskell}
-  \end{subfigure}
+          \draw [->] (a)   to node        {\texthaskell{return}} (t a);
+          \draw [->] (a)   to node [swap] {\texthaskell{f}}      (t b);
+          \draw [->] (t a) to node        {\texthaskell{bind f}} (t b);
+        \end{tikzpicture}
+      \end{center}
+      \caption{Monadic unity.}
+      \label{fig:triple-unity-haskell}
+    \end{subfigure}
+  \end{center}
   \caption{}
 \end{figure}
 
@@ -1161,10 +1144,7 @@ which makes it clear that it assigns a function to another function.
 Kleisli triples in \hask are defined by the \texthaskell{Monad} type
 class, which corresponds to the minimal definition of the standard
 \texthaskell{Monad} type class and whose declaration appears below.
-Notice that, as usual, this declaration does not include
-\eqref{eq:triple-associativity-haskell},
-\eqref{eq:triple-unity-left-haskell}, and
-\eqref{eq:triple-unity-right-haskell}.
+Notice that, as usual, this declaration does not include the laws.
 \begin{codehaskell}
 class Monad m where
   return :: a -> m a
@@ -1177,7 +1157,6 @@ is presented, that is, \texthaskell{(>>)} and \texthaskell{fail} are
 not included. This declaration is equivalent to that above, but the
 latter is more suitable for abstract manipulation and for comparing
 monads with Kleisli triples.
-
 \begin{codehaskell}
 class Monad m where
   return :: a -> m a
@@ -1186,24 +1165,22 @@ class Monad m where
 
 \begin{remark}
   \label{re:triple-endofunctor}
+
   Note that not including a \texthaskell{Functor} type constraint to
   the \texthaskell{Triple} type class is actually more theoretically
   correct. However, since Lemma \ref{prop:triple-to-endofunctor}
-  states that Kleisli triples are endofunctors, this type constraint could be
-  included for practical reasons.
+  states that Kleisli triples are endofunctors, this type constraint
+  could be included for practical reasons.
 
   For instance, it is preferable to use \texthaskell{fmap} instead of
-  \texthaskell{liftM}. -- Find a better argument or ignore this.
+  \texthaskell{liftM}. \todo{Find a better argument or ignore this.}
 
 \end{remark}
 
-\begin{equation*}
-  \text{\texthaskell{(>>=) :: Monad m => m a -> (a -> m b) -> m b}}
-\end{equation*}
-\begin{equation}
-  \label{eq:triple-to-alternative-bind-haskell}
-  \text{\texthaskell{mx >>= f = bind f mx}}
-\end{equation}
+\begin{codehaskell}
+(>>=) :: Monad m => m a -> (a -> m b) -> m b
+mx >>= f = bind f mx
+\end{codehaskell}
 
 
 Since
@@ -1224,36 +1201,32 @@ and
     \eqbydefh{(.)}
   \steph{mx >>= (\textbackslash x -> bind g (f x))}
     \eqbydefh{bind}
-  \steph{mx >>= (\textbackslash x -> f x >>= g)},
+  \steph{mx >>= (\textbackslash x -> f x >>= g)}
 \end{steps}
 \begin{steps}
   \steph{(bind f . return) x}
     \eqbydefh{(.)}
   \steph{bind f (return x)}
     \eqbydefh{bind}
-  \steph{return x >>= f},
+  \steph{return x >>= f}
 \end{steps}
 and
 \begin{steps}
   \steph{bind return mx}
-    \eqbydef{\texthaskell{(>>=)} \eqref{eq:triple-to-alternative-bind-haskell}}
-  \steph{mx >>= return},
+    \eqbydefh{(>>=)}
+  \steph{mx >>= return}
 \end{steps}
-\eqref{eq:triple-unity-right-haskell}, \eqref{eq:triple-unity-left-haskell},
-and \eqref{eq:triple-associativity-haskell} become
-\begin{equation*}
-  \text{\texthaskell{mx >>= return = mx}}
-  \text{,}
-\end{equation*}
-\begin{equation*}
-  \text{\texthaskell{return x >>= f = f x}}
-  \text{,}
-\end{equation*}
+right, left unit, and associativity become
+\begin{codehaskell}
+mx >>= return = mx
+\end{codehaskell}
+\begin{codehaskell}
+return x >>= f = f x
+\end{codehaskell}
 and
-\begin{equation*}
-  \text{\texthaskell{(mx >>= f) >>= g = mx >>= (\textbackslash x -> f x >>= g)}}
-  \text{,}
-\end{equation*}
+\begin{codehaskell}
+(mx >>= f) >>= g = mx >>= (\textbackslash x -> f x >>= g)
+\end{codehaskell}
 respectively, which are the standard laws.
 
 \todo{These laws in terms of \texthaskell{>>=} are rather weird to
@@ -1274,8 +1247,10 @@ respectively, which are the standard laws.
   instance declaration is:
   \begin{codehaskell}
 instance Monad Identity where
+  return :: a -> Identity a
   return = Identity
 
+  bind :: (a -> Identity b) -> Identity a -> Identity b
   bind f (Identity x) = f x
   \end{codehaskell}
 
@@ -1300,8 +1275,10 @@ instance Monad Identity where
 
   \begin{codehaskell}
 instance Monad Maybe where
+  return :: a -> Maybe a
   return = Just
 
+  bind :: (a -> Maybe b) -> Maybe a -> Maybe b
   bind _ Nothing  = Nothing
   bind f (Just x) = f x
   \end{codehaskell}
@@ -1382,8 +1359,10 @@ instance Monad Maybe where
   The instance declaration for the list type constructor is:
   \begin{codehaskell}
 instance Monad [] where
+  return :: a -> [a]
   return x = [x]
 
+  bind :: (a -> [b]) -> [a] -> [b]
   bind f xs = concat (map f xs)
   \end{codehaskell}
 
