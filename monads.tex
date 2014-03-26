@@ -83,18 +83,16 @@ output. \parencite[58]{moggi-1991}.
 \section{Monads and Kleisli triples}
 \label{sec:monads}
 
-\todo{Introduce the following subsections.}
+In this section, we define the concepts of monad and Kleisli triple,
+and prove their equivalence. Kleisli triples ``are easy to justify
+from a computational perspective,'' but monads ``are more widely used
+in (...) category theory and have the advantage of being defined only
+in terms of functors and natural transformations, which make them more
+suitable for abstract manipulation'' \parencite[60]{moggi-1991}.
 
 \subsection*{Monads}
 
-As mentioned earlier \todo{Where?}, monads in Haskell and Agda
-correspond to triples. However, monads are more widely used in
-category theory and more suitable for abstract manipulation because
-they are defined only in terms of functors and natural transformations
-\parencite[60]{moggi-1991}.
-
-\todo{Note about the identity natural transformation} \todo{Note about
-  the two equality lines in the second commutative diagram above.}
+First, we describe monads.
 
 \begin{definition}
   \label{def:monad}
@@ -104,9 +102,7 @@ they are defined only in terms of functors and natural transformations
   Let $\cat{C}$ be a category. A monad $\mon{T} = (\func{T},
   \nat{\eta}, \nat{\mu})$ in \cat{C} consists of an endofunctor
   $\func{T}: \cat{C} \to \cat{C}$, together with two natural
-  transformations\footnote{Whenever a natural transformation is
-    mentioned, its naturality is implicitly mentioned as well. See
-    Definition \ref{def:natural}.}
+  transformations
   \begin{equation}
     \label{eq:monad-unit}
     \nat{\eta}: \func{I} \to \func{T}: \cat{C} \to \cat{C}
@@ -136,9 +132,10 @@ they are defined only in terms of functors and natural transformations
     \text{,}
   \end{equation}
   that is, the diagrams in Figures \ref{fig:monad-associativity} and
-  \ref{fig:monad-unity} are commutative. Since \nat{\eta} and
-  \nat{\mu} are natural transformations, then, for all morphisms $f: a
-  \to \funcO{T}(b)$,
+  \ref{fig:monad-unity}\footnote{We use double arrows in commutative
+    diagrams to represent equality of objects.} are commutative. Since
+  \nat{\eta} and \nat{\mu} are natural transformations, then, for all
+  morphisms $f: a \to \funcO{T}(b)$,
   \begin{equation}
     \label{eq:monad-naturality-unit}
     \natO{\eta}{\funcO{T}(b)} \comp f = \funcM{T}(f) \comp \natO{\eta}{a}
@@ -238,72 +235,42 @@ they are defined only in terms of functors and natural transformations
 \begin{remark}
   \label{re:monad-monoid}
 
-  Formally, the definition of a monad is like that of a monoid $M$, as
-  described in Example \ref{ex:category-monoid}. The set $M$ of
-  elements of the monoid is replaced by the endofunctor \func{T} from
-  \cat{C} to \cat{C}, while the cartesian product $\times$ of two sets
-  is replaced by composite of two functors, the binary operation $\mu:
-  M \times M \to M$ of multiplication by
-  \eqref{eq:monad-multiplication} and the unit (identity) element
-  $\eta: I \to M$ by \eqref{eq:monad-unit}. We shall thus call $\eta$
-  the unit and $\mu$ the multiplication of the monad $T$; the diagram
-  in Figure \ref{fig:monad-associativity} is then the associative law
-  for the monad, while the diagrams in Figure \ref{fig:monad-unity}
-  express the left and right unit laws, respectively. Thus, a monad in
-  \cat{C} is just a monoid in the category of endofunctors of \cat{C},
-  with product $\times$ replaced by composition of endofunctors and
-  unit set replaced by the identity endofunctor
-  \parencite[138]{maclane-1998}.
+  Formally, the definition of a monad is like that of a monoid as
+  described in Example \ref{ex:category-monoid}. Let $\mon{T} =
+  (\func{T}, \nat{\eta}, \nat{\mu})$ be a monad in a category
+  $\cat{C}$. The endofunctor $\func{T}$ is the set of elements of a
+  monoid $M = (\func{T}, \nat{\eta}, \nat{\mu})$. The multiplication
+  natural transformation, $\nat{\eta}$, is the associative binary
+  operation of the monoid, and it has an identity, the unit natural
+  transformation, $\nat{\mu}$. Thus, the diagram in Figure
+  \ref{fig:monad-associativity} is the associative law for the monad,
+  while the diagram in Figure \ref{fig:monad-unity} expresses the left
+  and right unit laws \parencite[138]{maclane-1998}.
 
 \end{remark}
 
-\todo{\nat{\mu} is associative, and \nat{\eta} is a two-sided unit
-  for \nat{\mu}.}
-
-\begin{terminology}
-  \label{ter:monad}
-
-  Although the common term for monads is monad, alternatives include
-  standard construction, which is the original term
-  \parencite[30]{manes-1976}, algebraic theory in monoid form
-  \parencite[29]{manes-1976}, and triple
-  \parencites[83]{barr-2005}[372]{barr-wells-2012}. We choose monad
-  because of Remark \ref{re:monad-monoid} and reserve Kleisli triple
-  for effectively distinguishing between monads and Kleisli triples,
-  as explained in page \pageref{ter:triple}.
-
-\end{terminology}
-
-\todo{Introduce the following example.}
+As examples of monads, we consider the identity monad, which is just a
+reformulation of the identity functor for a given category.
 
 \begin{example}
   \label{ex:monad-identity}
 
-  The identity or trivial monad is just a reformulation of the
-  identity functor for a given category. Compare this with Example
-  \ref{ex:triple-identity}. Given a category \cat{C}, its identity
-  mapping and its identity endofunctor (see Example
-  \ref{ex:functor-identity}) yield a monad
-  \begin{equation*}
-    \mon{I} = (\func{I}, \id, \id)
-  \end{equation*}
-  in \cat{C}, called the identity monad in \cat{C}. Equations
-  \eqref{eq:monad-associativity}, \eqref{eq:monad-unity-left}, and
-  \eqref{eq:monad-unity-right} hold by \eqref{eq:category-identity},
-  and \eqref{eq:monad-naturality-unit} and
+  Let $\cat{C}$ be a category. The identity or trivial monad of
+  $\cat{C}$ is $\mon{I} = (\func{I}, \id, \id)$, that is, the identity
+  endofunctor (see Example \ref{ex:functor-identity}) and the identity
+  mapping of $\cat{C}$. Equations \eqref{eq:monad-associativity},
+  \eqref{eq:monad-unity-left}, and \eqref{eq:monad-unity-right} hold
+  by \eqref{eq:category-identity}, and
+  \eqref{eq:monad-naturality-unit} and
   \eqref{eq:monad-naturality-multiplication} hold because \nat{\id} is
-  a natural transformation, as demonstrated in Example
-  \ref{ex:natural-identity}.
+  a natural transformation (see Example \ref{ex:natural-identity}).
 
 \end{example}
 
 \subsection*{Kleisli triples}
 
-As stated above, Kleisli triples are just an alternative description
-for monads, which is easier to justify from a computational
-perspective \parencite[60]{moggi-1991}. In fact, monads in Haskell
-correspond exactly to Kleisli triples, not monads (as will be
-explained, they do correspond to monads, but via Kleisli triples).
+Now, we describe Kleisli triples, which ``are just an alternative
+description for monads'' \parencite[60]{moggi-1991}.
 
 \begin{definition}
   \label{def:triple}
@@ -377,89 +344,56 @@ explained, they do correspond to monads, but via Kleisli triples).
 \begin{remark}
   \label{re:triple}
 
-  Intuitively, \natO{\eta}{a} is the inclusion of values into
-  computations and \monM{T}{f} is the extension of a function $f$ from
-  values to computations to a function from computations to
-  computations, which first evaluates a computation and then applies
-  $f$ to the resulting value \parencite[59]{moggi-1991}.
+  From a computational perspective, ``$\natO{\eta}{a}$ is the
+  inclusion of values into computations and $\monM{T}{f}$ is the
+  extension of a function $f$ from values to computations to a
+  function from computations to computations, which first evaluates a
+  computation and then applies $f$ to the resulting value''
+  \parencite[59]{moggi-1991}.
 
 \end{remark}
 
-\begin{terminology}
-  \label{ter:triple}
-
-  The common term for Kleisli triples is Kleisli triple. Yet
-  another term is algebraic theory in extension form
-  \parencite[32]{manes-1976}, which is perhaps more precise but rather
-  outdated. Despite the fact that the latter could be updated to
-  something like monad in extension form, we choose
-  Kleisli triple for the sake of simplicity. When defining
-  monads, \textcite[138]{maclane-1998} considers the use of
-  triple as ``frequent but unfortunate,'' but this is not the
-  case within the context of this dissertation. \todo{Why or do not
-    mention it.}
-
-\end{terminology}
-
-\begin{remark*}
+\begin{remark}
   \label{re:monad-triple}
 
-  Note that, contrary to the definition of a monad, a Kleisli triple does not
-  require an endofunctor and its unit is not required to be defined as
-  a natural transformation.
+  Unlike the definition of a monad, a Kleisli triple does not require
+  an endofunctor, just an object mapping, and its unit is not required
+  to be defined as a natural transformation, just a transformation.
 
-\end{remark*}
+\end{remark}
 
-\todo{Introduce the following examples. Up to the reader to read
-  them.}
-
-As example, we describe the identity or trivial monad as a Kleisli
+As examples, we describe the identity or trivial monad as a Kleisli
 triple.
 
 \begin{example}
   \label{ex:triple-identity}
 
-  The most basic example of a Kleisli triple is the identity or
-  trivial Kleisli triple, which is just a reformulation of the
-  identity functor, just like Example \ref{ex:monad-identity}. Given a
-  category \cat{C}, its identity mapping, and the object and morphism
-  mappings of its identity endofunctor (see Example
-  \ref{ex:functor-identity}) yield a Kleisli triple
-  \begin{equation*}
-    \mon{I} = (\funcO{I}, \id, \funcM{I})
-    \text{,}
-  \end{equation*}
-  in $\cat{C}$, called the identity Kleisli triple. Equation
+  Let $\cat{C}$ be a category. The identity or trivial Kleisli triple
+  of $\cat{C}$ is $\mon{I} = (\funcO{I}, \id, \funcM{I})$, that is,
+  the object mapping of the identity endofunctor (see Example
+  \ref{ex:functor-identity}), the identity mapping, and the morphism
+  mapping of the identity endofunctor of $\cat{C}$. Equation
   \eqref{eq:triple-associativity} holds by
   \eqref{eq:category-associativity}, and \eqref{eq:triple-unity-left}
   and \eqref{eq:triple-unity-right} hold by
-  \eqref{eq:category-identity}.
+  \eqref{eq:category-identity}. This is just an alternative
+  description of the identity monad (see Example
+  \ref{ex:monad-identity}).
 
 \end{example}
 
-\begin{examples}
-  \label{ex:triple-notions-computation}
-
-  %% \parencite[60]{moggi-1991}
-
-  Partiality, nondeterminism, side effects, exceptions, continuations,
-  interactive input and output.
-
-\end{examples}
-
 \subsection*{Monads $=$ Kleisli triples}
 
-Algebraic theories in clone form \parencite[24]{manes-1976}, which
-will be referred to as monads in clone form, are yet another
-alternative description for monads. \textcite[26--29]{manes-1976}
-thoroughly proves the equivalence between monads and theories, and
-leaves the proof of the equivalence between theories and Kleisli triples as an
-exercise. \textcite[61]{moggi-1991} states the equivalence between
-monads and Kleisli triples, but his proof does not contain details. The
-following theorems demonstrate that monads and Kleisli triples are equivalent.
-As illustrated in Figure \ref{fig:monad-theory-triple}, these proofs
-are enough for stating the equivalence between the three alternative
-descriptions.
+Algebraic theories in clone form \parencite[24]{manes-1976}, which we
+shall refer to as monads in clone form, are yet another alternative
+description for monads. \textcite[26--29]{manes-1976} thoroughly
+proved the equivalence between monads and monads in clone form, and
+\textcite[61]{moggi-1991} stated the equivalence between monads and
+Kleisli triples, and proved it without going into details. The
+following theorems demonstrate in a thorough manner that monads and
+Kleisli triples are equivalent. As illustrated in Figure
+\ref{fig:monad-theory-triple}, these proofs are enough for stating the
+equivalence between the three alternative descriptions.
 
 \begin{figure}[htb]
   \begin{center}
@@ -1874,5 +1808,21 @@ The definitions of monad and Kleisli triple are based on
 respectively, and the theorems of the correspondence between monads
 and Kleisli triples are based on \parencites[24,
   26--29]{manes-1976}[61]{moggi-1991}.
+
+\begin{terminology}
+  \label{ter:monads}
+
+  Although the common term for monads is monad, alternatives include
+  standard construction, which is the original term
+  \parencite[30]{manes-1976}, algebraic theory in monoid form
+  \parencite[29]{manes-1976}, and triple
+  \parencites[83]{barr-2005}[372]{barr-wells-2012}. The common term
+  for Kleisli triples is Kleisli triple, but another term is algebraic
+  theory in extension form \parencite[32]{manes-1976}, which is
+  perhaps more precise but rather outdated. We choose the common terms
+  for the sake of simplicity and for effectively distinguishing
+  between monads and Kleisli triples.
+
+\end{terminology}
 
 \clearemptydoublepage
