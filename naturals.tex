@@ -11,37 +11,36 @@ to polymorphic functions in Haskell. Despite their name, natural
 transformations might be ``a first stumbling block'' in the study of
 category theory, ``simply because the examples tend to raise the level
 of mathematical sophistication'' \parencites[433]{poigne-1992}. But
-natural transformations are indeed natural, especially natural
-transformations in functional programming. It is typical to explain
-this idea with examples of parametrically polymorphic functions such
-as appending an element to a list, extracting the first component of a
-pair, reversing a list, etcetera.
+natural transformations are indeed natural, especially in functional
+programming. It is typical to explain this idea with examples of
+parametrically polymorphic functions such as appending an element to a
+list, extracting the first component of a pair, reversing a list,
+among others.
 
 In Haskell, one such function is the \texthaskell{head} function,
 which extracts the first element of a list\footnote{Note that this is
-  not the standard \texthaskell{head} function.}:
+  not the standard Haskell \texthaskell{head} function.}:
 \begin{codehaskell}
 head :: [a] -> Maybe a
 head []    = Nothing
 head (x:_) = Just x
 \end{codehaskell}
-This is not any function, but a function of functors. More
-specifically, it is a function from the list functor into the
-\texthaskell{Maybe} functor. Besides, it is not just a function, but
-rather a family of functions indexed by Haskell types.
+This is not any function, but a function between functors. More
+specifically, it is a function from the \texthaskell{[]} (list)
+functor into the \texthaskell{Maybe} functor. Besides, it is not just
+a function, but rather a family of functions indexed by Haskell types.
 
 The \texthaskell{head} function is natural or uniform in the sense
 that, given two types \texthaskell{a} and \texthaskell{b}, a function
 \texthaskell{f :: a -> b}, and a list of elements of \texthaskell{a},
 mapping the function over the list and then extracting the first
 element of the result is the same as extracting the first element of
-the list and then mapping the function over the result. That is to
-say:
+the list and then mapping the function over the result:
 \begin{codehaskell}
 head . fmap f = fmap f . head
 \end{codehaskell}
-Or, equivalently, the diagram in Figure
-\ref{fig:naturality-head-haskell} is commutative.
+That is, the diagram in Figure \ref{fig:naturality-head-haskell} is
+commutative.
 
 \begin{figure}[htb]
   \begin{center}
@@ -63,16 +62,16 @@ Or, equivalently, the diagram in Figure
 \end{figure}
 
 Even if this is an intuitive property of the \texthaskell{head}
-function and proving it is quite simple, it says a lot about its
-behavior and the behavior of all the functions that are part of the
-family that it defines. Most importantly, all of these facts are
-abstracted by natural transformations.
+function and proving it is quite simple, this property says a lot
+about the behavior of all the functions that are part of the family
+defined by \texthaskell{head}. Most importantly, all of these facts
+are abstracted by natural transformations.
 
 \section{Natural transformations}
 \label{sec:naturals}
 
-Having defined categories and functors or morphisms of categories, let
-us now define natural transformations or morphisms of functors.
+Having defined categories and functors (morphisms of categories), let
+us now define natural transformations (morphisms of functors).
 
 \begin{definition}
   \label{def:natural}
@@ -80,7 +79,7 @@ us now define natural transformations or morphisms of functors.
   %% \parencites[16]{maclane-1998}[435--436]{poigne-1992}
 
   Let $\func{F}$ and $\func{G}: \cat{C} \to \cat{D}$ be functors for
-  categories $\cat{C}$ and $\cat{D}$. A natural transformation
+  two categories $\cat{C}$ and $\cat{D}$. A natural transformation
   \begin{equation*}
     \nat{\tau}: \func{F} \to \func{G}: \cat{C} \to \cat{D}
   \end{equation*}
@@ -126,10 +125,13 @@ the category is the naturality of the transformation.
   Given a category $\cat{C}$, the identity natural transformation
   $\id: \func{I} \to \func{I}: \cat{C} \to \cat{C}$ assigns to each
   object $a$ the identity morphism $\idO{a}: a \to a$. This is a
-  natural transformation from and into the identity functor (see
+  natural transformation from and into the identity endofunctor (see
   Example \ref{ex:functor-identity}). Naturality is the commutativity
-  of either of the diagrams in Figure \ref{fig:natural-identity}, that
-  is, \eqref{eq:category-identity}.
+  of the diagram in Figure \ref{fig:natural-identity}, which holds by
+  \eqref{eq:category-identity}. More explicitly, naturality
+  corresponds to the commutativity of the diagram in Figure
+  \ref{fig:natural-identity-explicit}, which includes the identity
+  endofunctor.
 
   \begin{figure}[htb]
     \begin{center}
@@ -148,6 +150,8 @@ the category is the naturality of the transformation.
             \draw [->] (f b) to node [swap] {$\idO{b}$} (g b);
           \end{tikzpicture}
         \end{center}
+        \caption{}
+        \label{fig:natural-identity}
       \end{subfigure}
       \begin{subfigure}[t]{0.45\linewidth}
         \begin{center}
@@ -164,10 +168,11 @@ the category is the naturality of the transformation.
             \draw [->] (f b) to node [swap] {$\idO{b}$}      (g b);
           \end{tikzpicture}
         \end{center}
+        \caption{}
+        \label{fig:natural-identity-explicit}
       \end{subfigure}
     \end{center}
     \caption{Naturality of the identity natural transformation.}
-    \label{fig:natural-identity}
   \end{figure}
 
 \end{example}
@@ -242,11 +247,11 @@ function whose ``parameters can have more than one type.'' Such a
 function ``works uniformly on a range of types,'' which is ``achieved
 by type parameters'' \parencite[476]{cardelli-wegner-1985}.
 
-In Haskell, polymorphic functions can be thought of as functions of
-functors in order to relate them to natural transformations. Given two
-functors with type constructors \texthaskell{f} and \texthaskell{g}, a
-natural transformation \texthaskell{tau} is a polymorphic function
-\texthaskell{tau :: f a -> g a} or, using the
+In Haskell, polymorphic functions can be thought of as functions
+between functors in order to relate them to natural transformations.
+Given two functors with type constructors \texthaskell{f} and
+\texthaskell{g}, a natural transformation \texthaskell{tau} is a
+polymorphic function \texthaskell{tau :: f a -> g a} or, using the
 \texthaskell{ExplicitForAll} language option, a family of functions
 indexed by Haskell types:
 \begin{codehaskell}
@@ -292,9 +297,11 @@ naturality, it does not provide a proof of it. Parametricity does not
 require the definition of a polymorphic function (only its type), but
 proving naturality does.
 
-As examples, we consider the identity natural transformation, and the
+As examples, we consider the identity natural transformation, the
 \texthaskell{head} and \texthaskell{last} functions, which show that
-proofs of naturality differ according to the definition.
+proofs of naturality differ according to the definition, and the
+\texthaskell{concat} function, which is one of the examples of
+theorems from types in \parencite[349]{wadler-1989}
 
 \begin{example}
   \label{ex:natural-identity-haskell}
@@ -311,10 +318,10 @@ proofs of naturality differ according to the definition.
   \label{ex:natural-head-haskell}
 
   We have already talked about the \texthaskell{head} function, which
-  is a natural transformation from the list functor into the
-  \texthaskell{Maybe} functor. Naturality is the commutativity of the
-  diagram in Figure \ref{fig:naturality-head-haskell}. Here is its
-  proof.
+  is a natural transformation from the \texthaskell{[]} (list) functor
+  into the \texthaskell{Maybe} functor. Naturality is the
+  commutativity of the diagram in Figure
+  \ref{fig:naturality-head-haskell}. Here is its proof.
 
   \vspace{1em}
   \case{\texthaskell{[]}}
@@ -355,10 +362,11 @@ proofs of naturality differ according to the definition.
 \begin{example}
   \label{ex:natural-last-haskell}
 
-  Another natural transformation from the list functor into the
-  \texthaskell{Maybe} functor is the \texthaskell{last} function,
-  which extracts the last element of a list\footnote{Note that this is
-    not the standard \texthaskell{last} function.}:
+  Another natural transformation from the \texthaskell{[]} (list)
+  functor into the \texthaskell{Maybe} functor is the
+  \texthaskell{last} function, which extracts the last element of a
+  list\footnote{Note that this is not the standard Haskell
+    \texthaskell{last} function.}:
   \begin{codehaskell}
 last :: [a] -> Maybe a
 last []     = Nothing
@@ -375,6 +383,25 @@ last . fmap f = fmap f . last
   extracting the last element of the list is equivalent to extracting
   the last element of the list and then applying the function. In this
   case, proving naturality requires induction, as follows.
+
+  \begin{figure}[htb]
+    \begin{center}
+      \begin{tikzpicture}
+        \node (f a)                {\texthaskell{[a]}};
+        \node (f b) [below of=f a] {\texthaskell{[b]}};
+        \node (g a) [right of=f a] {\texthaskell{Maybe a}};
+        \node (g b) [below of=g a] {\texthaskell{Maybe b}};
+
+        \draw [->] (f a) to node [swap] {\texthaskell{fmap f}} (f b);
+        \draw [->] (g a) to node        {\texthaskell{fmap f}} (g b);
+
+        \draw [->] (f a) to node        {\texthaskell{last}}   (g a);
+        \draw [->] (f b) to node [swap] {\texthaskell{last}}   (g b);
+      \end{tikzpicture}
+    \end{center}
+    \caption{Naturality of the \texthaskell{last} function.}
+    \label{fig:naturality-last-haskell}
+  \end{figure}
 
   \vspace{1em}
   \case{\texthaskell{[]}}
@@ -432,23 +459,43 @@ last . fmap f = fmap f . last
     \steph{(fmap f . last) (x:y:ys)}
   \end{steps}
 
+\end{example}
+
+\begin{example}
+  \label{ex:natural-concat-haskell}
+
+  We can think of the \texthaskell{concat} function, which
+  concatenates a list of lists, as a natural transformation from and
+  into the \texthaskell{[]} functor. The type signature of this
+  function is:
+  \begin{codehaskell}
+concat :: [[a]] -> [a]
+  \end{codehaskell}
+  In this case, naturality is given by, for all functions
+  \texthaskell{f :: a -> b}:
+  \begin{codehaskell}
+fmap f . concat = concat . fmap (fmap f)
+  \end{codehaskell}
+  That is, the diagram in Figure \ref{fig:naturality-concat-haskell}
+  is commutative, which holds by parametricity.
+
   \begin{figure}[htb]
     \begin{center}
       \begin{tikzpicture}
-        \node (f a)                {\texthaskell{[a]}};
-        \node (f b) [below of=f a] {\texthaskell{[b]}};
-        \node (g a) [right of=f a] {\texthaskell{Maybe a}};
-        \node (g b) [below of=g a] {\texthaskell{Maybe b}};
+        \node (f a)                {\texthaskell{[[a]]}};
+        \node (f b) [below of=f a] {\texthaskell{[[b]]}};
+        \node (g a) [right of=f a] {\texthaskell{[a]}};
+        \node (g b) [below of=g a] {\texthaskell{[b]}};
 
-        \draw [->] (f a) to node [swap] {\texthaskell{fmap f}} (f b);
-        \draw [->] (g a) to node        {\texthaskell{fmap f}} (g b);
+        \draw [->] (f a) to node [swap] {\texthaskell{fmap (fmap f)}} (f b);
+        \draw [->] (g a) to node        {\texthaskell{fmap f}}        (g b);
 
-        \draw [->] (f a) to node        {\texthaskell{last}}   (g a);
-        \draw [->] (f b) to node [swap] {\texthaskell{last}}   (g b);
+        \draw [->] (f a) to node        {\texthaskell{concat}}   (g a);
+        \draw [->] (f b) to node [swap] {\texthaskell{concat}}   (g b);
       \end{tikzpicture}
     \end{center}
-    \caption{Naturality of the \texthaskell{last} function.}
-    \label{fig:naturality-last-haskell}
+    \caption{Naturality of the \texthaskell{concat} function.}
+    \label{fig:naturality-concat-haskell}
   \end{figure}
 
 \end{example}
