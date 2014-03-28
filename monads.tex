@@ -813,18 +813,18 @@ As examples, we consider \todo{Introduce the following examples
 As examples, we consider the identity or trivial monad, and two of the
 most common monads in Haskell, Maybe and the list monad.
 
+\todo{Unlike Examples \ref{ex:monad-identity} and
+  \ref{ex:triple-identity}, the identity monad in \hask is an
+  intuitive way of learning to use the \texthaskell{Monad'} type
+  class.}
+
 \begin{example}
   \label{ex:monad-identity-haskell}
 
-  Unlike Examples \ref{ex:monad-identity} and
-  \ref{ex:triple-identity}, the identity monad in \hask is an
-  intuitive way of learning to use the \texthaskell{Monad'} type
-  class. It is just a redefinition of the identity functor (see
-  Example \ref{ex:functor-identity-haskell}), but its instance
-  declaration, which appears below, gives a good idea of what
-  \texthaskell{return} and \texthaskell{join} do.
-
-
+  In \hask, the identity or trivial monad, which uses the identity
+  endofunctor (see Example \ref{ex:functor-identity-haskell}) is
+  defined as follows\footnote{Using the \texthaskell{InstanceSigs}
+    language option.}:
   \begin{codehaskell}
 instance Monad' Identity where
   return :: a -> Identity a
@@ -833,20 +833,17 @@ instance Monad' Identity where
   join :: Identity (Identity a) -> Identity a
   join (Identity mx) = mx
   \end{codehaskell}
-
-  \todo{Using the InstanceSigs language option}
-
-  Proof...
+  This instance satisfies the monad laws, as proved in Example
+  \ref{ex:monad-identity}.
 
 \end{example}
 
 \begin{example}
   \label{ex:monad-maybe-haskell}
 
-  The \texthaskell{Maybe} monad in \hask consists of the
-  \texthaskell{Maybe} endofunctor (Example
-  \ref{ex:functor-maybe-haskell})... The \texthaskell{Monad'} instance
-  declaration for the \texthaskell{Maybe} type is shown below.
+  In \hask, the \texthaskell{Maybe} monad, which uses the
+  \texthaskell{Maybe} endofunctor (see Example
+  \ref{ex:functor-maybe-haskell}), is defined as follows:
   \begin{codehaskell}
 instance Monad' Maybe where
   return :: a -> Maybe a
@@ -856,7 +853,8 @@ instance Monad' Maybe where
   join Nothing   = Nothing
   join (Just mx) = mx
   \end{codehaskell}
-  First, we prove that \eqref{eq:monad-associativity} holds:
+  Let us see that this instance satisfies the monad laws. First, we
+  prove that \eqref{eq:monad-associativity} holds:
 
   \vspace{1em}
   \caseh{Nothing}
@@ -885,7 +883,7 @@ instance Monad' Maybe where
       \eqbydefh{(.)}
     \steph{(join . fmap join) (Just mmx)}
   \end{steps}
-  We prove that \eqref{eq:monad-unity-left} holds:
+  Now, we prove that \eqref{eq:monad-unity-left} holds:
   \begin{steps}
     \steph{(join . return) mx}
       \eqbydef{\texthaskell{(.)}}
@@ -932,9 +930,8 @@ instance Monad' Maybe where
 \begin{example}
   \label{ex:monad-list-haskell}
 
-  In \hask, the list monad in \hask consists of the list endofunctor
-  (Example \ref{ex:functor-list-haskell}). The instance declaration
-  for lists is as follows:
+  In \hask, the list monad, which uses the list endofunctor (see
+  Example \ref{ex:functor-list-haskell}), is declared as follows:
   \begin{codehaskell}
 instance Monad' [] where
   return :: a -> [a]
@@ -943,70 +940,66 @@ instance Monad' [] where
   join :: [[a]] -> [a]
   join = concat
   \end{codehaskell}
-
+  The \texthaskell{concat} function is defined as follows:
   \begin{codehaskell}
 concat :: [[a]] -> [a]
 concat []       = []
 concat (xs:xss) = xs ++ concat xss
-  \end{codehaskell}
-  and
-  \begin{codehaskell}
+
 (++) :: [a] -> [a] -> [a]
 []     ++ ys = ys
 (x:xs) ++ ys = x : xs ++ ys
   \end{codehaskell}
-
-  We prove, by induction, that \eqref{eq:monad-associativity} holds:
+  Let us see that this instance satisfies the monad laws. In the first
+  place, we prove, by induction, that \eqref{eq:monad-associativity}
+  holds:
 
   \vspace{1em}
   \caseh{[]}
   \begin{steps}
     \steph{(join . join) []}
-      \eqbydefh{join}
-    \steph{(concat . concat) []}
-      \eqbydefh{(.)}
+      \eqbydefsh{(.)}{join}
     \steph{concat (concat [])}
       \eqbydefh{concat}
     \steph{concat []}
       \eqbydefh{fmap}
     \steph{concat (fmap concat [])}
-      \eqbydefh{(.)}
-    \steph{(concat . fmap concat) []}
-      \eqbydefh{join}
+      \eqbydefsh{(.)}{join}
     \steph{(join . fmap join) []}
   \end{steps}
   \caseh{(xss:xsss)}
   \begin{steps}
     \steph{(join . join) (xss:xsss)}
-      \eqbydefh{join}
-    \steph{(concat . concat) (xss:xsss)}
-      \eqbydefh{(.)}
+      \eqbydefsh{(.)}{join}
     \steph{concat (concat (xss:xsss))}
       \eqbydefh{concat}
     \steph{concat (xss ++ concat xsss)}
-      \eqbydefh{}
+      \eqtext{see below}
     \steph{concat xss ++ concat (concat xsss)}
       \eqbyih
     \steph{concat xss ++ concat (fmap concat xsss)}
-      \eqbydefh{}
+      \eqbydefh{concat}
     \steph{concat (concat xss : fmap concat xsss)}
       \eqbydefh{fmap}
     \steph{concat (fmap concat (xss:xsss))}
-      \eqbydefh{(.)}
-    \steph{(concat . fmap concat) (xss:xsss)}
-      \eqbydefh{join}
+      \eqbydefsh{(.)}{join}
     \steph{(join . fmap join) (xss:xsss)}
   \end{steps}
-  Now, we prove that \eqref{eq:monad-unity-left} holds:
+  In this proof, we use the fact that \texthaskell{concat} distributes
+  over \texthaskell{(++)}:
+  \begin{codehaskell}
+concat (xss ++ yss) = concat xss ++ concat yss
+  \end{codehaskell}
+  We shall not prove this property, which could be done by induction
+  on \texthaskell{xss}. Now, we prove that \eqref{eq:monad-unity-left}
+  holds:
   \begin{steps}
     \steph{(join . return) xs}
-
-    \steph{(concat . return) xs}
-
+      \eqbydefsh{(.)}{join}
     \steph{concat (return xs)}
-
+      \eqbydefh{return}
     \steph{concat [xs]}
-
+      \eqbydefh{concat}
     \steph{xs}
       \eqbydefh{id}
     \steph{id xs}
@@ -1018,7 +1011,7 @@ concat (xs:xss) = xs ++ concat xss
   \caseh{[]}
   \begin{steps}
     \steph{(join . fmap return) []}
-
+      \eqbydefsh{(.)}{join}
     \steph{concat (fmap return [])}
       \eqbydefh{fmap}
     \steph{concat []}
@@ -1030,15 +1023,15 @@ concat (xs:xss) = xs ++ concat xss
   \caseh{(x:xs)}
   \begin{steps}
     \steph{(join . fmap return) (x:xs)}
-
+      \eqbydefsh{(.)}{join}
     \steph{concat (fmap return (x:xs))}
-
+      \eqbydefh{fmap}
     \steph{concat (return x : fmap return xs)}
-
+      \eqbydefh{concat}
     \steph{return x ++ concat (fmap return xs)}
       \eqbyih
     \steph{return x ++ id xs}
-
+      \eqbydefsh{return}{id}
     \steph{[x] ++ xs}
       \eqbydefh{(++)}
     \steph{(x:xs)}
@@ -1225,7 +1218,7 @@ return x >>= f = f x
 \end{codehaskell}
 and
 \begin{codehaskell}
-(mx >>= f) >>= g = mx >>= (\textbackslash x -> f x >>= g)
+(mx >>= f) >>= g = mx >>= (\ x -> f x >>= g)
 \end{codehaskell}
 respectively, which are the standard laws.
 
@@ -1234,7 +1227,8 @@ respectively, which are the standard laws.
   monads and Kleisli triples: algebraic theories in clone form and the
   operator \texthaskell{<=<}.}
 
-\todo{Introduce the following examples (identity, maybe, list).}
+As examples, we consider the identity, \texthaskell{Maybe}, and list
+monads as Kleisli triples.
 
 \begin{example}
   \label{ex:triple-identity-haskell}
@@ -1261,18 +1255,8 @@ instance Monad Identity where
 \begin{example}
   \label{ex:triple-maybe-haskell}
 
-  The \texthaskell{Maybe} type constructor, together with a unit
-  function
-  \begin{equation*}
-    \text{\texthaskell{return :: a -> Maybe a}}
-  \end{equation*}
-  defined by..., and a multiplication function
-  \begin{equation*}
-    \text{\texthaskell{bind :: (a -> Maybe b) -> Maybe a -> Maybe b}}
-  \end{equation*}
-  yield the \texthaskell{Maybe} Kleisli triple in \hask. Its instance
-  declaration is:
-
+  In \hask, the \texthaskell{Maybe} Kleisli triple, which corresponds
+  to the standard \texthaskell{Maybe} monad, is defined as follows:
   \begin{codehaskell}
 instance Monad Maybe where
   return :: a -> Maybe a
@@ -1282,8 +1266,8 @@ instance Monad Maybe where
   bind _ Nothing  = Nothing
   bind f (Just x) = f x
   \end{codehaskell}
-
-  We prove that \eqref{eq:triple-associativity} holds:
+  Let us see that this instance satisfies the Kleisli triple laws. We
+  prove that \eqref{eq:triple-associativity} holds:
 
   \vspace{1em}
   \caseh{Nothing}
@@ -1304,7 +1288,7 @@ instance Monad Maybe where
       \eqbydefh{id}
     \steph{id (Just x)}
   \end{steps}
-  We prove that \eqref{eq:triple-unity-left} holds:
+  Now, we prove that \eqref{eq:triple-unity-left} holds:
   \begin{steps}
     \steph{(bind f . return) x}
       \eqbydefh{(.)}
@@ -1347,16 +1331,8 @@ instance Monad Maybe where
 \begin{example}
   \label{ex:triple-list-haskell}
 
-  The list Kleisli triple in \hask consists of the list type
-  constructor, that is, \texthaskell{[]}, a unit function
-  \begin{equation*}
-    \text{\texthaskell{return :: a -> [a]}}
-  \end{equation*}
-  defined by... and an extension function
-  \begin{equation*}
-    \text{\texthaskell{bind :: (a -> [b]) -> [a] -> [b]}}
-  \end{equation*}
-  The instance declaration for the list type constructor is:
+  In \hask, the list Kleisli triple, which corresponds to the standard
+  list monad, is declared as follows:
   \begin{codehaskell}
 instance Monad [] where
   return :: a -> [a]
@@ -1365,12 +1341,17 @@ instance Monad [] where
   bind :: (a -> [b]) -> [a] -> [b]
   bind f xs = concat (map f xs)
   \end{codehaskell}
-
-  Proof...
+  We shall not prove that this instance satisfies the Kleisli triple
+  laws. Since we have already proved that the list monad satisfies the
+  monad laws (see Example \ref{ex:monad-list-haskell}) and that both
+  representations are coextensive, we know that this instance does
+  satisfy the Kleisli triple laws.
 
 \end{example}
 
 \subsection*{Monads $=$ Kleisli triples}
+
+In this subsection, we
 
 Lemma \ref{lem:monad-to-triple}
 
@@ -1409,12 +1390,14 @@ Sd, Lemma \ref{lem:triple-to-monad}.
 In conclusion, by Theorem \ref{the:monad-triple}, monads and Kleisli triples
 in Haskell are equivalent.
 
-\todo{In semigroupoids, Edward Kmett defines bindable functors (that
-  is, monads without \texthaskell{return}). The type class
+\begin{remark}
+
+  In semigroupoids, Edward Kmett defines bindable functors (that is,
+  monads without \texthaskell{return}). The type class
   \texthaskell{Bind} includes both \texthaskell{bind} and
   \texthaskell{join}. Thus, yet another alternative type class
-  declaration would look like:}
-\begin{codehaskell}
+  declaration would look like:
+  \begin{codehaskell}
 class Functor m => Monad'' m where
   return :: a -> m a
 
@@ -1423,7 +1406,9 @@ class Functor m => Monad'' m where
 
   join :: m (m a) -> m a
   join = bind id
-\end{codehaskell}
+  \end{codehaskell}
+
+\end{remark}
 
 \section{Monads and Kleisli triples in Agda}
 \label{sec:monads-agda}
@@ -1469,7 +1454,7 @@ record Monad' {M : Set → Set} (functor : Functor M) : Set₁ where
 with Examples \ref{ex:monad-identity} and
 \ref{ex:monad-identity-haskell}.
 
-\begin{example}
+\begin{example}[See module \module{Abel.Data.Identity.Monad}]
   \label{ex:monad-identity-agda}
 
   The identity monad in Agda (which corresponds to the identity monad
@@ -1511,12 +1496,12 @@ monad' = mkMonad' return join associativity unity-left unity-right
 
 \end{example}
 
-\begin{example}
+\begin{example}[See module \module{Abel.Data.Maybe.Monad}]
   \label{ex:monad-maybe-agda}
 
-  The \textagda{Maybe} monad in Agda corresponds to Example
-  \ref{ex:monad-maybe-haskell} and can be found in module
-  \module{Abel.Data.Maybe.Monad}.
+  In \agda, the \textagda{Maybe} monad, which corresponds to the
+  \texthaskell{Maybe} monad in \hask (see Example
+  \ref{ex:monad-maybe-haskell}), is defined as follows:
   \begin{codeagda}
 monad' : Monad' functor
 monad' = mkMonad' return join associativity unity-left unity-right
@@ -1555,13 +1540,12 @@ monad' = mkMonad' return join associativity unity-left unity-right
 
 \end{example}
 
-\begin{example}
+\begin{example}[See module \module{Abel.Data.List.Monad}]
   \label{ex:monad-list-agda}
 
-  The \textagda{List} monad (which can be found in Abel's module
-  \module{Abel.Data.List.Monad}), corresponds to Example
-  \ref{ex:monad-list-haskell}. Note that its proof is not as
-  straightforward as those of the identity and the Maybe monads.
+  In \agda, the \textagda{List} monad, which corresponds to the list
+  monad in \hask (see Example \ref{ex:monad-list-haskell}), is defined
+  as follows:
   \begin{codeagda}
 monad' : Monad' functor
 monad' = mkMonad' return join associativity unity-left unity-right
@@ -1664,12 +1648,14 @@ The following example should be compared with Examples
 \ref{ex:triple-identity} and \ref{ex:triple-identity-haskell}.
 \todo{Introduce all three examples.}
 
-\begin{example}
-  \label{ex:triple-id-agda}
-  The identity Kleisli triple in Agda, which corresponds to Examples
-  \ref{ex:triple-identity} and \ref{ex:triple-identity-haskell},
-  appears in module \module{Abel.Data.Identity.Monad}.
+\begin{example}[See module \module{Abel.Data.Identity.Monad}]
+  \label{ex:triple-identity-agda}
 
+  In \agda, the identity or trivial Kleisli triple, which is an
+  instance of the identity Kleisli triple (see Example
+  \ref{ex:triple-identity}), and which corresponds to the identity
+  Kleisli triple in \hask (see Example
+  \ref{ex:triple-identity-haskell}), is defined as follows:
   \begin{codeagda}
 monad : Monad Identity
 monad = mkMonad return bind associativity unity-left unity-right
@@ -1693,16 +1679,12 @@ monad = mkMonad return bind associativity unity-left unity-right
   \end{codeagda}
 \end{example}
 
-\begin{example}
+\begin{example}[See module \module{Abel.Data.Maybe.Monad}]
   \label{ex:triple-maybe-agda}
 
-  The \textagda{Maybe} Kleisli triple in Agda corresponds to the
-  \texthaskell{Maybe} Kleisli triple in Haskell (Example
-  \ref{ex:triple-maybe-haskell}). Its definition and proof can be found in module
-  \module{Abel.Data.Maybe.Monad}. Note that this instance includes a
-  proof of the fact that the \textagda{Maybe} type constructor is
-  indeed a Kleisli triple.
-
+  In \agda, the \textagda{Maybe} Kleisli triple, which corresponds to
+  the \texthaskell{Maybe} Kleisli triple in \hask (see Example
+  \ref{ex:triple-maybe-haskell}), is defined as follows:
   \begin{codeagda}
 monad : Monad Maybe
 monad = mkMonad return bind associativity unity-left unity-right
@@ -1730,15 +1712,12 @@ monad = mkMonad return bind associativity unity-left unity-right
 
 \end{example}
 
-\begin{example}
+\begin{example}[See module \module{Abel.Data.List.Monad}]
   \label{ex:triple-list-agda}
 
-  Finally, the \textagda{List} Kleisli triple in Agda corresponds to
-  Example \ref{ex:triple-list-haskell}. Just like with Example
-  \ref{ex:monad-list-agda}, note that its proof is not as
-  straightforward as those of the previous Kleisli triples. Its
-  definition can be found in module \module{Abel.Data.List.Monad}.
-
+  In \agda, the \textagda{List} Kleisli triple, which corresponds to
+  the list Kleisli triple in \hask (see Example
+  \ref{ex:triple-list-haskell}), is defined as follows:
   \begin{codeagda}
 monad : Monad List
 monad = mkMonad return bind associativity unity-left unity-right
@@ -1777,7 +1756,8 @@ monad = mkMonad return bind associativity unity-left unity-right
 
 \subsection*{Monads $=$ Kleisli triples}
 
-...
+We shall not prove that monads and Kleisli triples are coextensive in
+\agda.
 
 \section{References}
 \label{sec:monads-references}

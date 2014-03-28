@@ -194,6 +194,10 @@
 \newcommand{\bydef}[1]{(by definition of {#1})}
 \newcommand{\bydefh}[1]{\bydef{\texthaskell{#1}}}
 
+\newcommand{\bydefs}[1]{(by definitions of {#1})}
+
+\newcommand{\bydefsh}[2]{\bydefs{\texthaskell{#1} and \texthaskell{#2}}}
+
 \newcommand{\byih}[1]{(by inductive hypothesis)}
 
 \newcommand{\eq}{\ensuremath{=}}
@@ -204,6 +208,8 @@
 
 \newcommand{\eqbydef}[1]{\item[]\quad\eq\quad\bydef{#1}}
 \newcommand{\eqbydefh}[1]{\item[]\quad\eqh\quad\bydefh{#1}}
+
+\newcommand{\eqbydefsh}[2]{\item[]\quad\eqh\quad\bydefsh{#1}{#2}}
 
 \newcommand{\eqbyih}{\item[]\quad\eq\quad\byih{}}
 \newcommand{\eqbyihh}[1]{\item[]\quad\eqh\quad\byih{\texthaskell{#1}}}
