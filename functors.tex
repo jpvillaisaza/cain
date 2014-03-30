@@ -296,11 +296,13 @@ In particular, there is the identity functor of \hask.
 
   The identity functor of \hask, which is just an instance of the
   identity endofunctor as described in Example
-  \ref{ex:functor-identity}, is defined as follows:
+  \ref{ex:functor-identity}, is defined as follows\footnote{Using the
+    \texthaskell{InstanceSigs} language option.}:
   \begin{codehaskell}
 newtype Identity a = Identity {unIdentity :: a}
 
 instance Functor Identity where
+  fmap :: (a -> b) -> Identity a -> Identity b
   fmap f (Identity x) = Identity (f x)
   \end{codehaskell}
 
@@ -328,6 +330,7 @@ data Maybe a = Nothing | Just a
   Its \texthaskell{fmap} function is defined as follows:
   \begin{codehaskell}
 instance Functor Maybe where
+  fmap :: (a -> b) -> Maybe a -> Maybe b
   fmap _ Nothing  = Nothing
   fmap f (Just x) = Just (f x)
   \end{codehaskell}
@@ -395,17 +398,20 @@ instance Functor Maybe where
 
   %% \parencites[146--147]{lipovaca-2011}[20--21]{yorgey-2009}
 
-  Another common example of functors in Haskell is the list functor.
-  Its type constructor is \texthaskell{[]}, and its \texthaskell{fmap}
-  function is the \texthaskell{map} function:
+  Another common example of functors in Haskell is the
+  \texthaskell{[]} (list) functor. Its type constructor is
+  \texthaskell{[]}, and its \texthaskell{fmap} function is the
+  \texthaskell{map} function:
   \begin{codehaskell}
 instance Functor [] where
+  fmap :: (a -> b) -> [a] -> [b]
   fmap _ []     = []
   fmap f (x:xs) = f x : fmap f xs
   \end{codehaskell}
   Or:
   \begin{codehaskell}
 instance Functor [] where
+  fmap :: (a -> b) -> [a] -> [b]
   fmap = map
   \end{codehaskell}
   The \texthaskell{[]} type constructor sends types \texthaskell{a} to
@@ -489,6 +495,7 @@ better understanding the type signature of \texthaskell{fmap}.
   uniquely defined as follows:
   \begin{codehaskell}
 instance Functor ((,) a) where
+  fmap :: (b -> c) -> (a,b) -> (a,c)
   fmap f (x, y) = (x, f y)
   \end{codehaskell}
   Let us prove that this instance satisfies the functor laws. In the
@@ -531,6 +538,7 @@ instance Functor ((,) a) where
   \texthaskell{fmap} function is uniquely defined as follows:
   \begin{codehaskell}
 instance Functor (Either a) where
+  fmap :: (b -> c) -> Either a b -> Either a c
   fmap _ (Left x)  = Left x
   fmap g (Right y) = Right (g y)
   \end{codehaskell}
@@ -599,11 +607,13 @@ instance Functor (Either a) where
   \texthaskell{fmap} function is function composition:
   \begin{codehaskell}
 instance Functor ((->) a) where
+  fmap :: (b -> c) -> (a -> b) -> a -> c
   fmap g f = \x -> g (f x)
   \end{codehaskell}
   Or, equivalently:
   \begin{codehaskell}
 instance Functor ((->) a) where
+  fmap :: (b -> c) -> (a -> b) -> a -> c
   fmap = (.)
   \end{codehaskell}
   Let us see that this instance satisfies the functor laws. In the
@@ -638,7 +648,7 @@ instance Functor ((->) a) where
 Since the functor laws are not part of the definition of the
 \texthaskell{Functor} type class, we can declare instances which do
 not satisfy the laws. In the following examples, we consider incorrect
-definitions of the \texthaskell{Maybe} and list functors.
+definitions of the \texthaskell{Maybe} and \texthaskell{[]} functors.
 
 \begin{example}
   \label{ex:functor-bad-maybe-haskell}
@@ -647,6 +657,7 @@ definitions of the \texthaskell{Maybe} and list functors.
   (see Example \ref{ex:functor-maybe-haskell}) as follows:
   \begin{codehaskell}
 instance Functor Maybe where
+  fmap :: (a -> b) -> Maybe a -> Maybe b
   fmap _ Nothing  = Nothing
   fmap _ (Just _) = Nothing
   \end{codehaskell}
@@ -667,17 +678,19 @@ Just 0
 \begin{example}
   \label{ex:functor-bad-list-haskell}
 
-  We can wrongly define the list functor too (see Example
-  \ref{ex:functor-list-haskell}). Here is the declaration we discussed
-  at the beginning of the chapter:
+  We can wrongly define the \texthaskell{[]} (list) functor too (see
+  Example \ref{ex:functor-list-haskell}). Here is the declaration we
+  discussed at the beginning of the chapter:
   \begin{codehaskell}
 instance Functor [] where
+  fmap :: (a -> b) -> [a] -> [b]
   fmap _ []     = []
   fmap f (x:xs) = f x : f x : fmap f xs
   \end{codehaskell}
   But this is not the only way. For instance:
   \begin{codehaskell}
 instance Functor [] where
+  fmap :: (a -> b) -> [a] -> [b]
   fmap _ []     = []
   fmap f (x:xs) = [f x]
   \end{codehaskell}
@@ -759,7 +772,8 @@ functor = mkFunctor fmap fmap-id fmap-∘
 \begin{example}[See module \module{Abel.Data.List.Functor}]
   \label{ex:functor-list-agda}
 
-  The following instance corresponds to the list functor in Agda:
+  The following instance corresponds to the \textagda{List} functor in
+  Agda:
   \begin{codeagda}
 functor : Functor List
 functor = mkFunctor fmap fmap-id fmap-∘
@@ -777,8 +791,8 @@ functor = mkFunctor fmap fmap-id fmap-∘
     fmap-∘             []       = refl
     fmap-∘ {f = f} {g} (x ∷ xs) = cong (_∷_ (g (f x))) (fmap-∘ xs)
   \end{codeagda}
-  This definition matches that of the list functor in Haskell (see
-  Example \ref{ex:functor-list-haskell}).
+  This definition matches that of the \texthaskell{[]} functor in
+  Haskell (see Example \ref{ex:functor-list-haskell}).
 
 \end{example}
 
