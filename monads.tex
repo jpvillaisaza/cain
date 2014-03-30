@@ -1,4 +1,4 @@
-\chapter{Monads}
+\chapter{Monads and Kleisli triples}
 \label{chap:monads}
 
 \epigraph{
@@ -23,47 +23,31 @@ cartesian xs ys = xs >>= \ x -> ys >>= \ y -> return (x,y)
 \end{codehaskell}
 This is but one simple example to show that ``a monad is often an
 obvious and useful tool to help solve a problem''
-\parencite[325]{osullivan-2008} and that ``many common programming
+\parencite[325]{osullivan-2008}, and that ``many common programming
 patterns have a monadic structure'' \parencite[328]{osullivan-2008}.
-In this chapter we explore monads and Kleisli triples, and their
-relation to monads in Haskell and Agda.
 
-
-\todo{Remember to cite moggi-1989 to say that a computation is the
-  denotation of a program and a notion of a computation is a
-  qualitative description of a computation.}
-
-In \parencite{moggi-1991}, category theory is taken as a general
-theory of functions and develop on top a \emph{categorical semantics
-  of computations} based on monads \parencite[56]{moggi-1991}.
-
-The basic idea behind the categorical semantics below is that, in
-order to interpret a programming language in a category \cat{C}, we
-distinguish the object $a$ of values (of type $a$) from the object
-$\funcO{T}(a)$ of computations (of type $a$), and take as denotations
-of programs (of type $a$) the \emph{elements} of $\funcO{T}(a)$. In
-particular, we identify the type $a$ with the object of values (of
-type $a$) and obtain the object of computations (of type $a$) by
-applying an unary type-constructor \funcO{T} to $a$. We call \funcO{T}
-a \emph{notion of computation}, since it abstracts away from the type
-of values computations may produce. There are many choices for
-$\funcO{T}(a)$ corresponding to different notions of computations
-\parencite[57--58]{moggi-1991}.
-
-Rather than focusing on a specific \funcO{T}, we want to find the
-general properties common to all notions of computation; therefore we
-impose as the only requirement that \emph{programs} should form a
-category. Such a requirement amounts to saying that \funcO{T} is part
-of a Kleisli triple and that the category of programs is the Kleisli
-category for such a triple \parencite[58]{moggi-1991}.
-
-Examples of notions of computation: partiality, nondeterminism, side
-effects, exceptions, continuations, interactive input, interactive
-output. \parencite[58]{moggi-1991}.
+In this chapter, we explore monads and Kleisli triples in order to be
+able to conceptualize and better understand monads in functional
+programming. As motivation, in \hask, ``we distinguish the object
+\texthaskell{a} of values (of type \texthaskell{a}) from the object
+\texthaskell{m a} of computations (of type \texthaskell{a}) (...). In
+particular, we identify the type \texthaskell{a} with the object of
+values (of type \texthaskell{a}) and obtain the object of computations
+(of type \texthaskell{a}) by applying a unary type constructor
+\texthaskell{m} to \texthaskell{a}. We call \texthaskell{m} a notion
+of computation,'' which is just a qualitative description of a
+computation \parencite[17]{moggi-1989}, ``since it abstracts away from
+the type of values computations may produce''
+\parencite[57--58]{moggi-1991}. There are many notions of computation.
+For instance, the \texthaskell{Maybe} and \texthaskell{[]} (list) type
+constructors represent the notions of partiality and nondeterminism,
+respectively. Instead of studying a specific \texthaskell{m}, we focus
+on monads, which describe ``the general properties common to all
+notions of computation'' \parencite[58]{moggi-1991}.
 
 In the remainder of this chapter, we define the concepts of monad and
-Kleisli triple, we prove that monads and Kleisli triples are
-equivalent, and we study both constructs in Haskell and Agda.
+Kleisli triple, prove their equivalence, and study both constructs in
+Haskell and Agda.
 
 \section{Monads and Kleisli triples}
 \label{sec:monads}
