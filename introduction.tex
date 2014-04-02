@@ -40,36 +40,16 @@ and contributes, among other things, to the development of new logical
 systems and to the semantics of programming''
 \parencite[23]{marquis-2013}.
 
-
-
-
-
-
-
-
 ``One does not so much learn category theory as absorb it over a
 period of time'' \parencite[26]{bird-demoor-1997}.
-
-\todo{When speaking of Haskell, we refer to GHC. Important, for
-  instance, when mentioning language options such as
-  \texttt{KindSignatures}. We refer to GHC 7.4.2 and the Haskell
-  platform 2012.4.0.0. We refer to Agda 2.3.2 and the Agda standard
-  library 0.7.}
-
-\todo{Prerequisite: Haskell or some of the concepts in a functional
-  programming language (Functors, monads, polymorphic functions, and
-  others) and Agda. Refer to tutorials.}
-
-\todo{How about assuming something like the following:}
-\begin{codehaskell}
-import Prelude ()
-\end{codehaskell}
-
-\todo{Mention Abel. I deleted that chapter.}
 
 ``The trinity of concepts category, functor, and natural
 transformation is what category theory is built on''
 \parencite{nlab-category-theory}.
+
+
+
+
 
 \section*{Summary of the project proposal}
 
@@ -207,45 +187,54 @@ science or functional programming.
 
 \section*{Overview of the project}
 
-The project is divided into six chapters.
+This project is divided into six chapters organized like the tree
+diagram in Figure \ref{fig:overview}:
+\begin{itemize}
+\item
+  In Chapter \ref{chap:categories} (\nameref{chap:categories}), we
+  define categories and commutative diagrams, and the categories which
+  will allow us to relate category theory to functional programming in
+  Haskell and Agda.
 
-\todo{This work (undergraduate dissertation or thesis or project?) is
-  divided into six chapters. The chapters are more or less dependent
-  on each other, but there are two lines.} See Figure \ref{fig:overview}.
+\item
+  In Chapter \ref{chap:constructions} (\nameref{chap:constructions}),
+  we describe some basic constructions in categories (isomorphisms,
+  initial and terminal objects, and products and coproducts), which we
+  use for describing some concepts and examples in all subsequent
+  chapters.
 
-Chapter \ref{chap:categories} is about categories. Required for all
-chapters. Including a category for Haskell and a category for Agda.
+\item
+  In Chapter \ref{chap:functors} (\nameref{chap:functors}), we study
+  functors and endofunctors in order to conceptualize and better
+  understand functors in Haskell and Agda.
 
-Chapter \ref{chap:constructions} describes constructions. This chapter
-is essential background for Chapter \ref{chap:algebras}, less
-important for Chapter \ref{chap:functors}, and not so necessary for
-the rest. Such as isomorphisms, initial and terminal objects, products
-and coproducts. Includes examples in \set, in Haskell, and Agda.
+\item
+  In Chapter \ref{chap:naturals} (\nameref{chap:naturals}), we explore
+  the connection between natural transformations and polymorphic
+  functions in Haskell.
 
-In Chapter \ref{chap:functors}, we study mathematical functors and
-endofunctors, and their relation to functors in Haskell and Agda.
+\item
+  In Chapter \ref{chap:monads} (\nameref{chap:monads}), we give a
+  detailed account of monads and Kleisli triples, and their
+  correspondence to monads in Haskell and Agda.
 
-In Chapter \ref{chap:naturals}, we describe natural transformations
-and see polymorphic functions in Haskell as that.
+\item
+  In Chapter \ref{chap:algebras} (\nameref{chap:algebras}), we
+  describe algebras and initial algebras over endofunctors, and their
+  relation to algebraic data types in Haskell.
 
-In Chapter \ref{chap:monads}, we study monads and Kleisli triples, and
-their relation to both concepts in both Haskell and Agda. We prove the
-correspondence between these two.
+\item
+  Finally, Chapter \ref{chap:conclusions} (\nameref{chap:conclusions})
+  contains our conclusions and some ideas for future work.
 
-In Chapter \ref{chap:algebras}, we study algebras and initial algebras
-over endofunctors, and their relation to algebraic data types in
-Haskell. We focus on the foldr function.
+\end{itemize}
 
-Additionally, in Chapter \ref{chap:conclusions}, we present our
-conclusions.
-
-Each chapter... \todo{Each chapter has a similar structure. A
-  motivation, theory, and Haskell. Some chapters include an analysis
-  in Agda. Each chapter ends with a References section, which collects
-  historical comments, and references to the literature. A reference
-  is a mention or citation of a source of information. Each chapter
-  should have references to books covering the subject in greater
-  depth. Each chapter is referenced.}
+Each chapter, except Chapter \ref{chap:constructions}, is further
+subdivided into two or three sections concerning some concepts of
+category theory, and their relation to functional programming in
+Haskell and, in some cases, Agda. Additionally, each chapter ends with
+a References section which collects the sources of information for all
+definitions and examples.
 
 \begin{figure}[htb]
   \begin{center}
@@ -270,100 +259,82 @@ Each chapter... \todo{Each chapter has a similar structure. A
   \label{fig:overview}
 \end{figure}
 
-\subsection*{Links}
+\section*{Prerequisites}
 
-And Abel in
-\begin{center}
-  \url{https://github.com/jpvillaisaza/abel}
-\end{center}
+We assume a working knowledge of functional programming in Haskell and
+Agda. See the references on page
+\pageref{sec:introduction-references}.
 
 \section*{References}
+\label{sec:introduction-references}
 
-\todo{\parencite{marquis-2013}, which includes: general definitions,
+\paragraph{Category theory}
+
+\begin{itemize}
+\item
+  Most of our definitions are based on \parencite{maclane-1998}, which
+  is the standard reference on category theory.
+
+\item
+  \parencite{marquis-2013}, which includes: general definitions,
   examples, and applications; brief historical sketch; philosophical
-  significance; and a programmatic reading guide.}
+  significance; and a programmatic reading guide. A useful
+  programmatic reading guide can be found in
+  \parencite[48--56]{marquis-2013}.
 
-\todo{Regarding natural transformations (Chapter \ref{chap:naturals}),
-  \parencite{eilenberg-maclane-1945} defines them on two arguments (for
-  concordant functors covariant in one argument and contravariant in
-  the other). If the second argument (that is, the contravariant one)
-  is ignored, the definition is very similar to that of
-  \parencite{maclane-1998}, which is the basis of Definition
-  \ref{def:natural}. This gives a good idea of the evolution of the
-  definition of ``natural transformation.''}
+  It is an introductory and philosophical article regarding general
+  category theory. Nice article for the preliminary study of category
+  theory and contains an extended annotated bibliography.
 
-\todo{nLab and MathWorld.}
+\item
+  The following book provides an accessible approach to category
+  theory and categorical logic: \parencite{awodey-2010}
 
-\todo{Haskell's wiki.}
+\item
+  \parencites{eilenberg-maclane-1942}{eilenberg-maclane-1945}
 
-\todo{Oxford Dictionaries and Merriam-Webster.}
+\item
+  \parencite{bird-demoor-1997} is a standard reference on the
+  applications of category theory to computer science. Some parts of
+  the book were used for the project proposal.
 
-%% Mac Lane (1998) es la referencia estándar de teoría de categorías.
-%% Aunque el texto no ha sido estudiado directamente, todos los textos
-%% relacionados con teoría de categorías lo señalan como la referencia
-%% estándar y como la guía principal para estudiar teoría de categorías
-%% desde las matemáticas.
+\item
+  \parencite{pierce-1991} is an introductory reference for studying
+  the applications of category theory to computer science. It is a
+  summary of category theory and some of its applications, and
+  contains a detailed bibliography.
 
-%% Poigné (1992) es una referencia para estudiar las aplicaciones de
-%% teoría de categorías a informática. Fue el texto guía consultado para
-%% la elaboración de esta propuesta y está basado en la notación de la
-%% primera edición de Mac Lane (1998). El estudio preliminar permite
-%% concluir que es una buena referencia central para el desarrollo del
-%% proyecto.
+  And \parencite[§ 4]{pierce-1991} contains books and articles for
+  further reading.
 
-%% Pierce (1991) es una referencia introductoria para estudiar las
-%% aplicaciones de teoría de categorías a informática. Es una resumen de
-%% teoría de categorías y de algunas de sus aplicaciones, y contiene una
-%% bibliografía anotada para encontrar más referencias sobre el tema.
+\item
+  \parencite{poigne-1992} is a reference for studying the applications
+  of category theory to computer science. This book was the main
+  reference for the project proposal.
 
-\parencite[§ 4]{pierce-1991}
+\item
+  Reprints in Theory and Applications of Categories
+  \url{http://www.tac.mta.ca/tac/reprints/}
+  including \parencites{adamek-2006}{barr-2005}{barr-wells-2012}
 
-Pierce 1991, chapter 4. Further reading. This chapter lists and
-briefly describes the available textbooks, introductory articles, and
-general reference works on category theory. The last sections gives a
-more eclectic sampling of research papers applying category theory in
-computing science.
+\end{itemize}
 
-4.1 textbooks 4.2 introductory articles 4.3 reference books 4.4
-selected research articles
+\paragraph{Haskell}
 
-%% Bird y de Moor (1997) es una referencia estándar para estudiar las
-%% aplicaciones de la teoría de categorías a la informática. Algunas
-%% partes de dicho libro fueron consultadas para la elaboración de esta
-%% propuesta. Como es el texto guía de algunos cursos de teoría de
-%% categorías, también es una de las referencias centrales para el
-%% desarrollo del proyecto.
+\begin{itemize}
+\item
+  \parencites{lipovaca-2011}{osullivan-2008} or the HaskellWiki
 
-%% Marquis (2010) es un artículo introductorio y filosófico de teoría de
-%% categorías en general. Es un buen artículo para el estudio preliminar
-%% del tema y contiene una extensa bibliografía anotada para encontrar
-%% las referencias más importnantes en los distintos enfoques de teoría
-%% de categorías.
+\item
+  \parencites{elkins-2009}{yorgey-2009}
 
-The following book provides an accessible approach to category theory
-and categorical logic: \parencite{awodey-2010}
+\end{itemize}
 
-The standard reference on category theory is unquestionably:
-\parencite{maclane-1998}
+\paragraph{Agda} Sd
 
-General books on category theory, books and articles with a
-philosophical bent, books and papers on categorical logic,
-applications of category theory, major books and papers of the history
-of category theory.
+\todo{nLab and MathWorld, Oxford Dictionaries and Merriam-Webster.}
 
-\parencites{eilenberg-maclane-1942}{eilenberg-maclane-1945}
-
-\parencite[48--56]{marquis-2013} (Useful) programmatic reading guide
-
-\parencite{bird-demoor-1997}
-
-\parencite{lipovaca-2011}
-\parencite{osullivan-2008}
-
-\parencite{elkins-2009}
-\parencite{yorgey-2009}
-
-%% TODO citation for the frontispiece
+\section*{Notes}
 
 \paragraph{Frontispiece}
 
@@ -371,6 +342,43 @@ The illustration in page \pageref{fig:hatter}, John Tenniel's
 \emph{Hatter engaging in rhetoric}, is taken from the Tenniel
 illustrations for Lewis Carroll's \emph{Alice's Adventures in
   Wonderland}\footnote{\url{http://www.gutenberg.org/ebooks/114}.}.
+
+\paragraph{Haskell and Agda code}
+
+\begin{itemize}
+\item
+  Haskell code was tested with GHC 7.6.3.
+
+\item
+  Agda code was tested with Agda 2.3.2.2 and the Agda standard library
+  0.7.
+
+\end{itemize}
+
+\paragraph{Links}
+
+\begin{itemize}
+\item
+  This document is available for download at
+  \begin{center}
+    \url{http://bit.ly/1cq5fwN}
+  \end{center}
+
+\item
+  A printable version is available at
+  \begin{center}
+    \url{http://bit.ly/1hDomqv}
+  \end{center}
+
+\item
+  In addition, all Agda examples can be found in the repository
+  \begin{center}
+    \url{https://github.com/jpvillaisaza/abel}
+  \end{center}
+
+\end{itemize}
+For more information, send an email to
+\href{mailto:jvillai@eafit.edu.co}{\nolinkurl{jvillai@eafit.edu.co}}.
 
 \nocite{*}
 
