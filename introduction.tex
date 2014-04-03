@@ -47,16 +47,6 @@ period of time'' \parencite[26]{bird-demoor-1997}.
 transformation is what category theory is built on''
 \parencite{nlab-category-theory}.
 
-
-
-
-
-\section*{Summary of the project proposal}
-
-This is an undergraduate project submitted in partial fulfillment of
-the requirements for the degree of Systems Engineering at EAFIT. Here
-is a summary of the project proposal, submitted in November 14, 2010.
-
 \paragraph{Theoretical framework and proposal}
 
 Category theory is a relatively recent branch of mathematics which
@@ -79,12 +69,6 @@ conceptualization is not necessary for its use, it's an ideal
 complement for better understanding functional programming and its
 theoretical foundations. (Haskell community)
 
-Having this into account (that it is possible to conceptualize many
-concepts of functional programming via the study of category theory,
-this project aims to develop a monographical study of category theory
-which allows to describe and explain some of the applications to
-functional programming. In particlar, ...
-
 Polymorphism refers to the fact that the type of a value may depend on
 the context in which it is used. Algebraic data types have various
 alternatives or constructors of values. Type classes allow to define
@@ -93,16 +77,6 @@ variety of types. Finally, a functor (in Haskell) is a class of types
 which can be mapped and a monad (of Haskell) is a class of types which
 introduces the concepts of context and the use of normal functions
 which preserve the contexts of those contexts. (Real World Haskell).
-
-
-\paragraph{Objective}
-
-Our goal is to describe and explain some of the applications of
-category theory to functional programming. More specifically, to
-describe and explain the concepts of category theory which allow to
-conceptualize and better understand the following concepts of
-functional programming: polymorphism, algebraic data types, and the
-functor and monad type classes.
 
 \paragraph{Justification}
 
@@ -138,54 +112,62 @@ difficult to understand, category theory is a conceptual framework
 which allows to deal with such concepts at a higher level of
 abstraction.
 
-\paragraph{Methodology}
+\section*{Summary of the project}
 
-The methodology used for the development of this project consists of
-four stages: researching, reading, writing, and revision
+This is an undergraduate project submitted in partial fulfillment of
+the requirements for the degree of Systems Engineering at EAFIT. Here
+is a summary of the project proposal, submitted in November 14, 2010.
 
-\paragraph{Scope}
+Having this into account (that it is possible to conceptualize many
+concepts of functional programming via the study of category theory,
+this project aims to develop a monographical study of category theory
+which allows to describe and explain some of the applications to
+functional programming. In particlar, ...
 
-This study of category theory is restricted to the following concepts:
+Our goal (objective) is to describe and explain some of the
+applications of category theory to functional programming. More
+specifically, to describe and explain the concepts of category theory
+which allow us to conceptualize and better understand the following
+concepts of functional programming: polymorphism, algebraic data
+types, and the functor and monad type classes.
 
-\begin{enumerate}
-\item Introductory concepts and infrastructure of category theory
-  \begin{enumerate}
-  \item Categories
-  \item Infrastructure of category theory
-    \begin{itemize}
-    \item Monomorphisms, epimorphisms, and isomorphisms
-    \item Initial and terminal objects
-    \item Universal constructions
-    \end{itemize}
-  \end{enumerate}
-\item Basic concepts of category theory
-  \begin{enumerate}
-  \item Functors
-  \item Natural transformations
-  \item Adjunctions
-  \item Limits
-  \end{enumerate}
-\item More specific concepts of category theory
-  \begin{enumerate}
-  \item Algebras
-  \item Monads
-  \end{enumerate}
-\end{enumerate}
+The product or result of this project is a monograph on category
+theory and some of its applications to functional programming. This
+monograph contains the results of the development of the project, that
+is, the results of the writing stage.
 
-\paragraph{Product or result}
+\section*{Audience and prerequisites}
 
-The result of this project is a monograph on category theory and some
-of its applications to functional programming. This monograph contains
-the results of the development of the project, that is, the results of
-the writing stage.
+We assume a working knowledge of functional programming in Haskell and
+Agda. See the references on page
+\pageref{sec:introduction-references}.
 
-\paragraph{Audience}
+%% If any further background material is needed, it can be found in
+%% textbooks on
 
 The main audience of this project is any computer scientist with an
-interest in mathematicas, the theoretical foundations of computer
+interest in mathematics, the theoretical foundations of computer
 science or functional programming.
 
-\section*{Overview of the project}
+%% This book is addressed primarily to the mathematically inclined
+%% functional programmer, though the non-functional -- but still
+%% mathematically inclined -- programmer is not excluded. Although we
+%% have taken pains to make the book as self-contained as possible, and
+%% have provided lots of exercises for self-study, the reader will need
+%% some mathematical background to appreciate and master the more
+%% abstract material.
+
+%% This project is written for mathematically inclined functional programmers.
+
+%% The reader of this project is a mathematically inclined
+
+%% We assume a working knowledge of functional programming in Haskell and
+%% Agda.
+
+%% The bibliographical remarks at the end of each chapter describe where
+%% appropriate background material can be found.
+
+\section*{Overview of the project} %% OR outline
 
 This project is divided into six chapters organized like the tree
 diagram in Figure \ref{fig:overview}:
@@ -259,12 +241,6 @@ definitions and examples.
   \label{fig:overview}
 \end{figure}
 
-\section*{Prerequisites}
-
-We assume a working knowledge of functional programming in Haskell and
-Agda. See the references on page
-\pageref{sec:introduction-references}.
-
 \section*{References}
 \label{sec:introduction-references}
 
@@ -323,16 +299,46 @@ Agda. See the references on page
 
 \begin{itemize}
 \item
-  \parencites{lipovaca-2011}{osullivan-2008} or the HaskellWiki
+  \parencites{lipovaca-2011}{osullivan-2008} or the
+  HaskellWiki\footnote{\url{http://www.haskell.org/}}
+
+  %%  Learn You a Haskell for Great Good! A Beginner's Guide
+
+  %% RWH is an easy-to-use, fast-paced tutorial that introduces to
+  %% Haskell.
 
 \item
   \parencites{elkins-2009}{yorgey-2009}
+
+  %% Typeclassopedia is a starting point for the student of Haskell
+  %% wishing to gain a firm grasp of its standard type classes. The
+  %% essentials of each type class are introduced, with examples,
+  %% commentary, and extensive references for further reading.
+
+  %% Elkins. Several concepts in Haskell are inspired by or taken from
+  %% category theory. The most notable example being monads. tools for
+  %% analyzing and building monads and related structures.
 
 \end{itemize}
 
 \paragraph{Agda} Sd
 
-\todo{nLab and MathWorld, Oxford Dictionaries and Merriam-Webster.}
+\begin{itemize}
+\item
+  The Agda wiki.\footnote{\url{http://wiki.portal.chalmers.se/agda/}}
+
+\item
+  \parencites{bove-dybjer-2009}{norell-2009}
+
+\end{itemize}
+
+\paragraph{Sd}
+
+\begin{itemize}
+\item
+  nLab and MathWorld, Oxford Dictionaries and Merriam-Webster.
+
+\end{itemize}
 
 \section*{Notes}
 
@@ -360,15 +366,10 @@ illustrations for Lewis Carroll's \emph{Alice's Adventures in
 \begin{itemize}
 \item
   This document is available for download at
-  \begin{center}
-    \url{http://bit.ly/1cq5fwN}
-  \end{center}
+  \url{http://bit.ly/1cq5fwN}.
 
 \item
-  A printable version is available at
-  \begin{center}
-    \url{http://bit.ly/1hDomqv}
-  \end{center}
+  A printable version is available at \url{http://bit.ly/1hDomqv}.
 
 \item
   In addition, all Agda examples can be found in the repository

@@ -12,27 +12,7 @@
 }{---\textcite[173]{carroll-2004}}
 \end{epigraphs}
 
-\todo{(Future work) The reasoning of Remark I deleted, which says that
-  it is more theoretically correct to not include a Functor constraint
-  in the type class declaration of monads, also applies for an
-  \texthaskell{Applicative} type constraint in the \texthaskell{Monad}
-  type class. In this case, it makes real practical sense to include
-  it.}
-
-%% From Natural transformations
-
-\todo{The relation between natural transformations and parametrically
-  polymorphic functions is not as straightforward as discussed here.
-  Polymorphic functions actually correspond to lax natural
-  transformations, but this fact is beyond the scope of this
-  dissertation.}
-
-%% From Algebras
-
-\todo{We are only concerned with inductive types, not coinductive.}
-
-
-
+Conclusions.
 
 %% 1. Hacia atrás: categorías incompleto sin functores, functores
 %% incompleto sin transformaciones naturales.
@@ -46,5 +26,57 @@
 
 %% 4. En transformaciones naturales: abre a parametricidad, visión
 %% distinta de polimorfismo.
+
+
+
+\section{Future Work}
+
+\todo{The reasoning of Remark I deleted, which says that it is more
+  theoretically correct to not include a Functor constraint in the
+  type class declaration of monads, also applies for an
+  \texthaskell{Applicative} type constraint in the \texthaskell{Monad}
+  type class. In this case, it makes real practical sense to include
+  it.}
+
+Applicative functors: \parencite{mcbride-paterson-2008}
+
+\todo{Regarding natural transformations, the relation between natural
+  transformations and parametrically polymorphic functions is not as
+  straightforward as discussed here. Polymorphic functions actually
+  correspond to lax natural transformations, but this fact is beyond
+  the scope of this dissertation.}
+
+\todo{Regarding Algebras, we are only concerned with inductive types,
+  not coinductive.}
+
+\paragraph{Scope}
+
+This study of category theory is restricted to the following concepts:
+This list is based on Mac Lane, Pierce, and Poigné.
+
+\begin{enumerate}
+\item Introductory concepts and infrastructure of category theory
+  \begin{enumerate}
+  \item Categories
+  \item Infrastructure of category theory
+    \begin{itemize}
+    \item Monomorphisms, epimorphisms, and isomorphisms
+    \item Initial and terminal objects
+    \item Universal constructions
+    \end{itemize}
+  \end{enumerate}
+\item Basic concepts of category theory
+  \begin{enumerate}
+  \item Functors
+  \item Natural transformations
+  \item Adjoints
+  \item Limits
+  \end{enumerate}
+\item More specific concepts of category theory
+  \begin{enumerate}
+  \item Algebras
+  \item Monads
+  \end{enumerate}
+\end{enumerate}
 
 \clearemptydoublepage
