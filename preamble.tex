@@ -1,19 +1,19 @@
 \usepackage{polyglossia}
-\setdefaultlanguage{english}
+
 \setmainlanguage[variant=usmax]{english}
-
-%% \usepackage[showframe]{geometry}
-
-\hyphenation{i-so-mor-phism}
-\hyphenation{Grund-leh-ren}
+\setotherlanguage{spanish}
 
 \usepackage{amsmath}
+\usepackage{amsthm}
+
+\let\equation\gather
+\let\endequation\endgather
+
 
 \usepackage{enumitem}
 \usepackage{epigraph}
 
 \setlength{\epigraphrule}{0pt}
-%% \setlength{\epigraphwidth}{0.4\textwidth}
 \setlength{\epigraphwidth}{0.55\textwidth}
 
 \usepackage{fancyhdr}
@@ -48,10 +48,7 @@
 
 \setmathfont{latinmodern-math.otf}
 
-%% \setmathfont[range={\llparenthesis,\rrparenthesis}]{Asana-Math.otf}
 \setmathfont[range={\llparenthesis,\rrparenthesis}]{xits-math.otf}
-
-%% \usepackage[only,llparenthesis,rrparenthesis]{stmaryrd}
 
 \setmonofont
   [ BoldFont       = DejaVuSansMono-Bold.ttf,
@@ -61,25 +58,17 @@
   ]
   {DejaVuSansMono.ttf}
 
-\usepackage{xcolor}
-
 \usepackage{xltxtra}
 \usepackage{xunicode}
 
-\usepackage{makeidx}
-
 \usepackage{xspace}
-
-\usepackage{amsthm}
-
-\let\equation\gather
-\let\endequation\endgather
 
 \usepackage{tikz}
 \tikzset{node distance=2.5cm,auto}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% biblatex
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \usepackage[style=authoryear,backref=true]{biblatex}
 \usepackage[english=american]{csquotes}
@@ -95,12 +84,9 @@
 
 \addbibresource{cain.bib}
 
-\DefineHyphenationExceptions{english}{
-  type-class-o-pe-dia Grund-leh-ren
-}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% hyperref
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \usepackage{hyperref}
 
@@ -120,30 +106,10 @@
   \hypersetup{hidelinks}
 \fi
 
-%% \makeindex %% detex -w cain.tex | sort -uf > foo
-
 \hypersetup{pdftitle={Category Theory Applied to Functional Programming}}
 \hypersetup{pdfauthor={Juan Pedro Villa Isaza}}
 \hypersetup{pdfkeywords={category theory, functional programming}}
 \hypersetup{pdfsubject={Systems Engineering undergraduate project}}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% todo
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\newif\iftodo
-
-\todotrue
-
-\iftodo
-  \ifcolor
-    \newcommand{\todo}[1]{\textcolor{red}{TODO}~(#1)}
-  \else
-    \newcommand{\todo}[1]{TODO~(#1)}
-  \fi
-\else
-  \newcommand{\todo}[1]{}
-\fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Verbatim

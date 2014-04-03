@@ -23,8 +23,9 @@ cartesian xs ys = xs >>= \ x -> ys >>= \ y -> return (x,y)
 \end{codehaskell}
 This is but one simple example to show that ``a monad is often an
 obvious and useful tool to help solve a problem''
-\parencite[325]{osullivan-2008}, and that ``many common programming
-patterns have a monadic structure'' \parencite[328]{osullivan-2008}.
+\parencite[325]{osullivan-et-al-2008}, and that ``many common
+programming patterns have a monadic structure''
+\parencite[328]{osullivan-et-al-2008}.
 
 In this chapter, we explore monads and Kleisli triples in order to be
 able to conceptualize and better understand monads in functional
@@ -1688,11 +1689,11 @@ and Kleisli triples are based on \parencites[24,
   standard construction, which is the original term
   \parencite[30]{manes-1976}, algebraic theory in monoid form
   \parencite[29]{manes-1976}, and triple
-  \parencites[83]{barr-2005}[372]{barr-wells-2012}. The common term
-  for Kleisli triples is Kleisli triple, but another term is algebraic
-  theory in extension form \parencite[32]{manes-1976}, which is
-  perhaps more precise but rather outdated. We choose the common terms
-  for the sake of simplicity and for effectively distinguishing
+  \parencites[83]{barr-wells-2005}[372]{barr-wells-2012}. The common
+  term for Kleisli triples is Kleisli triple, but another term is
+  algebraic theory in extension form \parencite[32]{manes-1976}, which
+  is perhaps more precise but rather outdated. We choose the common
+  terms for the sake of simplicity and for effectively distinguishing
   between monads and Kleisli triples.
 
 \end{terminology}
