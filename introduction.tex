@@ -6,143 +6,93 @@
   Et sur la terre jette Dieu !
 }{---\textcite[16]{baudelaire-1857}}
 
+%% \parencites[73]{elkins-2009}[49--50]{goguen-1991}[vii]{maclane-1998}[1,
+%%   23]{marquis-2013}{nlab-category-theory}[xi]{pierce-1991}[415]{poigne-1992}[1154]{wolfram-2002}
+
 Category theory is a branch of mathematics developed in the 1940s
 which has come to occupy a central position in computer science.
 Broadly, it is a convenient and powerful conceptual framework or
-language of structures and systems of structures
+language for structures and systems of structures
 \parencites[vii]{maclane-1998}[1]{marquis-2013}[1154]{wolfram-2002}.
 
-In computer science, category theory contributes to areas such as
-automata theory, domain theory, functional programming, monads or
-notions of computation, polymorphism, semantics, type theory, among
-others
-\parencites[23]{marquis-2013}{nlab-category-theory}[xi]{pierce-1991}[415]{poigne-1992}.
-
 In computer science, category theory allows us to formulate
-definitions and theories and to measure the elegance and coherence of
+definitions and theories, and to measure the elegance and coherence of
 existing formulations, to carry out proofs, to discover and exploit
 relations with other fields, to deal with abstraction and
 representation independence, to formulate conjectures and research
-directions, and to unify concepts \parencites[49--50]{goguen-1991}. In
-addition, category theory is a foundational theory of functions which
-provides a sound basis for functional programming
-\parencite[414]{poigne-1992}.
+directions, and to unify concepts \parencites[49--50]{goguen-1991}.
+Additionally, category theory contributes to areas such as automata
+theory, domain theory, functional programming, monads or notions of
+computation, polymorphism, semantics, type theory, among others
+\parencites[23]{marquis-2013}{nlab-category-theory}[xi]{pierce-1991}[415]{poigne-1992}.
+In particular, category theory can be viewed as a formalization of
+operations on data types, which provides a sound basis for functional
+programming \parencites[414]{poigne-1992}[1154]{wolfram-2002}.
 
-``Category theory can be viewed as a formalization of operations on
-abstract data types in computer languages''
-\parencite[1154]{wolfram-2002}.
+According to \textcite[73]{elkins-2009}, several concepts of
+functional programming languages such as Haskell
+\parencite{peytonjones-2003} and Agda \parencite{norell-2007} are
+based on concepts of category theory, but one can be a perfectly
+competent functional programmer without knowledge of these theoretical
+foundations. In spite of that, category theory can be applied to
+functional programming with the purpose of, for instance, better
+understanding concepts such as algebraic data types, applicative
+functors, functors, monads, and polymorphism, and thus becoming a
+better programmer.
 
-
-
-
-
-
-In functional programming,
-
-
-
-``Most structures in mathematics are best understood from a category
-theoretic viewpoint'' \parencite{nlab-category-theory}.
-
-
-
-Seveveral concepts in Haskell are inspired or taken from category
-theory. However, when these concepts are taken from category theory,
-very little of the theory around them is brought along. This is why,
-``despite claims to the contrary, one can be a perfectly competent
-programmer without knowing anything at all about category theory. But,
-if you are familiar with category theory, you can turn around and
-apply it to Haskell.'' In a way, category theory provides tools for
-analyzing and building such concepts \parencite[73]{elkins-2009}.
-
-Some important concepts in functional programming languages such as
-Haskell allow us to relate category theory and functional programming.
-In this sense, polymorphism, algebraic data types, and the functor and
-monad type classes, and the like, are concepts which can be
-conceptualized or formalized, or are based on ideas from category
-theory. Its categorical conceptualization is not necessary for its
-use, but it is an ideal complement for better understanding functional
-programming and its theoretical foundations.
-
-Polymorphism refers to the fact that the type of a value may depend on
-the context in which it is used. Algebraic data types have various
-alternatives or constructors of values. Type classes allow to define
-generic interfaces which exhibit characteristics common to a great
-variety of types. Finally, a functor (in Haskell) is a class of types
-which can be mapped and a monad (of Haskell) is a class of types which
-introduces the concepts of context and the use of normal functions
-which preserve the contexts of those contexts. (Real World Haskell).
-
-
-Even though the study of theoretical foundations of functional
-programming is not strictly necessary for a programmer
-
-
-``Some of the required functional constructions may be given natural
-definitions within category theory'' \parencite[7]{pitt-1986}.
-
-
-
-In summary, we aim to study some concepts of functional programming
-through category theory.
-
-
-
-
-
-``Category-theoretic formulations of concepts can be more difficult to
-grasp than their counterparts in other formalisms''
-\parencite[xi]{pierce-1991}. ``One does not so much learn category
-theory as absorb it over a period of time''
-\parencite[25]{bird-demoor-1997}. ``From [116]: 'do not succumb to a
-feeling that you must understand \emph{all} of category theory before
-you put it to use'`` \parencite[xi]{pierce-1991}. ``Category theory
-has been called 'abstract nonsense' by both its friends and its
-detractors. Perhaps what this phrase suggests to both is that category
-theory has relatively more form than content, compared to other areas
-of mathematics'' \parencite[50]{goguen-1991}. Even though the
-categorical formulation of some concepts may be difficult to
-understand, category theory is a conceptual framework which allows to
-deal with such concepts at a higher level of abstraction.
-
-
-``The trinity of concepts category, functor, and natural
-transformation is what category theory is built on''
-\parencite{nlab-category-theory}.
-
-With category theory, ``concepts may be dealt with at a higher level''
-\parencite[xi]{pierce-1991}. ``Category theory formalizes otherwise
-vague concepts'' \parencite[414]{poigne-1992}.
+In this regard, we aim to explore the category-theoretical foundations
+of some of the concepts of functional programming listed above. In
+other words, we aim to see functional programming through category
+theory.
 
 \section*{Summary of the project}
 \label{sec:introduction-summary}
 
 This is an undergraduate project submitted in partial fulfillment of
 the requirements for the degree of Systems Engineering at EAFIT
-University\footnote{\url{http://www.eafit.edu.co}}.
-
-As a summary of the project proposal,
-our goal or objective is to describe and explain some of the
-applications of category theory to functional programming. More
-specifically, we aim to describe and explain the concepts of category
-theory which allow us to concetualize or formalize and better
-understand algebraic data types, functors, monads, polymorphism. We
-use Haskell for every concept, Agda for functors and monads.
+University\footnote{\url{http://www.eafit.edu.co}}. As a summary of
+the project proposal, our objective is to study some of the
+applications of category theory to functional programming in Haskell
+and Agda. More specifically, our goal is to describe and explain the
+concepts of category theory needed for conceptualizing and better
+understanding algebraic data types, functors, monads, and
+polymorphism.
 
 \section*{Audience and prerequisites}
 \label{sec:introduction-prerequisites}
 
 The reader of this project is a mathematically inclined functional
-programmer with some mathematical background. In other words, we
-assume some mathematical background and a working knowledge of
+programmer. We assume a working knowledge of mathematics and
 functional programming in Haskell and Agda. If any further background
-material is needed, it can be found in the references on page
-\pageref{sec:introduction-references} or in the bibliographical
-remarks at the end of each chapter, which describe where appropriate
-background material can be found.
+material is required, some suggestions can be found in the references
+on page \pageref{sec:introduction-references} or in the references at
+the end of each chapter.
 
 \section*{Overview of the project}
 \label{sec:introduction-overview}
+
+\begin{figure}[htb]
+  \begin{center}
+    \begin{tikzpicture}
+      \node (categories)    at (2,8) {\ref{chap:categories}    (\nameref{chap:categories})};
+      \node (constructions) at (2,6) {\ref{chap:constructions} (\nameref{chap:constructions})};
+      \node (functors)      at (2,4) {\ref{chap:functors}      (\nameref{chap:functors})};
+      \node (naturals)      at (0,2) {\ref{chap:naturals}      (\nameref{chap:naturals})};
+      \node (monads)        at (0,0) {\ref{chap:monads}        (\nameref{chap:monads})};
+      \node (algebras)      at (4,2) {\ref{chap:algebras}      (\nameref{chap:algebras})};
+
+      \draw [->] (categories)    to (constructions);
+      \draw [->] (constructions) to (functors);
+
+      \draw [->] (functors)      to (naturals);
+      \draw [->] (naturals)      to (monads);
+
+      \draw [->] (functors)      to (algebras);
+    \end{tikzpicture}
+  \end{center}
+  \caption{Overview of the project.}
+  \label{fig:overview}
+\end{figure}
 
 This project is divided into six chapters organized like the tree
 diagram in Figure \ref{fig:overview}:
@@ -170,6 +120,10 @@ diagram in Figure \ref{fig:overview}:
   the connection between natural transformations and polymorphic
   functions in Haskell.
 
+  This chapter completes the trinity of concepts category, functor,
+  and natural transformation, which are the basis of category theory
+  \parencite{nlab-category-theory}.
+
 \item
   In Chapter \ref{chap:monads} (\nameref{chap:monads}), we give a
   detailed account of monads and Kleisli triples, and their
@@ -193,33 +147,13 @@ Haskell and, in some cases, Agda. Additionally, each chapter ends with
 a References section which collects the sources of information for all
 definitions and examples.
 
-\begin{figure}[htb]
-  \begin{center}
-    \begin{tikzpicture}
-      \node (categories)    at (2,8) {\nameref{chap:categories}};
-      \node (constructions) at (2,6) {\nameref{chap:constructions}};
-      \node (functors)      at (2,4) {\nameref{chap:functors}};
-      \node (naturals)      at (0,2) {\nameref{chap:naturals}};
-      \node (monads)        at (0,0) {\nameref{chap:monads}};
-      \node (algebras)      at (4,2) {\nameref{chap:algebras}};
-
-      \draw [->] (categories)    to (constructions);
-      \draw [->] (constructions) to (functors);
-
-      \draw [->] (functors)      to (naturals);
-      \draw [->] (naturals)      to (monads);
-
-      \draw [->] (functors)      to (algebras);
-    \end{tikzpicture}
-  \end{center}
-  \caption{Overview of the project.}
-  \label{fig:overview}
-\end{figure}
-
 \section*{References}
 \label{sec:introduction-references}
 
-The following are referred to. Also recommended for further reading.
+This section includes a list of suggestions for further reading, as
+well as some bibliographical remarks. For more thorough
+category-theoretical reading guides, see
+\parencites[48--56]{marquis-2013}[§ 4]{pierce-1991}.
 
 \paragraph{Category theory}
 
@@ -227,51 +161,49 @@ The following are referred to. Also recommended for further reading.
 \item
   Most of our definitions are based on \parencite{maclane-1998}, which
   is the standard reference on category theory. However, it is a book
-  for the working mathematician.
+  for the working mathematician. On the other hand,
+  \parencite{awodey-2010} is a book on category theory for anyone
+  else.
 
 \item
-  \parencite{marquis-2013}, which includes: general definitions,
-  examples, and applications; brief historical sketch; philosophical
-  significance; and a programmatic reading guide. A useful
-  programmatic reading guide can be found in
-  \parencite[48--56]{marquis-2013}.
-
-  It is an introductory and philosophical article regarding general
-  category theory. Nice article for the preliminary study of category
-  theory and contains an extended annotated bibliography.
+  \parencite{marquis-2013} includes an interesting description of the
+  history of category theory, some of its applications, an analysis of
+  its philosophical significance, and, perhaps more relevant, a useful
+  programmatic reading guide.
 
 \item
-  While \parencite{maclane-1998} is a book for the working
-  mathematician, \parencite{awodey-2010} is a book on category theory
-  for anyone else.
-
-\item
-  \parencites{eilenberg-maclane-1942}{eilenberg-maclane-1945}
+  As far as history is concerned, categories, functors, and natural
+  transformations were discovered by
+  \textcite{eilenberg-maclane-1942}, but category theory was devised
+  in \parencite{eilenberg-maclane-1945}. Some of our definitions were
+  compared with those of the latter.
 
 \item
   \parencite{bird-demoor-1997} is a standard reference on the
-  applications of category theory to computer science. Some parts of
-  the book were used for the project proposal.
+  applications of category theory to computer science.
 
 \item
-  \parencite{pierce-1991} is an introductory reference for studying
-  the applications of category theory to computer science. It is a
-  summary of category theory and some of its applications, and
-  contains a detailed bibliography.
-
-  And \parencite[§ 4]{pierce-1991} contains books and articles for
-  further reading.
+  Some of our definitions and examples are based on
+  \parencite{pierce-1991}, which covers the basic concepts of category
+  theory and some of its applications to computer science. Besides, it
+  includes a chapter with interesting reading suggestions.
 
 \item
-  \parencite{poigne-1992} is a reference for studying the applications
-  of category theory to computer science. This book was the main
-  reference for the project proposal.
+  Many of our definitions and some of our examples are based on
+  \parencite{poigne-1992}, which is a complete reference on the
+  applications of category theory to computer science.
 
 \item
-  Reprints in Theory and Applications of
+  Some works on category theory are not easily accessible.
+  Fortunately, Reprints in Theory and Applications of
   Categories\footnote{\url{http://www.tac.mta.ca/tac/reprints/}}
-  including
-  \parencites{adamek-et-al-2006}{barr-wells-2005}{barr-wells-2012}
+  contains some interesting and useful books, including
+  \parencites{adamek-et-al-2006}{barr-wells-2005}{barr-wells-2012}.
+
+\item
+  The $n$Lab\footnote{\url{http://ncatlab.org/nlab/}}, a wiki-lab for
+  collaborative work on mathematics, physics, and philosophy, is a
+  helpful source of information about category theory.
 
 \end{itemize}
 
@@ -279,48 +211,46 @@ The following are referred to. Also recommended for further reading.
 
 \begin{itemize}
 \item
-  \parencites{lipovaca-2011}{osullivan-et-al-2008} or the
-  HaskellWiki\footnote{\url{http://www.haskell.org/}}
-
-  %%  Learn You a Haskell for Great Good! A Beginner's Guide
-
-  %% RWH is an easy-to-use, fast-paced tutorial that introduces to
-  %% Haskell.
+  Among the many tutorials on Haskell,
+  \parencites{lipovaca-2011}{osullivan-et-al-2008} are highly
+  recommended.
 
 \item
-  \parencites{elkins-2009}{yorgey-2009}
+  \parencite{yorgey-2009} is a nice introduction to the standard
+  Haskell type classes, including categories, functors, and monads,
+  and \parencite{elkins-2009} is an interesting article about how to
+  use category theory in Haskell.
 
-  %% Typeclassopedia is a starting point for the student of Haskell
-  %% wishing to gain a firm grasp of its standard type classes. The
-  %% essentials of each type class are introduced, with examples,
-  %% commentary, and extensive references for further reading.
-
-  %% Elkins. Several concepts in Haskell are inspired by or taken from
-  %% category theory. The most notable example being monads. tools for
-  %% analyzing and building monads and related structures.
+\item
+  For more information, see the Haskell
+  wiki\footnote{\url{http://www.haskell.org}}.
 
 \end{itemize}
 
-\paragraph{Agda} Sd
+\paragraph{Agda}
 
 \begin{itemize}
 \item
-  The Agda wiki.\footnote{\url{http://wiki.portal.chalmers.se/agda/}}
-  \parencite{norell-2007}
+  For an introduction to Agda, see
+  \parencites{bove-dybjer-2009}{norell-2009}.
 
 \item
-  \parencites{bove-dybjer-2009}{norell-2009}
+  For more information, see the Agda
+  wiki\footnote{\url{http://wiki.portal.chalmers.se/agda/}}.
 
 \end{itemize}
 
-\paragraph{Sd}
+\paragraph{Additional references}
 
 \begin{itemize}
 \item
-  \parencite{weisstein-mathworld}
+  \parencite{weisstein-mathworld}, which is an extensive mathematics
+  resource, was frequently consulted for supplementary information.
 
 \item
-  $n$Lab
+  Some Stack Exchange\footnote{\url{http://stackexchange.com}} sites,
+  notably MathOverflow and Stack Overflow, were consulted during the
+  development of this project.
 
 \end{itemize}
 
@@ -342,11 +272,8 @@ illustrations for Lewis Carroll's \emph{Alice's Adventures in
 
 \item
   Agda code was tested with Agda 2.3.2.2 and the Agda standard library
-  0.7. In addition, all Agda examples can be found in the repository
-  \begin{center}
-    \url{https://github.com/jpvillaisaza/abel}
-  \end{center}
-
+  0.7. The Agda code can be found in a Git repository which is
+  available at \url{https://github.com/jpvillaisaza/abel}.
 
 \end{itemize}
 
