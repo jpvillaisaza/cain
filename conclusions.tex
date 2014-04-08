@@ -12,7 +12,37 @@
 }{---\textcite[173]{carroll-2004}}
 \end{epigraphs}
 
-Conclusions.
+In this chapter, we highlight
+
+Teniendo en cuenta los objetivos, una primera conclusión son los
+conceptos de teoría de categorías que describimos para formalizar los
+cuatro de programación funcional propuestos. Usar la frase de que no
+hay que estudiar toda la teoría de categorías para poder usarla, y así
+hemos identificado solo algunos conceptos. Para functores, functores y
+endofunctores. Para polimorfismo, transformaciones naturales, pero con
+precisión: polimorfismo paramétrico. Para mónadas, mónadas y tripletas
+de Kleisli. Para tipos de datos algebraicos, álgebras y álgebras
+iniciales, con precisión: énfasis en fold. Y para todos: categoría.
+Obviamente, quedan muchos temas pendientes, algunos que estudiamos y
+simplemente no metimos, como lo de functores aplicativos.
+
+Otra conclusión tiene que ver con si en efecto estudiar teoría de
+categorías como fundamento teórico de programación funcional ayuda. Y
+la conclusión es que sí, no es necesario para programar, pero hay
+cosas que es posible entender mejor, sobre todo con mónadas y
+álgebras. En fin, es útil.
+
+Otra posible conclusión tiene que ver con la posibilidad de abusar de
+teoría de categorías, como lo describe Goguen. Pero nuestro estudio no
+cae en eso, aunque hay elementos que sobran (como pruebas muy
+detalladas), todo parece apropiado (y algo apropiado es pasar un poco
+el estudio de tipos de datos a fold).
+
+Queda una pregunta de si lo que se hizo con Agda es relevante o solo
+interesante.
+
+
+
 
 %% 1. Hacia atrás: categorías incompleto sin functores, functores
 %% incompleto sin transformaciones naturales.
@@ -70,17 +100,6 @@ of mathematics'' \parencite[50]{goguen-1991}. Even though the
 categorical formulation of some concepts may be difficult to
 understand.
 
-\section{Future Work}
-
-TODO: The reasoning of Remark I deleted, which says that it is more
-theoretically correct to not include a Functor constraint in the type
-class declaration of monads, also applies for an
-\texthaskell{Applicative} type constraint in the \texthaskell{Monad}
-type class. In this case, it makes real practical sense to include
-it.
-
-Applicative functors: \parencite{mcbride-paterson-2008}
-
 TODO: Regarding natural transformations, the relation between natural
 transformations and parametrically polymorphic functions is not as
 straightforward as discussed here. Polymorphic functions actually
@@ -93,31 +112,25 @@ not coinductive.
 \paragraph{Scope}
 
 This study of category theory is restricted to the following concepts:
-This list is based on Mac Lane, Pierce, and Poigné.
+Only the ones we did not cover: from introductory concepts and
+infrastructure of category theory, monomorphisms and epimorphisms, and
+universal constructions; from basic concepts of category theory,
+adjoints and limits.
 
-\begin{enumerate}
-\item Introductory concepts and infrastructure of category theory
-  \begin{enumerate}
-  \item Categories
-  \item Infrastructure of category theory
-    \begin{itemize}
-    \item Monomorphisms, epimorphisms, and isomorphisms
-    \item Initial and terminal objects
-    \item Universal constructions
-    \end{itemize}
-  \end{enumerate}
-\item Basic concepts of category theory
-  \begin{enumerate}
-  \item Functors
-  \item Natural transformations
-  \item Adjoints
-  \item Limits
-  \end{enumerate}
-\item More specific concepts of category theory
-  \begin{enumerate}
-  \item Algebras
-  \item Monads
-  \end{enumerate}
-\end{enumerate}
+\section{Future Work}
+
+\paragraph{Applicative functors}
+
+Una primera cosa son los functores aplicativos, que estudiamos un
+tiempo con functores monoidales de teoría de categorías a partir del
+paper de McBride y Paterson. Nuestra discusión sobre mónadas abre las
+puertas a algo más avanzado e interesante sobre la relación entre las
+clases functor, mónada y aplicativo. TODO: The reasoning of Remark I
+deleted, which says that it is more theoretically correct to not
+include a Functor constraint in the type class declaration of monads,
+also applies for an \texthaskell{Applicative} type constraint in the
+\texthaskell{Monad} type class. In this case, it makes real practical
+sense to include it. Applicative functors:
+\parencite{mcbride-paterson-2008}
 
 \clearemptydoublepage
