@@ -12,112 +12,60 @@
 }{---\textcite[173]{carroll-2004}}
 \end{epigraphs}
 
-In this chapter, we highlight
+Our main objective with this project was to study some of the
+applications of category theory to functional programming in Haskell
+and Agda, and, more specifically, to describe and explain the concepts
+of category theory needed for conceptualizing and better understanding
+algebraic data types, functors, monads, and polymorphism, which we did
+in Chapters \ref{chap:algebras}, \ref{chap:functors},
+\ref{chap:monads}, and \ref{chap:naturals}, respectively. In Chapter
+\ref{chap:categories}, we identified categories as the starting point
+for relating category theory to functional programming. In the case of
+algebraic data types and, more usefully, folds, we identified algebras
+and initial algebras over endofunctors as the required concepts for
+satisfying our main goal; in the case of functors, the notions of
+functor and endofunctor; in the case of monads, the concepts of monad
+and Kleisli triple; and, in the case of polymorphism or, more
+precisely, parametric polymorphism, natural transformations.
 
-Teniendo en cuenta los objetivos, una primera conclusión son los
-conceptos de teoría de categorías que describimos para formalizar los
-cuatro de programación funcional propuestos. Usar la frase de que no
-hay que estudiar toda la teoría de categorías para poder usarla, y así
-hemos identificado solo algunos conceptos. Para functores, functores y
-endofunctores. Para polimorfismo, transformaciones naturales, pero con
-precisión: polimorfismo paramétrico. Para mónadas, mónadas y tripletas
-de Kleisli. Para tipos de datos algebraicos, álgebras y álgebras
-iniciales, con precisión: énfasis en fold. Y para todos: categoría.
-Obviamente, quedan muchos temas pendientes, algunos que estudiamos y
-simplemente no metimos, como lo de functores aplicativos.
+Obviously, we did not cover all of category theory. For instance, we
+did not deal with concepts such as adjoints, epimorphisms, limits,
+monomorphisms, and universal constructions, which were listed in the
+project proposal, but did not answer our purpose. Having said that, we
+did cover the trinity of concepts category, functor, and natural
+transformation, which is the foundation of all category theory, and
+which creates an opportunity for a deeper understanding of the
+subject.
 
-Otra conclusión tiene que ver con si en efecto estudiar teoría de
-categorías como fundamento teórico de programación funcional ayuda. Y
-la conclusión es que sí, no es necesario para programar, pero hay
-cosas que es posible entender mejor, sobre todo con mónadas y
-álgebras. En fin, es útil.
+Additionally, some of the applications of category theory to
+functional programming are not as straightforward as suggested here.
+For example, polymorphic functions actually correspond to lax natural
+transformations, and algebraic data types in Haskell correspond to
+initial algebras and terminal coalgebras over endofunctors, but such
+concepts go beyond the scope of this project. However, our use of
+category theory seems to be appropriate and useful from the standpoint
+of functional programming.
 
-Otra posible conclusión tiene que ver con la posibilidad de abusar de
-teoría de categorías, como lo describe Goguen. Pero nuestro estudio no
-cae en eso, aunque hay elementos que sobran (como pruebas muy
-detalladas), todo parece apropiado (y algo apropiado es pasar un poco
-el estudio de tipos de datos a fold).
+In this regard, we stated that one can be a perfectly competent
+functional programmer without knowledge of category theory, and that
+categorical concepts can be applied to functional programming with the
+intention of, for instance, becoming a better programmer. Although
+subjective, we believe that this project provides some interesting
+examples of how to take advantage of category theory in functional
+programming and programming in general.
 
-Queda una pregunta de si lo que se hizo con Agda es relevante o solo
-interesante.
-
-
-
-
-%% 1. Hacia atrás: categorías incompleto sin functores, functores
-%% incompleto sin transformaciones naturales.
-
-%% 2. Fin de los tres conceptos básicos de teoría de categorías. Con esto
-%% queda abierto el mundo categórico.
-
-%% 3. Hacia adelante: todo requiere transformaciones. Monoidals:
-%% functores con trasnformaciones. Mónadas: endofunctores con
-%% transformaciones.
-
-%% 4. En transformaciones naturales: abre a parametricidad, visión
-%% distinta de polimorfismo.
-
-``Category theory can also be abused, and in several different styles.
-One style of abuse is specious generality, in which some theory or
-example is generalised in a way that does not actually include any new
-examples of genuine interest. A related style of abuse is categorical
-overkill, in which the language of category theory is used to describe
-phenomena that do not actually require such an elaborate treatment or
-terminology'' \parencite[50]{goguen-1991}.
-
-``Category theory provides a number of broadly useful, and yet
-surprisingly specific, guidelines for organising, generalising, and
-discovering analogies among and within various branches of mathematics
-and its applications. I wish to suggest that the existence of such
-guidelines can be seen to support an alternative, more pragmatic view:
-Foundations should provide general concepts and tools that reveal the
-structures and interrelations of various areas of mathematics and its
-applications, and that help in doing and using mathematics''
-\parencite[64]{goguen-1991}. ``In a field which is not yet very well
-developed, such as computing science, where it often seems that
-getting the definitions right is the hardest task, foundations in this
-sense can be very useful, because they can suggest which research
-directions may be fruitful, using relatively explicit measures of
-elegance and coherence. The succesful use of category theory for such
-purposes suggests that it provides at least the beginnings of such a
-foundation'' \parencite[64]{goguen-1991}.
-
-With category theory, ``concepts may be dealt with at a higher level''
-\parencite[xi]{pierce-1991}. ``Category theory formalizes otherwise
-vague concepts'' \parencite[414]{poigne-1992}.
-
-``Category-theoretic formulations of concepts can be more difficult to
-grasp than their counterparts in other formalisms''
-\parencite[xi]{pierce-1991}. ``One does not so much learn category
-theory as absorb it over a period of time''
-\parencite[25]{bird-demoor-1997}. ``From [116]: 'do not succumb to a
-feeling that you must understand \emph{all} of category theory before
-you put it to use'`` \parencite[xi]{pierce-1991}. ``Category theory
-has been called 'abstract nonsense' by both its friends and its
-detractors. Perhaps what this phrase suggests to both is that category
-theory has relatively more form than content, compared to other areas
-of mathematics'' \parencite[50]{goguen-1991}. Even though the
-categorical formulation of some concepts may be difficult to
-understand.
-
-TODO: Regarding natural transformations, the relation between natural
-transformations and parametrically polymorphic functions is not as
-straightforward as discussed here. Polymorphic functions actually
-correspond to lax natural transformations, but this fact is beyond the
-scope of this dissertation.
-
-TODO: Regarding Algebras, we are only concerned with inductive types,
-not coinductive.
-
-\paragraph{Scope}
-
-This study of category theory is restricted to the following concepts:
-Only the ones we did not cover: from introductory concepts and
-infrastructure of category theory, monomorphisms and epimorphisms, and
-universal constructions; from basic concepts of category theory,
-adjoints and limits.
+Needless to say, the ideas of category theory might be difficult to
+understand at first. As a matter of fact,
+\textcite[25]{bird-demoor-1997} claim that ``one does not so much
+learn category theory as absorb it over a period of time.'' We claim
+that it is definitely worth it.
 
 \section{Future Work}
+
+\paragraph{Agda}
+
+Queda una pregunta de si lo que se hizo con Agda es relevante o solo
+interesante. We applied all of these to Agda whenever appropriate.
 
 \paragraph{Applicative functors}
 
@@ -131,6 +79,19 @@ include a Functor constraint in the type class declaration of monads,
 also applies for an \texthaskell{Applicative} type constraint in the
 \texthaskell{Monad} type class. In this case, it makes real practical
 sense to include it. Applicative functors:
-\parencite{mcbride-paterson-2008}
+\parencite{mcbride-paterson-2008}. This article introduces applicative
+functors and identifies the categorical structure of applicative
+functors and examines their relationship with monads.
+
+\paragraph{Existence of initial algebras}
+
+From Vene: The initial F-algebra may or may not exist. It is
+guaranteed to exist if F is ω-cocontinuous (that is, it preserves the
+colimits of ω-chains). All polynomial functors (that is, functors
+built from products, sums, the identity functor, and constant
+functors) are ω-cocontinuous and, hence, the initial algebras for them
+exist. From Andrés: A primera vista parece que todos los functores de
+Haskell satisfacen esta condición. Sin embargo, podemos dejar para la
+sección de Future Work un comentario al respecto.
 
 \clearemptydoublepage
