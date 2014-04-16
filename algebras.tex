@@ -1,4 +1,4 @@
-\chapter{Algebras and initial algebras}
+\chapter{Algebras and Initial Algebras}
 \label{chap:algebras}
 
 \epigraph{
@@ -11,7 +11,8 @@ As motivation, \texthaskell{foldr} is a standard function that
 encapsulates common patterns of induction and recursion concerning
 lists \parencite[355--356]{hutton-1999}. The \texthaskell{foldr}
 function can be defined as follows\footnote{Note that this is not the
-  type signature of the standard \texthaskell{foldr} function.}:
+  type signature of the standard Haskell \texthaskell{foldr}
+  function.}:
 \begin{codehaskell}
 foldr :: b -> (a -> b -> b) -> [a] -> b
 foldr n c []     = n
@@ -32,7 +33,7 @@ definition of the \texthaskell{foldr} function.
 This idea generalizes to algebraic data types in the sense that one
 such type is the initial algebra over an endofunctor and that this
 fact uniquely determines a function that encapsulates common patterns
-of induction and recursion concerning the type.
+of induction and recursion concerning that type.
 
 \section{Algebras and initial algebras}
 \label{sec:algebras}
@@ -46,9 +47,9 @@ homomorphisms.
   %% \parencite[15]{vene-2000}
 
   Let $\func{F}: \cat{C} \to \cat{C}$ be an endofunctor in a category
-  $\cat{C}$. An \func{F}-algebra $(a,\alpha)$ is an object $a$, called
-  the carrier of the algebra, and a morphism $\alpha: \funcO{F}(a) \to
-  a$.
+  $\cat{C}$. An \func{F}-al\-ge\-bra $(a,\alpha)$ is an object $a$,
+  called the carrier of the algebra, and a morphism $\alpha:
+  \funcO{F}(a) \to a$.
 
 \end{definition}
 
@@ -63,7 +64,7 @@ of algebras in Haskell.
 
   Let \cat{C} be a category with an initial object $0$. Then
   $(0,\idO{0})$ is an algebra over the identity functor (see Example
-  \ref{ex:functor-identity}), that is, an \func{I}-algebra. In
+  \ref{ex:functor-identity}), that is, an \func{I}-al\-ge\-bra. In
   particular, in \set, $(\emptyset,\idO{\emptyset})$ is an
   \func{I}-algebra.
 
@@ -103,9 +104,9 @@ of algebras in Haskell.
     \quad
     \funcM{N}(f)(2,x) = (2,f(x))
   \end{equation*}
-  for all $x \in A$. If necessary, see Examples
-  \ref{ex:initial-terminal-objects-set} and \ref{ex:coproduct-set}
-  (that is, initial objects and coproducts in \set, respectively).
+  for all $x \in A$ (see Examples
+  \ref{ex:initial-terminal-objects-set} and \ref{ex:coproduct-set} for
+  initial objects and coproducts in \set, respectively).
 
   \begin{figure}[htb]
     \begin{center}
@@ -164,10 +165,10 @@ of algebras in Haskell.
     \quad
     \funcM{L}^{A}(g)(2,(x,y)) = (2,(x,g(y)))
   \end{equation*}
-  for all $(x,y) \in A \times B$. Again, see Examples
+  for all $(x,y) \in A \times B$ (see Examples
   \ref{ex:initial-terminal-objects-set}, \ref{ex:product-set}, and
-  \ref{ex:coproduct-set} (that is, initial objects, products, and
-  coproducts in \set, respectively) if necessary.
+  \ref{ex:coproduct-set} for initial objects, products, and coproducts
+  in \set, respectively).
 
   \begin{figure}[htb]
     \begin{center}
@@ -319,7 +320,7 @@ we move on to their initial objects (see Definition
     \text{,}
   \end{equation}
   or, equivalently, the diagram in Figure \ref{fig:cata-charn} is
-  commutative. Such an \func{F}-algebra homomorphism (that is, a
+  commutative. Such an \func{F}-al\-ge\-bra homomorphism (that is, a
   unique \func{F}-algebra homomorphism from the initial
   \func{F}-algebra) is called a catamorphism.
 

@@ -1,4 +1,4 @@
-\chapter{Monads and Kleisli triples}
+\chapter{Monads and Kleisli Triples}
 \label{chap:monads}
 
 \epigraph{
@@ -352,7 +352,7 @@ triple.
 
 \end{example}
 
-\subsection*{Monads $=$ Kleisli triples}
+\subsection*{Equivalence of monads and Kleisli triples}
 
 Algebraic theories in clone form \parencite[24]{manes-1976}, which we
 shall refer to as monads in clone form, are yet another alternative
@@ -376,7 +376,7 @@ equivalence between the three alternative descriptions.
       \draw [<->] (monad) to (triple);
     \end{tikzpicture}
   \end{center}
-  \caption{Monads $=$ Monads in clone form $=$ Kleisli triples.}
+  \caption{Equivalence of monads, monads in clone form, and Kleisli triples.}
   \label{fig:monad-theory-triple}
 \end{figure}
 
@@ -670,7 +670,7 @@ triples are equivalent.
 \label{sec:monads-haskell}
 
 When discussing monads, there are three possibilities: monads (in
-monoid form), Kleisli triples or monads in extension form, and monads
+monoid form), Kleisli triples (monads in extension form), and monads
 in clone form. Kleisli triples are easier to justify from a
 computational point of view and correspond to the representation that
 is found in functional programming languages like Haskell and Agda. On
@@ -1246,7 +1246,7 @@ instance Monad [] where
 
 \end{example}
 
-\subsection*{Monads $=$ Kleisli triples}
+\subsection*{Equivalence of monads and Kleisli triples}
 
 We have already proved that monads and Kleisli triples are equivalent.
 In this subsection, we shall see their correspondence in terms of
@@ -1667,7 +1667,7 @@ monad = mkMonad return bind associativity unity-left unity-right
 
 \end{example}
 
-\subsection*{Monads $=$ Kleisli triples}
+\subsection*{Equivalence of monads and Kleisli triples}
 
 We shall not prove that monads and Kleisli triples are coextensive in
 \agda. However, the definitions of the \textagda{Monad} and
