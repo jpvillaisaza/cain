@@ -352,7 +352,7 @@ interesting change of perspective.
         \label{fig:category-3}
       \end{subfigure}
     \end{center}
-    \caption{}
+    \caption{Trivial categories.}
     \label{fig:category-trivial}
   \end{figure}
 
@@ -594,20 +594,26 @@ data Maybe a = Nothing | Just a
 But not \texthaskell{[]} and \texthaskell{Maybe}, which are unary type
 constructors or type expressions with kind \texthaskell{* -> *}.
 
-However, Haskell types have bottom. For example:
-\begin{codehaskell}
+\begin{convention}
+  \label{con:hask}
+
+  However, Haskell types have bottom. For example:
+  \begin{codehaskell}
 undefined :: a
 undefined = undefined
-\end{codehaskell}
-As a consequence, values of type \texthaskell{Bool} include
-\texthaskell{True} and \texthaskell{False}, but also
-\texthaskell{undefined}, values of type \texthaskell{Nat} include
-\texthaskell{Zero} and \texthaskell{Succ Zero}, but also
-\texthaskell{undefined}, and so forth, which is a
-difficulty\footnote{See
-  \url{http://www.haskell.org/haskellwiki/Hask}.}. For this reason, by
-``Haskell types'' we mean ``Haskell types without bottom values,''
-which is why \hask is sometimes considered a platonic category.
+  \end{codehaskell}
+  As a consequence, values of type \texthaskell{Bool} include
+  \texthaskell{True} and \texthaskell{False}, but also
+  \texthaskell{undefined}, values of type \texthaskell{Nat} include
+  \texthaskell{Zero} and \texthaskell{Succ Zero}, but also
+  \texthaskell{undefined}, and so forth, which is a
+  difficulty\footnote{See
+    \url{http://www.haskell.org/haskellwiki/Hask}.}. For this reason,
+  by ``Haskell types'' we mean ``Haskell types without bottom
+  values,'' which is why \hask is sometimes considered a platonic
+  category.
+
+\end{convention}
 
 As anticipated, the morphisms of \hask are Haskell functions. For
 instance, \texthaskell{not}:

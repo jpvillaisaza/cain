@@ -118,6 +118,12 @@ data Void
 absurd :: Void -> a
 absurd = absurd
   \end{codehaskell}
+  Note that, in the absence of Convention \ref{con:hask}, we could
+  also have:
+  \begin{codehaskell}
+absurd' :: Void -> a
+absurd' _ = undefined
+  \end{codehaskell}
   Additionally, the unit type is the terminal object of the category:
   \begin{codehaskell}
 data () = ()
@@ -127,6 +133,11 @@ data () = ()
   \begin{codehaskell}
 unit :: a -> ()
 unit _ = ()
+  \end{codehaskell}
+  Without Convention \ref{con:hask}, we could also have:
+  \begin{codehaskell}
+unit' :: a -> ()
+unit' _ = undefined
   \end{codehaskell}
 
 \end{example}
@@ -227,7 +238,7 @@ categories \set, \hask, and \agda.
         \draw [->,dotted] (c)  to node [swap] {$\langle{f,g}\rangle$} (axb);
       \end{tikzpicture}
     \end{center}
-    \caption{}
+    \caption{A product.}
     \label{fig:product}
   \end{figure}
 
@@ -353,7 +364,7 @@ proj₂ (_ , y) = y
         \draw [<-,dotted] (c) to node [swap] {$[f,g]$} (a+b);
       \end{tikzpicture}
     \end{center}
-    \caption{}
+    \caption{A coproduct.}
     \label{fig:coproduct}
   \end{figure}
 
