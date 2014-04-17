@@ -43,14 +43,16 @@ the type of values computations may produce''
 For instance, the \texthaskell{Maybe} and \texthaskell{[]} (list) type
 constructors represent the notions of partiality and nondeterminism,
 respectively. Instead of studying a specific \texthaskell{m}, we focus
-on monads, which describe ``the general properties common to all
-notions of computation'' \parencite[58]{moggi-1991}.
+on monads, which describe the general properties common to such
+notions of computation \parencite[58]{moggi-1991}.
 
 In the remainder of this chapter, we define the concepts of monad and
 Kleisli triple, prove their equivalence, and study both constructs in
-Haskell and Agda.
+Haskell and Agda. We should note that, terminologically,
+category-theoretical monads and monads in functional programming,
+which actually correspond to Kleisli triples, are not the same thing.
 
-\section{Monads and Kleisli triples}
+\section{Monads and Kleisli Triples}
 \label{sec:monads}
 
 In this section, we define the concepts of monad and Kleisli triple,
@@ -60,9 +62,12 @@ in (...) category theory and have the advantage of being defined only
 in terms of functors and natural transformations, which make them more
 suitable for abstract manipulation'' \parencite[60]{moggi-1991}.
 
-\subsection*{Monads}
+\subsection{Monads}
 
-First, we describe monads.
+First, we describe monads. Despite the fact that monads in functional
+programming correspond to Kleisli triples, categorical monads are
+likely more appropriate for analyzing them from the perspective of
+category theory.
 
 \begin{definition}
   \label{def:monad}
@@ -237,7 +242,7 @@ reformulation of the identity functor for a given category.
 
 \end{example}
 
-\subsection*{Kleisli triples}
+\subsection{Kleisli Triples}
 
 Now, we describe Kleisli triples, which ``are just an alternative
 description for monads'' \parencite[60]{moggi-1991}.
@@ -306,7 +311,7 @@ description for monads'' \parencite[60]{moggi-1991}.
       \caption{Kleisli triple unity.}
       \label{fig:triple-unity}
     \end{subfigure}
-    \caption{}
+    \caption{Kleisli triple laws.}
   \end{figure}
 
 \end{definition}
@@ -352,7 +357,7 @@ triple.
 
 \end{example}
 
-\subsection*{Equivalence of monads and Kleisli triples}
+\subsection{Equivalence of Monads and Kleisli Triples}
 
 Algebraic theories in clone form \parencite[24]{manes-1976}, which we
 shall refer to as monads in clone form, are yet another alternative
@@ -666,7 +671,7 @@ triples are equivalent.
 
 \end{theorem}
 
-\section{Monads and Kleisli triples in Haskell}
+\section{Monads and Kleisli Triples in Haskell}
 \label{sec:monads-haskell}
 
 When discussing monads, there are three possibilities: monads (in
@@ -678,7 +683,7 @@ the other hand, monads have some mathematical advantages and are more
 intuitive in some cases. In this section, we describe both
 representations in Haskell.
 
-\subsection*{Monads}
+\subsection{Monads in Haskell}
 
 In \hask, a monad consists of an endofunctor, together with two
 parametrically polymorphic functions, as follows\footnote{Note that
@@ -989,13 +994,13 @@ concat (xss ++ yss) = concat xss ++ concat yss
 
 \end{example}
 
-\subsection*{Kleisli triples}
+\subsection{Kleisli Triples in Haskell}
 
 In \hask, a Kleisli triple consists of a type constructor, and two
 functions, as follows\footnote{Note that this is not the standard
   Haskell \texthaskell{Monad} type class.}:
 \begin{codehaskell}
-class Monad m where
+class Monad'' m where
   return :: a -> m a
   bind   :: (a -> m b) -> m a -> m b
 \end{codehaskell}
@@ -1036,7 +1041,7 @@ bind return = id
           \draw [->] (t b) to node        {\texthaskell{bind g}}            (t c);
         \end{tikzpicture}
       \end{center}
-      \caption{Monadic associativity.}
+      \caption{Kleisli triple associativity.}
       \label{fig:triple-associativity-haskell}
     \end{subfigure}
     \begin{subfigure}[b]{0.45\linewidth}
@@ -1051,34 +1056,40 @@ bind return = id
           \draw [->] (t a) to node        {\texthaskell{bind f}} (t b);
         \end{tikzpicture}
       \end{center}
-      \caption{Monadic unity.}
+      \caption{Kleisli triple unity.}
       \label{fig:triple-unity-haskell}
     \end{subfigure}
   \end{center}
-  \caption{}
+  \caption{Kleisli triple laws in \hask.}
 \end{figure}
 
 \begin{remark}
   \label{re:triple-standard}
 
-  Our \texthaskell{Monad} type class corresponds to the minimal
+  Our \texthaskell{Monad''} type class corresponds to the minimal
   declaration of the standard Haskell \texthaskell{Monad} type class,
   which is not defined in terms of \texthaskell{bind}:
   \begin{codehaskell}
-class Monad'' m where
+class Monad m where
   return :: a -> m a
   (>>=)  :: m a -> (a -> m b) -> m b
+
+  (>>)   :: m a -> m b -> m b
+  m >> k = m >>= \_ -> k
+
+  fail   :: String -> m a
+  fail = error
   \end{codehaskell}
   Given a monad with a \texthaskell{bind} function, we can get
   \texthaskell{(>>=)} as follows:
   \begin{codehaskell}
-(>>=) :: Monad m => m a -> (a -> m b) -> m b
+(>>=) :: Monad'' m => m a -> (a -> m b) -> m b
 mx >>= f = bind f mx
   \end{codehaskell}
   In terms of standard Haskell, the \texthaskell{bind} function is
   \texthaskell{(<<=)}, which is the same as \texthaskell{(>>=)}, but
   with the arguments interchanged. Now, let us rewrite the
-  \texthaskell{Monad} laws using \texthaskell{(>>=)}. In the first
+  \texthaskell{Monad''} laws using \texthaskell{(>>=)}. In the first
   place, since
   \begin{steps}
     \steph{(bind g . bind f) mx}
@@ -1126,6 +1137,22 @@ return x >>= f = f x
 mx >>= return = mx
   \end{codehaskell}
 
+  Even though our \texthaskell{Monad''} type class corresponds just to
+  \texthaskell{Monad} with \texthaskell{return} and
+  \texthaskell{(>>=)}, it is worth mentioning the \texthaskell{(>>)}
+  and \texthaskell{fail} functions, neither of which are part of the
+  mathematical definition of a Kleisli triple. In the first place,
+  ``\texthaskell{(>>)} is a specialized version of
+  \texthaskell{(>>=)}'' \parencite[30]{yorgey-2009}. In the second
+  place, the \texthaskell{fail} function is a hack used by Haskell to
+  enable failure in a \texthaskell{do} expression, which is a special
+  syntactic construct for \texthaskell{Monad}
+  \parencites[273]{lipovaca-2011}[88]{peytonjones-2003}[30]{yorgey-2009}.
+  Besides, the \texthaskell{error} function is closely related to
+  \texthaskell{undefined}\footnote{See \parencite[§
+      3.1]{peytonjones-2003}.}, which we discussed in Section
+  \ref{sec:category-haskell}.
+
 \end{remark}
 
 As examples, we consider the \texthaskell{Identity},
@@ -1137,7 +1164,7 @@ As examples, we consider the \texthaskell{Identity},
   In \hask, the \texthaskell{Identity} or trivial Kleisli triple is
   defined as follows:
   \begin{codehaskell}
-instance Monad Identity where
+instance Monad'' Identity where
   return :: a -> Identity a
   return = Identity
 
@@ -1155,7 +1182,7 @@ instance Monad Identity where
   In \hask, the \texthaskell{Maybe} Kleisli triple is defined as
   follows:
   \begin{codehaskell}
-instance Monad Maybe where
+instance Monad'' Maybe where
   return :: a -> Maybe a
   return = Just
 
@@ -1231,7 +1258,7 @@ instance Monad Maybe where
   In \hask, the \texthaskell{[]} (list) Kleisli triple is declared as
   follows:
   \begin{codehaskell}
-instance Monad [] where
+instance Monad'' [] where
   return :: a -> [a]
   return x = [x]
 
@@ -1246,12 +1273,12 @@ instance Monad [] where
 
 \end{example}
 
-\subsection*{Equivalence of monads and Kleisli triples}
+\subsection{Equivalence of Monads and Kleisli Triples in Haskell}
 
 We have already proved that monads and Kleisli triples are equivalent.
 In this subsection, we shall see their correspondence in terms of
-Haskell. First, let us see that a \texthaskell{Monad} (and a
-\texthaskell{Monad''}) can be obtained from a \texthaskell{Monad'},
+Haskell. First, let us see that a \texthaskell{Monad''} (and a
+\texthaskell{Monad}) can be obtained from a \texthaskell{Monad'},
 which we demonstrated in Lemma \ref{lem:monad-to-triple}:
 \begin{codehaskell}
 bind :: Monad' m => (a -> m b) -> m a -> m b
@@ -1262,29 +1289,29 @@ mx >>= f = join (fmap f mx)
 \end{codehaskell}
 
 Second, let us see that a \texthaskell{Monad'} can be obtained from a
-\texthaskell{Monad} (and from a \texthaskell{Monad''}). The type
-constructor of a \texthaskell{Monad} can be extended to define an
+\texthaskell{Monad''} (and from a \texthaskell{Monad}). The type
+constructor of a \texthaskell{Monad''} can be extended to define an
 endofunctor, which we showed in Lemma
 \ref{prop:triple-to-endofunctor}:
 \begin{codehaskell}
-fmap :: Monad m => (a -> b) -> m a -> m b
+fmap :: Monad'' m => (a -> b) -> m a -> m b
 fmap f mx = bind (return . f) mx
 
-liftM :: Monad'' m => (a -> b) -> m a -> m b
+liftM :: Monad m => (a -> b) -> m a -> m b
 liftM f m x = mx >>= (return . f)
 \end{codehaskell}
 This definition of \texthaskell{fmap} is just
 \eqref{eq:triple-to-endofunctor-morphism-function}. Finally, the
-\texthaskell{bind} function of a \texthaskell{Monad} can be used to
+\texthaskell{bind} function of a \texthaskell{Monad''} can be used to
 define the \texthaskell{join} function of a \texthaskell{Monad'},
 which corresponds to Lemma \ref{prop:triple-to-monad-multiplication}
 or \eqref{eq:triple-to-monad-multiplication}:
 \begin{codehaskell}
-join :: Monad m => m (m a) -> m a
-join mmx = bind id mmx
-
 join' :: Monad'' m => m (m a) -> m a
-join' mmx = mmx >>= id
+join' mmx = bind id mmx
+
+join :: Monad m => m (m a) -> m a
+join mmx = mmx >>= id
 \end{codehaskell}
 
 \begin{remark}
@@ -1307,14 +1334,14 @@ class Functor m => Monad''' m where
 
 \end{remark}
 
-\section{Monads and Kleisli triples in Agda}
+\section{Monads and Kleisli Triples in Agda}
 \label{sec:monads-agda}
 
 In this section, we describe monads and Kleisli triples in Agda. Since
 we have already described both representations in category theory and
 Haskell, we shall not go into a lot of detail here.
 
-\subsection*{Monads}
+\subsection{Monads in Agda}
 
 Monads in \agda are defined by the \textagda{Monad'} record, which can
 be found in the module \module{Abel.Category.Monad}. This declaration
@@ -1496,9 +1523,9 @@ monad' = mkMonad' return join associativity unity-left unity-right
 
 \end{example}
 
-\subsection*{Kleisli triples}
+\subsection{Kleisli Triples in Agda}
 
-Kleisli triples in \agda are defined by the \textagda{Monad} record,
+Kleisli triples in \agda are defined by the \textagda{Monad''} record,
 which can be found in the module \module{Abel.Category.Monad}. The
 following definition corresponds to the \texthaskell{Monad} type class
 declaration in Haskell. As usual, this definition includes the
@@ -1506,9 +1533,9 @@ appropriate associativity and unity laws, and naturalities, which
 means that any instance of the \textagda{Monad} type class \emph{is} a
 Kleisli triple.
 \begin{codeagda}
-record Monad (M : Set → Set) : Set₁ where
+record Monad'' (M : Set → Set) : Set₁ where
 
-  constructor mkMonad
+  constructor mkMonad''
 
   field
 
@@ -1565,8 +1592,8 @@ and \textagda{List} monads as Kleisli triples.
   Kleisli triple in \hask (see Example
   \ref{ex:triple-identity-haskell}), is defined as follows:
   \begin{codeagda}
-monad : Monad Identity
-monad = mkMonad return bind associativity unity-left unity-right
+monad : Monad'' Identity
+monad = mkMonad'' return bind associativity unity-left unity-right
   where
     return : {A : Set} → A → Identity A
     return = identity
@@ -1595,8 +1622,8 @@ monad = mkMonad return bind associativity unity-left unity-right
   the \texthaskell{Maybe} Kleisli triple in \hask (see Example
   \ref{ex:triple-maybe-haskell}), is defined as follows:
   \begin{codeagda}
-monad : Monad Maybe
-monad = mkMonad return bind associativity unity-left unity-right
+monad : Monad'' Maybe
+monad = mkMonad'' return bind associativity unity-left unity-right
   where
     return : {A : Set} → A → Maybe A
     return = just
@@ -1629,8 +1656,8 @@ monad = mkMonad return bind associativity unity-left unity-right
   the list Kleisli triple in \hask (see Example
   \ref{ex:triple-list-haskell}), is defined as follows:
   \begin{codeagda}
-monad : Monad List
-monad = mkMonad return bind associativity unity-left unity-right
+monad : Monad'' List
+monad = mkMonad'' return bind associativity unity-left unity-right
   where
     return : {A : Set} → A → List A
     return x = x ∷ []
@@ -1667,12 +1694,12 @@ monad = mkMonad return bind associativity unity-left unity-right
 
 \end{example}
 
-\subsection*{Equivalence of monads and Kleisli triples}
+\subsection{Equivalence of Monads and Kleisli Triples in Agda}
 
 We shall not prove that monads and Kleisli triples are coextensive in
-\agda. However, the definitions of the \textagda{Monad} and
-\textagda{Monad'} records include the required constructions discussed
-in Section \ref{sec:monads}.
+\agda. However, the definitions of the \textagda{Monad'} and
+\textagda{Monad''} records include the required constructions
+discussed in Section \ref{sec:monads}.
 
 \section{References}
 \label{sec:monads-references}
