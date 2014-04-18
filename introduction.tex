@@ -11,27 +11,29 @@
 
 Category theory is a branch of mathematics developed in the 1940s
 which has come to occupy a central position in computer science.
-Broadly, it is a convenient and powerful conceptual framework or
-language for structures and systems of structures
+Broadly, it is a convenient and powerful conceptual framework for
+structures and systems of structures
 \parencites[vii]{maclane-1998}[1]{marquis-2013}[1154]{wolfram-2002}.
 
 In computer science, category theory allows us to formulate
-definitions and theories, and to measure the elegance and coherence of
-existing formulations, to carry out proofs, to discover and exploit
-relations with other fields, to deal with abstraction and
+definitions and theories of concepts, or to analyze the elegance and
+coherence of existing formulations, to carry out proofs, to discover
+and exploit relations with other fields, to deal with abstraction and
 representation independence, to formulate conjectures and research
 directions, and to unify concepts \parencites[49--50]{goguen-1991}.
 Moreover, category theory contributes to areas such as automata
-theory, domain theory, functional programming, monads or notions of
-computation, polymorphism, semantics, type theory, among others
-\parencites[23]{marquis-2013}{nlab-category-theory}[xi]{pierce-1991}[415]{poigne-1992}.
-In particular, category theory can be viewed as a formalization of
-operations on data types, which provides a sound basis for functional
-programming \parencites[414]{poigne-1992}[1154]{wolfram-2002}.
+theory, domain theory, functional programming, polymorphism,
+semantics, type theory, among others
+\parencites[23]{marquis-2013}[xi]{pierce-1991}[415]{poigne-1992}. In
+particular, category theory can be viewed as a formalization of
+operations on data types and as a foundational theory of functions,
+which provides a sound basis for functional programming
+\parencites[414]{poigne-1992}[1154]{wolfram-2002}.
 
 According to \textcite[73]{elkins-2009}, several concepts of
-functional programming languages such as Haskell
-\parencite{peytonjones-2003} and Agda \parencite{norell-2007} are
+functional programming languages, such as Agda
+\parencites{norell-2007}{agda}, Haskell \parencite{peytonjones-2003},
+Miranda \parencite{turner-1985}, and ML \parencite{milner-1984}, are
 based on concepts of category theory, but one can be a perfectly
 competent functional programmer without knowledge of these theoretical
 foundations. In spite of that, category theory can be applied to
@@ -45,7 +47,7 @@ of some of the concepts of functional programming listed above. In
 other words, we aim to examine functional programming through category
 theory.
 
-\section*{Summary of the Project}
+\section{Summary of the Project}
 \label{sec:introduction-summary}
 
 This is an undergraduate project submitted in partial fulfillment of
@@ -58,7 +60,7 @@ concepts of category theory needed for conceptualizing and better
 understanding algebraic data types, functors, monads, and
 polymorphism.
 
-\section*{Audience and Prerequisites}
+\section{Audience and Prerequisites}
 \label{sec:introduction-prerequisites}
 
 The reader of this project is a mathematically inclined functional
@@ -68,7 +70,7 @@ material is required, some suggestions can be found in the references
 on page \pageref{sec:introduction-references} or in the references at
 the end of each chapter.
 
-\section*{Overview of the Project}
+\section{Overview of the Project}
 \label{sec:introduction-overview}
 
 \begin{figure}[htb]
@@ -122,7 +124,7 @@ diagram in Figure \ref{fig:overview}.
 
   This chapter completes the trinity of concepts category, functor,
   and natural transformation, which are the basis of category theory
-  \parencite{nlab-category-theory}.
+  \parencite[vii]{maclane-1998}.
 
 \item
   In Chapter \ref{chap:monads} (\nameref{chap:monads}), we give a
@@ -144,10 +146,10 @@ Each chapter, except Chapter \ref{chap:constructions}, is further
 subdivided into two or three sections concerning some concepts of
 category theory, and their relation to functional programming in
 Haskell and, in some cases, Agda. Moreover, each chapter ends with a
-References section which collects the sources of information for all
-definitions and examples.
+section of references which collects the sources of information for
+all definitions and examples.
 
-\section*{References}
+\section{References}
 \label{sec:introduction-references}
 
 This section includes a list of suggestions for further reading, as
@@ -160,10 +162,8 @@ category-theoretical reading guides, see
 \begin{itemize}
 \item
   Most of our definitions are based on \parencite{maclane-1998}, which
-  is the standard reference on category theory. However, it is a book
-  for the working mathematician. On the other hand,
-  \parencite{awodey-2010} is a book on category theory for anyone
-  else.
+  is a standard reference on category theory, as well as
+  \parencite{awodey-2010}.
 
 \item
   \textcite{marquis-2013} includes an interesting description of the
@@ -254,7 +254,7 @@ category-theoretical reading guides, see
 
 \end{itemize}
 
-\section*{Notes}
+\section{Notes}
 \label{sec:introduction-notes}
 
 \paragraph{Frontispiece}
@@ -268,12 +268,14 @@ illustrations for Lewis Carroll's \emph{Alice's Adventures in
 
 \begin{itemize}
 \item
-  The Haskell code was tested with GHC 7.6.3.
+  The Haskell code was tested with GHC 7.6.3. Most of it corresponds
+  to or is based on standard Haskell code, and can be used as it is.
 
 \item
   The Agda code was tested with Agda 2.3.2.2 and the Agda standard
-  library 0.7. The Agda code can be found in a Git repository which is
-  available at \url{https://github.com/jpvillaisaza/abel}.
+  library 0.7. We omit a lot of details such as import declarations,
+  but all the code can be found in a Git repository which is available
+  at \url{https://github.com/jpvillaisaza/abel}.
 
 \end{itemize}
 
