@@ -13,46 +13,45 @@
 \end{epigraphs}
 
 Our main objective with this project was to study some of the
-applications of category theory to functional programming in Haskell
-and Agda, and, more specifically, to describe and explain the concepts
-of category theory needed for conceptualizing and better understanding
-functors, polymorphism, monads, and algebraic data types, which we did
-in Chapters \ref{chap:functors}, \ref{chap:naturals},
-\ref{chap:monads}, and \ref{chap:algebras}, respectively. In Chapter
-\ref{chap:categories}, we identified categories as the starting point
-for relating category theory to functional programming. In the case of
-algebraic data types and, more usefully, folds, we identified algebras
-and initial algebras over endofunctors as the required concepts for
-satisfying our main goal; in the case of functors, the notions of
-functor and endofunctor; in the case of monads, the concepts of monad
-and Kleisli triple; and, in the case of polymorphism or, more
-precisely, parametric polymorphism, natural transformations.
+applications of category theory to functional programming,
+particularly in Haskell and Agda, and, more specifically, to describe
+and explain the concepts of category theory needed for conceptualizing
+and better understanding functors, polymorphism, monads, and algebraic
+data types, which we did in Chapters \ref{chap:functors},
+\ref{chap:naturals}, \ref{chap:monads}, and \ref{chap:algebras},
+respectively. In Chapter \ref{chap:categories}, we identified
+categories as the starting point for relating category theory to
+functional programming. In the case of algebraic data types and, more
+usefully, folds, we identified algebras and initial algebras over
+endofunctors as the required concepts for satisfying our main goal; in
+the case of functors, the notions of functor and endofunctor; in the
+case of monads, the concepts of monad and Kleisli triple; and, in the
+case of polymorphism or, more precisely, parametric polymorphism,
+natural transformations.
 
 Obviously, we did not cover all of category theory. For instance, we
 did not deal with concepts such as adjoints, epimorphisms, limits,
 monomorphisms, and universal constructions, which were listed in the
 project proposal, but did not answer our purpose. Having said that, we
 did cover the trinity of concepts category, functor, and natural
-transformation, which is the foundation of all category theory, and
-which creates an opportunity for a deeper understanding of the
-subject.
+transformation, which is the foundation of all category theory
+\parencite[vii]{maclane-1998}, and which creates an opportunity for a
+deeper understanding of the subject.
 
 Additionally, some of the applications of category theory to
 functional programming are not as straightforward as suggested here.
 For example, polymorphic functions actually correspond to lax natural
-transformations, and algebraic data types in Haskell correspond to
-initial algebras and terminal coalgebras over endofunctors, but such
-concepts go beyond the scope of this project. However, our use of
-category theory seems to be appropriate and useful, especially from
-the standpoint of functional programming.
+transformations \parencite[350]{wadler-1989}, and algebraic data types
+in Haskell correspond to initial algebras and terminal coalgebras over
+endofunctors \parencite[§ 2]{vene-2000}, but such concepts go beyond
+the scope of this project. However, our use of category theory seems
+to be appropriate and useful, especially from the standpoint of
+functional programming.
 
-In this regard, we stated that one can be a perfectly competent
-functional programmer without knowledge of category theory, and that
-categorical concepts can be applied to functional programming with the
-intention of, for instance, becoming a better programmer. Although
-subjective, we believe that this project provides some interesting
-examples of how to take advantage of category theory in functional
-programming and programming in general.
+Although subjective, we believe that this project provides some
+interesting examples of how to take advantage of category theory in
+functional programming and programming in general, as well as a way to
+become a better programmer.
 
 Needless to say, the ideas of category theory might be difficult to
 understand at first. As a matter of fact,
@@ -65,15 +64,17 @@ that it is definitely worth it.
 All unanswered questions and concepts beyond the scope of this project
 could be considered as suggestions for future work. For instance, the
 questions of Haskell's and Agda's categories, the existence of initial
-algebras over endofunctors, and others. We describe two ideas which we
-find interesting and appropriate.
+algebras over endofunctors, and others. We describe some ideas which
+we find interesting and appropriate.
 
 \paragraph{Agda}
 
 Whenever suitable for our objective, we used category theory in Agda,
 but focused on Haskell. Even though helpful, additional projects could
 benefit much more from really exploting a programming language such as
-Agda.
+Agda. For instance, we could explore natural transformations and
+algebras, or the theorems stating the equivalence between monads and
+Kleisli triples.
 
 \paragraph{Applicative functors}
 
@@ -88,5 +89,61 @@ which adds an \texthaskell{Applicative} constraint to the
 \texthaskell{Monad} type class and promotes \texthaskell{join} to
 \texthaskell{Monad}, which we briefly discussed in Remark
 \ref{re:monad-bind}.
+
+\paragraph{Beyond catamorphisms and folds}
+
+Based on \parencites{meijer-fokkinga-paterson-1991}{vene-2000}, we
+could go beyond catamorphisms and study recursion patterns such as
+anamorphisms, hylomorphisms, and paramorphisms. Moreover, we discussed
+the \texthaskell{foldr} function, but not \texthaskell{foldl} and
+folds in general, which could be a different approach, as well as
+those mentioned in \parencite[§ 6]{hutton-1999}.
+
+\paragraph{Category theory}
+
+\textcite{awodey-2010} was a late addition to our references for this
+project. The approach and examples of the book seem like a suitable
+next step for a more thorough study of category theory and its
+applications.
+
+\paragraph{More monads}
+
+As examples of monads, we discussed the \texthaskell{Identity},
+\texthaskell{Maybe}, and \texthaskell{[]} monads. However, a more
+complete study of monads could include the \texthaskell{Cons},
+\texthaskell{IO}, \texthaskell{Reader}, \texthaskell{State}, and
+\texthaskell{Writer} monads. Additionally, we could explore the idea
+of notions of computation and semantics with \parencite{moggi-1991}.
+
+\paragraph{Parametricity}
+
+In Chapter \ref{chap:naturals}, we discussed quite simple polymorphic
+functions, but we could use some of the ideas of
+\parencite{wadler-1989} for a deeper understanding of parametricity or
+theorems for free. Additionally, \parencite{bernardy-et-al-2012}
+provides ideas for analyzing parametricity in Agda.
+
+\paragraph{Parser combinators}
+
+Based on, for instance, \parencite[§ 16]{osullivan-et-al-2008}, we
+could study the applications of category theory to parser combinators.
+
+\paragraph{Real categories}
+
+In Sections \ref{sec:category-haskell} and \ref{sec:category-agda}, we
+stated that \hask and \agda are not attempts to answer the questions
+of Haskell's and Agda's categories, respectively. In the case of
+Haskell, we could begin with the study of the category of complete
+partial orders \parencite[12.43]{hudak-et-al-2007} and more details
+about the problem with bottom values.
+
+\paragraph{The typeclassopedia}
+
+We explored only two of the standard Haskell type classes related to
+category theory: \texthaskell{Functor} and \texthaskell{Monad}. Based
+on \parencite{yorgey-2009}, we could do the same with
+\texthaskell{Arrow}, \texthaskell{Applicative} (see above),
+\texthaskell{Category}, \texthaskell{Foldable}, \texthaskell{Monoid},
+\texthaskell{Traversable}, among other classes.
 
 \clearemptydoublepage
