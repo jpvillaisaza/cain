@@ -558,7 +558,11 @@ again as initial algebras.
   $\func{L}^{A}$-\alg. Let $(B,[n,c])$ be an algebra over
   $\func{L}^{A}$, that is, a set $A$ and functions $n: 1 \to B$ and
   $c: A \times B \to B$. Then we need a unique $\func{L}^{A}$-algebra
-  homomorphism $\fold(n,c): (\listof{A},[\nil,\cons]) \to (B,[n,c])$,
+  homomorphism
+  \begin{equation*}
+    \fold(n,c): (\listof{A},[\nil,\cons]) \to (B,[n,c])
+    \text{,}
+  \end{equation*}
   that is, a function $\foldr(n,c): \listof{A} \to B$ such that
   \begin{equation*}
     \foldr(n,c) \comp [\nil,\cons] = [n,c] \comp \funcM{L}^{A}(\foldr(n,c))

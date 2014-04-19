@@ -49,8 +49,8 @@ notions of computation \parencite[58]{moggi-1991}.
 In the remainder of this chapter, we define the concepts of monad and
 Kleisli triple, prove their equivalence, and study both constructs in
 Haskell and Agda. We should note that, terminologically,
-category-theoretical monads and monads in functional programming,
-which actually correspond to Kleisli triples, are not the same thing.
+category-theoretical monads and monads in Haskell, which actually
+correspond to Kleisli triples, are not the same thing.
 
 \section{Monads and Kleisli Triples}
 \label{sec:monads}
@@ -678,10 +678,10 @@ When discussing monads, there are three possibilities: monads (in
 monoid form), Kleisli triples (monads in extension form), and monads
 in clone form. Kleisli triples are easier to justify from a
 computational point of view and correspond to the representation that
-is found in functional programming languages like Haskell and Agda. On
-the other hand, monads have some mathematical advantages and are more
-intuitive in some cases. In this section, we describe both
-representations in Haskell.
+is found in functional programming languages like Haskell and the Agda
+standard library. On the other hand, monads have some mathematical
+advantages and are more intuitive in some cases. In this section, we
+describe both representations in Haskell.
 
 \subsection{Monads in Haskell}
 
@@ -1150,8 +1150,8 @@ mx >>= return = mx
   \parencites[273]{lipovaca-2011}[88]{peytonjones-2003}[30]{yorgey-2009}.
   Besides, the \texthaskell{error} function is closely related to
   \texthaskell{undefined}\footnote{See \parencite[§
-      3.1]{peytonjones-2003}.}, which we discussed in Convention
-  \ref{con:hask}.
+      3.1]{peytonjones-2003}.}, which we discussed in
+  Convention~\ref{con:hask}.
 
 \end{remark}
 
