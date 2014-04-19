@@ -695,7 +695,7 @@ mult m n = fold Zero (add n) m
   In this case, explicit recursion yields the following definition:
   \begin{codehaskell}
 mult Zero     n = Zero
-mult (Succ m) n = add n (mul m n)
+mult (Succ m) n = add n (mult m n)
   \end{codehaskell}
 
 \end{example}
@@ -796,10 +796,10 @@ length Nil         = Zero
 length (Cons _ xs) = Succ (length xs)
 
 append Nil         ys = ys
-append (Cons x xs) ys = Cons x (concat xs ys)
+append (Cons x xs) ys = Cons x (append xs ys)
 
 map _ Nil         = Nil
-map f (Cons x xs) = Cons (f x) (fmap f xs)
+map f (Cons x xs) = Cons (f x) (map f xs)
   \end{codehaskell}
 
 \end{example}

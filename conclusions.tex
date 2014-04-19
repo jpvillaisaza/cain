@@ -72,26 +72,27 @@ we find interesting and appropriate.
 \label{sec:future-adjoints}
 
 Category theory is based on the concepts of categories, functors, and
-natural transformations. While important, the fundamental notion of
-category theory is adjoints \parencite[11]{marquis-2013}, which
-``arise everywhere'' \parencite[vii]{maclane-1998}. Taking into
-account our approach, can we study the applications of adjoints with
-the purpose of better understanding functional programming? Based on
-\parencites[§ 13]{barr-wells-2012}[79--81]{elkins-2009}[§
-  2.4]{pierce-1991}{rydeheard-1986-adjunctions}[§
+natural transformations. Even though these ideas are important, a
+fundamental notion of category theory is adjoints
+\parencite[11]{marquis-2013}, which ``arise everywhere''
+\parencite[vii]{maclane-1998}. Taking into account our approach, can
+we study the applications of adjoints with the purpose of better
+understanding functional programming? Based on \parencites[§
+  13]{barr-wells-2012}[79--81]{elkins-2009}[§~2.4]{pierce-1991}{rydeheard-1986-adjunctions}[§
   6]{rydeheard-burstall-1988}, the answer seems to be yes. In
-addition, \textcite[§ 9]{awodey-2010} and \textcite[§
-  IV]{maclane-1998} seem to offer a good starting point.
+addition, \textcite[§ 9]{awodey-2010} and
+\textcite[§~IV]{maclane-1998} seem to offer a good starting point.
 
 \subsection{Applicative functors}
 \label{sec:future-monoidals}
 
 Based on \parencite{mcbride-paterson-2008}, we identified and studied
 monoidal categories and functors in order to be able to understand
-applicative functors from a category-theoretical point of view, but we
-did not include our results here. This seems to be a very relevant
-next step, particularly in the context of the ``current, and very
-likely to succeed,'' Haskell 2014 \texthaskell{Applicative => Monad}
+applicative functors from a category-theoretical point of view. We
+could use our results in a future project, which seems to be a very
+relevant next step, particularly in the context of the ``current, and
+very likely to succeed,'' Haskell 2014 \texthaskell{Applicative =>
+  Monad}
 proposal\footnote{\url{http://www.haskell.org/haskellwiki/Functor-Applicative-Monad_Proposal}.},
 which adds an \texthaskell{Applicative} constraint to the
 \texthaskell{Monad} type class and promotes \texthaskell{join} to
@@ -103,7 +104,7 @@ which adds an \texthaskell{Applicative} constraint to the
 
 In Section \ref{sec:category-haskell}, we described \hask, the
 category of Haskell types and functions, in order to be able to relate
-category theory to functional programming. We could have used the
+category theory to functional programming. We could use the
 \texthaskell{Category} type class instead
 \parencites[49--51]{yorgey-2009}[74--75]{elkins-2009}:
 \begin{codehaskell}
@@ -115,7 +116,7 @@ instance Category (->) where
   id  = Prelude.id
   (.) = (Prelude..)
 \end{codehaskell}
-Likewise, we could have studied Kleisli categories
+Likewise, we could study Kleisli categories
 \parencite[59--60]{moggi-1991} in terms of this type class, which
 might be a more intuitive way to justify the Kleisli triple laws. In
 addition, the \texthaskell{Category} class would lead us to
@@ -136,8 +137,8 @@ classes?
 \subsection{Monoids}
 \label{sec:future-monoids}
 
-As an alternative to the ideas of Section \ref{sec:future-adjoints},
-``the fundamental notion of category theory is that of a monoid''
+As an alternative to the ideas of Section \ref{sec:future-adjoints}, a
+``fundamental notion of category theory is that of a monoid''
 \parencite[vii]{maclane-1998}, as described in Example
 \ref{ex:category-monoid}. In Haskell, monoids are defined by the
 \texthaskell{Monoid} type class:
