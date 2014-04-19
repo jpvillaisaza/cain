@@ -60,6 +60,7 @@ learn category theory as absorb it over a period of time.'' We claim
 that it is definitely worth it.
 
 \section{Future Work}
+\label{sec:future}
 
 All unanswered questions and concepts beyond the scope of this project
 could be considered as suggestions for future work. For instance, the
@@ -67,83 +68,88 @@ questions of Haskell's and Agda's categories, the existence of initial
 algebras over endofunctors, and others. We describe some ideas which
 we find interesting and appropriate.
 
-\paragraph{Agda}
+\subsection{Adjoints}
+\label{sec:future-adjoints}
 
-Whenever suitable for our objective, we used category theory in Agda,
-but focused on Haskell. Even though helpful, additional projects could
-benefit much more from really exploting a programming language such as
-Agda. For instance, we could explore natural transformations and
-algebras, or the theorems stating the equivalence between monads and
-Kleisli triples.
+Category theory is based on the concepts of categories, functors, and
+natural transformations. While important, the fundamental notion of
+category theory is adjoints \parencite[11]{marquis-2013}, which
+``arise everywhere'' \parencite[vii]{maclane-1998}. Taking into
+account our approach, can we study the applications of adjoints with
+the purpose of better understanding functional programming? Based on
+\parencites[§ 13]{barr-wells-2012}[79--81]{elkins-2009}[§
+  2.4]{pierce-1991}{rydeheard-1986-adjunctions}[§
+  6]{rydeheard-burstall-1988}, the answer seems to be yes. In
+addition, \textcite[§ 9]{awodey-2010} and \textcite[§
+  IV]{maclane-1998} seem to offer a good starting point.
 
-\paragraph{Applicative functors}
+\subsection{Applicative functors}
+\label{sec:future-monoidals}
 
 Based on \parencite{mcbride-paterson-2008}, we identified and studied
-monoidal functors in order to be able to understand applicative
-functors from a category-theoretical point of view, but we did not
-include our results here. This seems to be a very relevant next step,
-particularly in the context of the ``current, and very likely to
-succeed,'' Haskell 2014 \texthaskell{Applicative => Monad}
+monoidal categories and functors in order to be able to understand
+applicative functors from a category-theoretical point of view, but we
+did not include our results here. This seems to be a very relevant
+next step, particularly in the context of the ``current, and very
+likely to succeed,'' Haskell 2014 \texthaskell{Applicative => Monad}
 proposal\footnote{\url{http://www.haskell.org/haskellwiki/Functor-Applicative-Monad_Proposal}.},
 which adds an \texthaskell{Applicative} constraint to the
 \texthaskell{Monad} type class and promotes \texthaskell{join} to
 \texthaskell{Monad}, which we briefly discussed in Remark
 \ref{re:monad-bind}.
 
-\paragraph{Beyond catamorphisms and folds}
+\subsection{Categories}
+\label{sec:future-categories}
 
-Based on \parencites{meijer-fokkinga-paterson-1991}{vene-2000}, we
-could go beyond catamorphisms and study recursion patterns such as
-anamorphisms, hylomorphisms, and paramorphisms. Moreover, we discussed
-the \texthaskell{foldr} function, but not \texthaskell{foldl} and
-folds in general, which could be a different approach, as well as
-those mentioned in \parencite[§ 6]{hutton-1999}.
+In Section \ref{sec:category-haskell}, we described \hask, the
+category of Haskell types and functions, in order to be able to relate
+category theory to functional programming. We could have used the
+\texthaskell{Category} type class instead
+\parencites[49--51]{yorgey-2009}[74--75]{elkins-2009}:
+\begin{codehaskell}
+class Category cat where
+  id  :: cat a a
+  (.) :: cat b c -> cat a b -> cat a c
 
-\paragraph{Category theory}
+instance Category (->) where
+  id  = Prelude.id
+  (.) = (Prelude..)
+\end{codehaskell}
+Likewise, we could have studied Kleisli categories
+\parencite[59--60]{moggi-1991} in terms of this type class, which
+might be a more intuitive way to justify the Kleisli triple laws. In
+addition, the \texthaskell{Category} class would lead us to
+\texthaskell{Arrow}, which is a generalization of functions
+\parencite[51--57]{yorgey-2009}.
 
-\textcite{awodey-2010} was a late addition to our references for this
-project. The approach and examples of the book seem like a suitable
-next step for a more thorough study of category theory and its
-applications.
+\subsection{Folds}
 
-\paragraph{More monads}
+In Chapter \ref{chap:algebras}, we examined catamorphisms and their
+relation to the \texthaskell{foldr} function for lists. Can we apply
+the results of that chapter to \texthaskell{foldl} and folds in
+general? In particular, can we use algebras and initial algebras over
+endofunctors for conceptualizing the \texthaskell{Foldable}
+\parencite[44--47]{yorgey-2009} and \texthaskell{Traversable}
+\parencites[§ 3]{mcbride-paterson-2008}[47--49]{yorgey-2009} type
+classes?
 
-As examples of monads, we discussed the \texthaskell{Identity},
-\texthaskell{Maybe}, and \texthaskell{[]} monads. However, a more
-complete study of monads could include the \texthaskell{Cons},
-\texthaskell{IO}, \texthaskell{Reader}, \texthaskell{State}, and
-\texthaskell{Writer} monads. Additionally, we could explore the idea
-of notions of computation and semantics with \parencite{moggi-1991}.
+\subsection{Monoids}
+\label{sec:future-monoids}
 
-\paragraph{Parametricity}
-
-In Chapter \ref{chap:naturals}, we discussed quite simple polymorphic
-functions, but we could use some of the ideas of
-\parencite{wadler-1989} for a deeper understanding of parametricity or
-theorems for free. Additionally, \parencite{bernardy-et-al-2012}
-provides ideas for analyzing parametricity in Agda.
-
-\paragraph{Parser combinators}
-
-Based on, for instance, \parencite[§ 16]{osullivan-et-al-2008}, we
-could study the applications of category theory to parser combinators.
-
-\paragraph{Real categories}
-
-In Sections \ref{sec:category-haskell} and \ref{sec:category-agda}, we
-stated that \hask and \agda are not attempts to answer the questions
-of Haskell's and Agda's categories, respectively. In the case of
-Haskell, we could begin with the study of the category of complete
-partial orders \parencite[12.43]{hudak-et-al-2007} and more details
-about the problem with bottom values.
-
-\paragraph{The typeclassopedia}
-
-We explored only two of the standard Haskell type classes related to
-category theory: \texthaskell{Functor} and \texthaskell{Monad}. Based
-on \parencite{yorgey-2009}, we could do the same with
-\texthaskell{Arrow}, \texthaskell{Applicative} (see above),
-\texthaskell{Category}, \texthaskell{Foldable}, \texthaskell{Monoid},
-\texthaskell{Traversable}, among other classes.
+As an alternative to the ideas of Section \ref{sec:future-adjoints},
+``the fundamental notion of category theory is that of a monoid''
+\parencite[vii]{maclane-1998}, as described in Example
+\ref{ex:category-monoid}. In Haskell, monoids are defined by the
+\texthaskell{Monoid} type class:
+\begin{codehaskell}
+class Monoid a where
+  mempty  :: a
+  mappend :: a -> a -> a
+\end{codehaskell}
+In connection with Remark \ref{re:monad-monoid} and Section
+\ref{sec:future-monoidals}, studying monoids and their relation to
+monads seems like a pertinent complement to this project. As basis for
+this study, we have identified \parencites[§
+  VII]{maclane-1998}[39--44]{yorgey-2009}.
 
 \clearemptydoublepage
