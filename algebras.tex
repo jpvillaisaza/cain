@@ -8,11 +8,10 @@
 In this chapter we explore algebras and initial algebras over
 endofunctors, and their relation to algebraic data types in Haskell.
 As motivation, \texthaskell{foldr} is a standard function that
-encapsulates common patterns of induction and recursion concerning
-lists \parencite[355--356]{hutton-1999}. The \texthaskell{foldr}
-function can be defined as follows\footnote{Note that this is not the
-  type signature of the standard Haskell \texthaskell{foldr}
-  function.}:
+encapsulates common patterns of recursion concerning lists
+\parencite[355--356]{hutton-1999}. The \texthaskell{foldr} function
+can be defined as follows\footnote{Note that this is not the type
+  signature of the standard Haskell \texthaskell{foldr} function.}:
 \begin{codehaskell}
 foldr :: b -> (a -> b -> b) -> [a] -> b
 foldr n c []     = n
@@ -32,7 +31,7 @@ uniquely determines both the type signature and the definition of the
 This idea generalizes to algebraic data types in the sense that one
 such type is the initial algebra over an endofunctor and that this
 fact uniquely determines a function that encapsulates common patterns
-of induction and recursion concerning that type.
+recursion concerning that type.
 
 \section{Algebras and Initial Algebras}
 \label{sec:algebras}
@@ -418,7 +417,7 @@ The following theorem is ``the formal justification on the
 identification of inductive types with initial algebras''
 \parencite[17]{vene-2000}.
 
-\begin{theorem}
+\begin{theorem}[Lambek]
   \label{the:lambek}
 
   %% \parencite[17--18]{vene-2000}
@@ -466,8 +465,12 @@ identification of inductive types with initial algebras''
 
 \end{theorem}
 
-This ``theorem shows that the carrier of the initial algebra is (up to
-isomorphism) a fixed point of the functor'' \parencite[18]{vene-2000}.
+This theorem shows that the carrier of the initial algebra,
+$\mu\func{F}$, is isomorphic to $\funcO{F}(\mu\func{F})$, and, for
+this reason, the initial algebra is said to be ``(up to isomorphism) a
+fixed point of the functor'' \parencite[18]{vene-2000}, but we shall
+not focus on this terminology.
+
 We have already discussed three examples of algebras (the initial
 object of a category, natural numbers, and lists). We describe them
 again as initial algebras.
@@ -597,15 +600,20 @@ again as initial algebras.
 \section{Algebras and Initial Algebras in Haskell}
 \label{sec:algebras-haskell}
 
-In Haskell, when we define an algebraic data type, its declaration
-introduces a new type or type constructor, and zero or more data
-constructors. These data specify an initial algebra over an
-endofunctor which can be inferred from the information at hand. Given
-an algebraic data type, inferring such an endofunctor and proving that
-its category of algebras has an initial object amounts to defining a
-fold function for that particular type. In fact, such a function is
-uniquely determined by the fact that the algebraic data type is an
-initial algebra.
+In the previous section, we identified inductive types with initial
+algebras. In Haskell, such types are known as algebraic data types,
+which include recursive types such as natural numbers and lists. When
+we define an algebraic data type, its declaration introduces a new
+type or type constructor, and zero or more data constructors. These
+data specify an initial algebra over an endofunctor which can be
+inferred from the information at hand. Given an algebraic data type,
+inferring such an endofunctor and proving that its category of
+algebras has an initial object amounts to defining a fold function for
+that particular type. In fact, such a function is uniquely determined
+by the fact that the algebraic data type is an initial algebra.
+
+As examples, we describe natural numbers and lists as initial algebras
+over endofunctors in Haskell.
 
 \begin{example}
   \label{ex:algebra-natural-haskell}
