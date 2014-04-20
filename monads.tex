@@ -19,7 +19,7 @@ cartesian xs ys = [(x,y) | x <- xs, y <- ys]
 \end{codehaskell}
 Or, equivalently, desugaring the list comprehension:
 \begin{codehaskell}
-cartesian xs ys = xs >>= \ x -> ys >>= \ y -> return (x,y)
+cartesian xs ys = xs >>= \x -> ys >>= \y -> return (x,y)
 \end{codehaskell}
 This is but one simple example to show that ``a monad is often an
 obvious and useful tool to help solve a problem''
@@ -1298,7 +1298,7 @@ fmap :: Monad'' m => (a -> b) -> m a -> m b
 fmap f mx = bind (return . f) mx
 
 liftM :: Monad m => (a -> b) -> m a -> m b
-liftM f m x = mx >>= (return . f)
+liftM f mx = mx >>= (return . f)
 \end{codehaskell}
 This definition of \texthaskell{fmap} is just
 \eqref{eq:triple-to-endofunctor-morphism-function}. Finally, the
