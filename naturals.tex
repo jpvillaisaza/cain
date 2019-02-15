@@ -465,9 +465,9 @@ last . fmap f = fmap f . last
   \label{ex:natural-concat-haskell}
 
   We can think of the \texthaskell{concat} function, which
-  concatenates a list of lists, as a natural transformation from and
-  into the \texthaskell{[]} functor. The type signature of this
-  function is:
+  concatenates a list of lists, as a natural transformation from the
+  \texthaskell{[] . []} functor and into the \texthaskell{[]} functor. The type
+  signature of this function is:
   \begin{codehaskell}
 concat :: [[a]] -> [a]
   \end{codehaskell}
